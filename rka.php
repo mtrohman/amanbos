@@ -200,7 +200,10 @@ require_once 'config/dbmanager.php';
                         <div class="collapse" id="inputrka">
                             <div class="card card-body">
                                 <div class="table-responsive">
+                                    <div class="alert alert-danger" id="spanvalidasi" style="display: none">
+                                    </div>
                                     <button class="btn btn-sm btn-info m-b-5" id="addRow">Add</button>
+                                    
                                     <form class="form" method="POST" id="forminput">
                                         <table style="width:1500px" class="table table-sm color-table info-table" id="tableInput">
                                             <!-- <caption style="caption-side:top" ><b>Tambah RKA</b></caption> -->
@@ -217,13 +220,13 @@ require_once 'config/dbmanager.php';
                                                 </tr>
                                                 <tr id="template" style="display: none">
                                                     <td>
-                                                        <input id="npsn" type="text" class="form-control p-0" style="min-height:0.5rem" name="npsn[]" />
+                                                        <input id="npsn" type="text" class="form-control p-0" style="min-height:0.5rem" name="npsn[]" required="" />
                                                     </td>
                                                     <td>
-                                                        <input id="ta" type="text" class="form-control p-0" style="min-height:0.5rem" name="ta[]" />
+                                                        <input id="ta" type="text" class="form-control p-0" style="min-height:0.5rem" name="ta[]" required="" />
                                                     </td>
                                                     <td>
-                                                        <input id="triwulan" type="text" class="form-control p-0" style="min-height:0.5rem" name="triwulan[]" />
+                                                        <input id="triwulan" type="text" class="form-control p-0" style="min-height:0.5rem" name="triwulan[]" required="" />
                                                     </td>
                                                     <td> 
                                                         <input class="form-control p-0" style="min-height:0.5rem" name="program[]" type="text" id="namaprogram" readonly="">
@@ -244,14 +247,16 @@ require_once 'config/dbmanager.php';
                                                     </td>
                                                     
                                                     <td>
-                                                        <input id="rekening" type="text" class="form-control p-0" style="min-height:0.5rem" name="rekening[]" />
+                                                        <input class="form-control p-0" style="min-height:0.5rem" name="rekening[]" type="text" id="namarekening" readonly="">
+                                                        <input id="idrekening" name="idrekening[]" type="text" hidden="">
+                                                        <!-- <input id="rekening" type="text" class="form-control p-0" style="min-height:0.5rem" name="rekening[]" /> -->
                                                     </td>
                                                     <td>
                                                         <button id="btnrekening" class="btn btn-primary p-t-0 p-b-0" type="button" >...</button>
                                                     </td>
                                                     
                                                     <td>
-                                                        <input id="nilai" type="text" class="form-control p-0" style="min-height:0.5rem" name="nilai[]" />
+                                                        <input id="nilai" type="text" class="form-control p-0 nilai" style="min-height:0.5rem" name="nilai[]" required="" />
                                                     </td>
                                                     
                                                     <td>
@@ -259,16 +264,25 @@ require_once 'config/dbmanager.php';
                                                     </td>
 
                                                 </tr>
+                                                
                                             </thead>
                                             <tbody>
-                                            
-                                            <!-- style="display: none" -->
                                                 
                                             </tbody>
+                                            <tfoot>
+                                                <tr style="background-color: #1976d2; color: #ffffff;">
+                                                    <th>Total Baris</th>
+                                                    <th><input id="totalBaris" type="text" name="totalbaris" class="form-control p-0" style="min-height:0.5rem" readonly></th>
+                                                    <th colspan="7" class="text-right">Total Nilai</th>
+                                                    <th><input id="totalNilai" name="totalnilai" type="text" class="form-control p-0" style="min-height:0.5rem" readonly=""></th>
+                                                    <th></th>
+                                                </tr>
+                                            </tfoot>
                                         </table>
                                         <button class="btn btn-sm btn-danger" type="button" onclick="cancelInput()">Cancel</button>
-                                        <button class="btn btn-sm btn-success" type="button">Save</button>
+                                        <button class="btn btn-sm btn-success" type="button" onclick="saveRka()">Save</button>
                                     </form>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -330,6 +344,7 @@ require_once 'config/dbmanager.php';
     <script src="assets/js/dtbutton/buttons.print.js"></script>
     <!-- <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script> -->
 	<script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
+    
     <script type="text/javascript" src="http://www.jeasyui.com/easyui/plugins/jquery.datagrid.js"></script>
     <script src="assets/js/fungsi.js"></script>
     <script>
@@ -338,11 +353,11 @@ require_once 'config/dbmanager.php';
                 {field:'ta',title:'TA'},
                 {field:'triwulan',title:'Triwulan'},
                 {field:'npsn',width:'100',title:'NPSN'},
-                {field:'sekolah',title:'Sekolah',width:'250',formatter:function(value,row){return row.sekolah.nama_sekolah}},
-                {field:'program',title:'Program',width:'250',formatter:function(value,row){return row.program.nama_program}},
-                {field:'kp',title:'KP',width:'250',formatter:function(value,row){return row.kp.nama_pembiayaan}},
+                {field:'sekolah',title:'Sekolah',width:'250',formatter:function(value,row){return row.sekolah.nama_sekolah;}},
+                {field:'program',title:'Program',width:'250',formatter:function(value,row){return row.program.nama_program;}},
+                {field:'kp',title:'KP',width:'250',formatter:function(value,row){return row.kp.nama_pembiayaan;}},
                 {field:'nama_rekening',width:'250',title:'Rekening'},
-                {field:'nilai',width:'250',title:'Nilai',formatter:function(value, row){ return cetakIDR(value) }}
+                {field:'nilai',width:'250',title:'Nilai',formatter:function(value, row){ return cetakIDR(value);}}
                 
             ]]
         });
@@ -403,6 +418,7 @@ require_once 'config/dbmanager.php';
                     $(this).attr('id', title + (row));
                 });
             });
+            updateNilai();
             $('#npsn'+row).val("<?=$_SESSION['username'];?>").attr('readonly','true');
             $('#ta'+row).val("<?=$_SESSION['ta'];?>").attr('readonly','true');
             $('#btnprogram'+row).attr('onClick', 'cariProgram('+row+')');
@@ -411,7 +427,23 @@ require_once 'config/dbmanager.php';
             row++;
         }
 
-        
+        function updateNilai(){
+            var TotalNilai = 0;
+            $('#tableInput').find('tbody').find('tr').each(function(){
+                var nilai= parseFloat($(this).find('.nilai').val());
+                if(!isNaN(nilai)){
+                    TotalNilai+= nilai;
+                }
+            });
+            // alert(TotalNilai);
+            $('#totalNilai').val(TotalNilai);
+            $('#totalBaris').val($('tr', $('#tableInput').find('tbody')).length);
+            
+        }
+
+        $('#tableInput').on('change', '.nilai', function () {
+            updateNilai();
+        });
 
         var url;
 		function newRka(){
@@ -419,10 +451,48 @@ require_once 'config/dbmanager.php';
             $('#tableInput').find('tbody').detach();
             $('#tableInput').append($('<tbody>'));  
             $('#forminput').form('clear');
+            $('#forminput').attr('action','config/rka/save.php');
             tambahBaris();
 			// $('#dlg').dialog('open').dialog('setTitle','New User');
 			// url = 'save.php';
 		}
+
+        $( "#forminput" ).submit(function( event ) {
+          // alert( "Handler for .submit() called." );
+            var empty = true;
+
+            $('#tableInput').find('tbody').find('tr').each(function(){
+                $(this).children().each(function(){        
+                    if($(this).find('input').val()!=""){
+                        empty =false;
+                      // return false;
+                    }
+                    else{
+                        empty=true;
+                        return false;
+                    }
+                    // alert(empty+" :"+$(this).find('input').val());
+                });
+            });
+            if (!empty) {
+                return;
+            }
+            else{
+                $("#spanvalidasi").text("Mohon lengkapi formulir anda terlebih dahulu").show().fadeOut( 3000 );
+                
+            }
+            event.preventDefault();
+        });
+
+        function saveRka() {
+            // $("#template").children().each( function () {
+            //     $(this).children().each(function(){
+            //         $(this).removeAttr('name');
+            //     });
+            // });
+            $("#template").detach();
+            $( "#forminput" ).submit();
+        }
 
         $('#addRow').click(function() {
             tambahBaris();
@@ -431,6 +501,7 @@ require_once 'config/dbmanager.php';
         $('#tableInput').on('click', '.btn-hapus', function () {
             $(this).parent().parent().fadeOut("slow", function () {
                 $(this).remove();
+                updateNilai();
             });
         });
         

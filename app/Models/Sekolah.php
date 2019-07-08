@@ -18,12 +18,17 @@ class Sekolah extends Model
 
     protected $primaryKey = 'id_sekolah';
 
-    public function rka(){
+    public function rkas(){
         return $this->hasMany('App\Models\Rka','npsn','npsn');
     }
 
-    public function pagu(){
+    public function pagus(){
         return $this->hasMany('App\Models\Pagu','npsn','npsn');
+    }
+
+    public function scopeNpsn($query, $npsn)
+    {
+        return $query->where('npsn', 'like', '%' . $npsn . '%');
     }
 
 }

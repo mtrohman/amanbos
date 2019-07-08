@@ -8,6 +8,7 @@ class Rka extends Model
 {
     use SoftDeletes;
     // protected $table = 'rka';
+    protected $fillable = ['ta', 'npsn', 'triwulan', 'program_id','pembiayaan_id','rekening_id','nilai'];
 
     /**
      * The attributes that should be mutated to dates.
