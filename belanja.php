@@ -15,7 +15,7 @@ require_once 'config/dbmanager.php';
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/x-icon" sizes="16x16" href="assets/images/favicon.ico">
-    <title>Data RKA - <?php echo $namaweb;?></title>
+    <title>Data Belanja - <?php echo $namaweb;?></title>
     <!-- Bootstrap Core CSS -->
     <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
@@ -98,12 +98,12 @@ require_once 'config/dbmanager.php';
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-5 align-self-center">
-                    <h3 class="text-themecolor">Data RKA Sekolah</h3>
+                    <h3 class="text-themecolor">Data Belanja Sekolah</h3>
                 </div>
                 <div class="col-md-7 align-self-center">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                        <li class="breadcrumb-item active">RKA</li>
+                        <li class="breadcrumb-item active">Belanja</li>
                     </ol>
                 </div>
                 <!-- <div>
@@ -133,7 +133,7 @@ require_once 'config/dbmanager.php';
                                     <div class="col-lg-12">
                                         <div class="text-center text-md-left db">
                                             <img src="assets/images/semarangkab.png" class="logospecial">
-                                            <h1 class="h1special pull-right d-none d-md-block">RKA</h1>
+                                            <h1 class="h1special pull-right d-none d-md-block">Belanja</h1>
                                         </div> 
                                     </div>
                                 </div>
@@ -142,25 +142,23 @@ require_once 'config/dbmanager.php';
 
                                 <div class="table-responsive">
                                     <table id="dg" title="" class="easyui-datagrid" style="width:100%;height:400px"
-                                        url="config/rka/getdata.php"
+                                        url="config/belanja/getdata.php"
                                         toolbar="#toolbar" pagination="true"
                                         rownumbers="true" fitColumns="false" singleSelect="true">
                                         
                                     </table>
                                     <div id="toolbar">
-                                        <div>
-                                            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newRka()">Tambah</a>
-                                            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editRka()">Edit</a>
-                                            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyRka()">Hapus</a>
-                                            
-                                        </div>
-                                        <div>
-                                            <!-- <span>npsn:</span>
-                                            <input id="npsn" style="line-height:26px;border:1px solid #ccc"> -->
+                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newBelanja()">Tambah</a>
+                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editBelanja()">Edit</a>
+                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyBelanja()">Hapus</a>
+                                        
+                                        <!-- <div class="ml-3">
+                                            <span>npsn:</span>
+                                            <input id="npsn" style="line-height:26px;border:1px solid #ccc">
                                             <span>triwulan:</span>
                                             <input id="triwulan" style="line-height:26px;border:1px solid #ccc">
                                             <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">Search</a>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     
                                 </div>
@@ -168,12 +166,41 @@ require_once 'config/dbmanager.php';
                             </div>
                         </div>
 
-                        <div class="collapse" id="inputrka">
+
+                        <div id="dlg" class="easyui-dialog" style="width:500px;max-width:80%;padding:10px 20px;" closed="true" buttons="#dlg-buttons">
+                            <!-- <div class="ftitle">User Information</div> -->
+                            <form id="fm" method="post">
+                                <div style="margin-bottom:10px">
+                                    <input name="rka_id" id="cg" label="RKAS" labelWidth="150" style="width:100%">
+                                </div>
+
+                                <div style="margin-bottom:10px">
+                                    <input name="nama" label="Belanja" id="nama" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                </div>
+
+                                <div style="margin-bottom:10px">
+                                    <input name="nilai" label="Harga" id="harga" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                </div>
+
+                                <div style="margin-bottom:10px">
+                                    <input name="tanggal" label="Tanggal" id="tgl" type="text" class="easyui-datebox" labelWidth="150" style="width:100%">
+                                </div>
+                                
+                                
+                            </form>
+                        </div>
+                        <div id="dlg-buttons">
+                            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="savePagu()" style="width:90px">Save</a>
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
+                        </div>
+
+
+                        <!-- <div class="collapse" id="inputbelanja">
                             <div class="card card-body">
                                 <div class="table-responsive">
-                                    <h3 class="card-title" id="judulForm">Tambah RKA</h3>
+                                    <h3 class="card-title" id="judulForm">Tambah Belanja</h3>
                                     <hr>
-
+                        
                                     <div class="form-group row p-0 m-0" style="min-height:0.5rem">
                                         <label class="control-label text-right col-md-3">NPSN</label>
                                         <div class="col-md-9">
@@ -192,7 +219,7 @@ require_once 'config/dbmanager.php';
                                             <input id="tw" type="text" name="triwulan" class="form-control p-0" style="min-height:0.5rem" form="forminput" >
                                         </div>
                                     </div>
-
+                        
                                     <hr>
                                     <div class="alert alert-danger" id="spanvalidasi" style="display: none">
                                     </div>
@@ -200,12 +227,10 @@ require_once 'config/dbmanager.php';
                                     
                                     <form class="form" method="POST" id="forminput">
                                         <table style="width:1200px" class="table table-sm color-table info-table" id="tableInput">
-                                            <!-- <caption style="caption-side:top" ><b>Tambah RKA</b></caption> -->
+                                            <caption style="caption-side:top" ><b>Tambah RKA</b></caption>
                                             <thead>
                                                 <tr>
-                                                    <!-- <th width="100">NPSN</th> -->
-                                                    <!-- <th width="70">TA</th> -->
-                                                    <th width="250">Uraian</th>
+                                                    
                                                     <th width="450" colspan="2">Program</th>
                                                     <th width="450" colspan="2">KP</th>
                                                     <th width="450" colspan="2">Rekening</th>
@@ -213,28 +238,20 @@ require_once 'config/dbmanager.php';
                                                     <th width="80">Hapus</th>
                                                 </tr>
                                                 <tr id="template" style="display: none">
-                                                    <!-- <td>
-                                                        <input id="npsn" type="text" class="form-control p-0" style="min-height:0.5rem"  required="" />
-                                                    </td>
-                                                    <td>
-                                                        <input id="ta" type="text" class="form-control p-0" style="min-height:0.5rem"  required="" />
-                                                    </td> -->
-                                                    <td>
-                                                        <input id="uraian" type="text" name="uraian[]" class="form-control p-0" style="min-height:0.5rem"  required="" />
-                                                    </td>
+                                                   
                                                     <td> 
                                                         <input class="form-control p-0" style="min-height:0.5rem" name="program[]" type="text" id="namaprogram" readonly="">
                                                         <input id="idprogram" name="idprogram[]" type="text" hidden="">
-                                                        <!-- <input id="program" type="text" class="form-control p-0" style="min-height:0.5rem" name="program[]" /> -->
+                                                        
                                                     </td>
                                                     <td>
                                                         <button id="btnprogram" class="btn btn-info p-t-0 p-b-0" type="button" >...</button>
                                                     </td>
-
+                        
                                                     <td>
                                                         <input class="form-control p-0" style="min-height:0.5rem" name="kp[]" type="text" id="namakomponen" readonly="">
                                                         <input id="idkomponen" name="idkp[]" type="text" hidden="">
-                                                        <!-- <input id="kp" type="text" class="form-control p-0" style="min-height:0.5rem" name="kp[]" /> -->
+                                                        <input id="kp" type="text" class="form-control p-0" style="min-height:0.5rem" name="kp[]" />
                                                     </td>
                                                     <td>
                                                         <button id="btnkp" class="btn btn-warning p-t-0 p-b-0" type="button" >...</button>
@@ -243,7 +260,7 @@ require_once 'config/dbmanager.php';
                                                     <td>
                                                         <input class="form-control p-0" style="min-height:0.5rem" name="rekening[]" type="text" id="namarekening" readonly="">
                                                         <input id="idrekening" name="idrekening[]" type="text" hidden="">
-                                                        <!-- <input id="rekening" type="text" class="form-control p-0" style="min-height:0.5rem" name="rekening[]" /> -->
+                                                        <input id="rekening" type="text" class="form-control p-0" style="min-height:0.5rem" name="rekening[]" />
                                                     </td>
                                                     <td>
                                                         <button id="btnrekening" class="btn btn-primary p-t-0 p-b-0" type="button" >...</button>
@@ -256,7 +273,7 @@ require_once 'config/dbmanager.php';
                                                     <td>
                                                         <button type="button" class="btn btn-sm btn-danger btn-hapus">Hapus</button>
                                                     </td>
-
+                        
                                                 </tr>
                                                 
                                             </thead>
@@ -265,7 +282,6 @@ require_once 'config/dbmanager.php';
                                             </tbody>
                                             <tfoot>
                                                 <tr style="background-color: #1976d2; color: #ffffff;">
-                                                    <!-- <th></th> -->
                                                     <th>Total Baris <input id="totalBaris" type="text" name="totalbaris" class="p-0 ml-3"
                                                         style="min-height:0.5rem;font-size: 1rem;
                                                         line-height: 1.5;
@@ -276,19 +292,19 @@ require_once 'config/dbmanager.php';
                                                         text-align: center;
                                                         width: 30px;background-color: #e9ecef;" readonly>
                                                     </th>
-                                                    <th colspan="6" class="text-right">Total Nilai</th>
+                                                    <th colspan="5" class="text-right">Total Nilai</th>
                                                     <th><input id="totalNilai" name="totalnilai" type="text" class="form-control p-0" style="min-height:0.5rem" readonly=""></th>
                                                     <th></th>
                                                 </tr>
                                             </tfoot>
                                         </table>
                                         <button class="btn btn-sm btn-danger" type="button" onclick="cancelInput()">Cancel</button>
-                                        <button class="btn btn-sm btn-success" type="button" onclick="saveRka()">Save</button>
+                                        <button class="btn btn-sm btn-success" type="button" onclick="saveBelanja()">Save</button>
                                     </form>
                                     
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
 
                     </div>
@@ -355,234 +371,58 @@ require_once 'config/dbmanager.php';
     <script>
         $('#dg').datagrid({
             columns: [[
-                {field:'ta',title:'TA'},
-                {field:'triwulan',title:'Triwulan'},
-                {field:'npsn',width:'100',title:'NPSN'},
-                {field:'sekolah',title:'Sekolah',width:'250',formatter:function(value,row){return row.sekolah.nama_sekolah;}},
-                {field:'uraian',title:'Uraian'},
-                {field:'program',title:'Program',width:'250',formatter:function(value,row){return row.program.nama_program;}},
-                {field:'kp',title:'KP',width:'250',formatter:function(value,row){return row.kp.nama_pembiayaan;}},
-                {field:'nama_rekening',width:'250',title:'Rekening'},
-                {field:'nilai',width:'250',title:'Nilai',formatter:function(value, row){ return cetakIDR(value);}}
-                
+                {field:'tanggal_belanja',title:'Tanggal'},
+                {field:'nama',width:'250',title:'Belanja'},
+                {field:'nilai',width:'170',title:'Harga',formatter:function(value, row){ return cetakIDR(value);}},
+                {field:'program',title:'Program',width:'100',align:'center',formatter:function(value,row){return row.rka.program.kode_program;}},
+                {field:'kp',title:'KP',width:'50',align:'center',formatter:function(value,row){return row.rka.kp.kode_pembiayaan;}},
+                {field:'nomor_rekening',width:'110',title:'Kode Rekening',align:'center'},
+                {field:'nama_rekening',width:'250',title:'Nama Rekening'}
+                // {field:'triwulan',title:'Triwulan'},
+                // {field:'npsn',width:'100',title:'NPSN'},
+                // {field:'sekolah',title:'Sekolah',width:'250',formatter:function(value,row){return row.sekolah.nama_sekolah;}}                
             ]]
         });
 
-        function doSearch(){
-			$('#dg').datagrid('load',{
-				triwulan: $('#triwulan').val()
-			});
-		}
-
-        function cariProgram(val) {
-            // console.log(val);
-            $('#modalprogram').modal('show');
-            $('.pilihprogram').attr('id',('pilihprogram'+val));
-            $('#modalprogram').on('click',('#pilihprogram'+val), function(){
-                $('#namaprogram'+val).val($(this).attr('data-namaprogram'));
-                $('#idprogram'+val).val($(this).attr('data-idprogram'));
-                $('#modalprogram').modal('hide');
-            });
-        }
-
-        function cariKp(val) {
-            // console.log(val);
-            $('#modalkomponen').modal('show');
-            $('.pilihkomponen').attr('id',('pilihkomponen'+val));
-            $('#modalkomponen').on('click',('#pilihkomponen'+val), function(){
-                $('#namakomponen'+val).val($(this).attr('data-namakomponen'));
-                $('#idkomponen'+val).val($(this).attr('data-idkomponen'));
-                $('#modalkomponen').modal('hide');
-            });
-        }
-
-        function cariRekening(val) {
-            // console.log(val);
-            $('#modalrekening').modal('show');
-            // $('.pilihrekening').attr('id',('pilihrekening'+val));
-            $("#lookuprekening").DataTable().rows().nodes().to$().attr('id',('pilihrekening'+val));
-            $('#modalrekening').on('click',('#pilihrekening'+val), function(){
-                $('#namarekening'+val).val($(this).attr('data-namarekening'));
-                $('#idrekening'+val).val($(this).attr('data-idrekening'));
-                $('#modalrekening').modal('hide');
-            });
-        }
-
-
-        var row = 1;
-        function tambahBaris() {
-            // e.preventDefault();
-            var template = $('#template')
-            .clone()                        // CLONE THE TEMPLATE
-            .attr('id', 'row' + row)    // MAKE THE ID UNIQUE
-            .appendTo($('#tableInput tbody'))  // APPEND TO THE TABLE
-            .show();                        // SHOW IT
-            template.children().each( function () {
-                // var title = $(this).children().prop('id');
-                // $(this).children().attr('id', title + (row));
-                $(this).children().each(function(){
-                    var title = $(this).prop('id');
-                    $(this).attr('id', title + (row));
-                });
-            });
-            updateNilai();
-            $('#btnprogram'+row).attr('onClick', 'cariProgram('+row+')');
-            $('#btnkp'+row).attr('onClick', 'cariKp('+row+')');
-            $('#btnrekening'+row).attr('onClick', 'cariRekening('+row+')');
-            row++;
-        }
-
-
-        
-
-        function updateNilai(){
-            var TotalNilai = 0;
-            $('#tableInput').find('tbody').find('tr').each(function(){
-                var nilai= parseFloat($(this).find('.nilai').val());
-                if(!isNaN(nilai)){
-                    TotalNilai+= nilai;
-                }
-            });
-            // alert(TotalNilai);
-            $('#totalNilai').val(TotalNilai);
-            $('#totalBaris').val($('tr', $('#tableInput').find('tbody')).length);
-            
-        }
-
-        $('#tableInput').on('change', '.nilai', function () {
-            updateNilai();
-        });
+        // function doSearch(){
+		// 	$('#dg').datagrid('load',{
+		// 		triwulan: $('#triwulan').val()
+		// 	});
+		// }
 
         var url;
-		function newRka(){
-            $('#inputrka').collapse('show');
-            $('#addRow').show();
-            $('#judulForm').text("Tambah RKA");
-            $('#tw').val('').removeAttr('readonly');
-            $('#tableInput').find('tbody').detach();
-            $('#tableInput').append($('<tbody>'));  
-            $('#forminput').form('clear');
-            $('#npsn').val("<?=$_SESSION['username'];?>").attr('readonly','true');
-            $('#ta').val("<?=$_SESSION['ta'];?>").attr('readonly','true');
-            $('#forminput').attr('action','config/rka/save.php');
-            row = 1;
-            tambahBaris();
-			// $('#dlg').dialog('open').dialog('setTitle','New User');
-			// url = 'save.php';
-		}
-
-
-        function saveRka() {
-            var empty = true;
-            var twempty = true;
-
-            $('#tableInput').find('tbody').find('tr').each(function(){
-                $(this).children().each(function(){        
-                    if($(this).find('input').val()!=""){
-                        empty =false;
-                      // return false;
-                    }
-                    else{
-                        empty=true;
-                        return false;
-                    }
-                    // alert(empty+" :"+$(this).find('input').val());
-                });
-            });
-
-            if($('#tw').val()!=""){
-                twempty=false;
-            }
-            else{
-                twempty=true;
-            }
-            // alert($("#tw").val());
-
-            if (!empty && !twempty) {
-                $("#template").detach();
-                $( "#forminput" ).submit();
-            }
-            else{
-                $("#spanvalidasi").text("Mohon lengkapi formulir anda terlebih dahulu").show().fadeOut( 3000 );
-            }
+		function newBelanja(){
+            $('#dlg').dialog('open').dialog('setTitle','Tambah Belanja');
+            $('#fm').form('clear');
+            url = 'config/belanja/save.php';
 
             
-        }
-
-        $('#addRow').click(function() {
-            tambahBaris();
-        });
-
-        $('#tableInput').on('click', '.btn-hapus', function () {
-            $(this).parent().parent().fadeOut("slow", function () {
-                $(this).remove();
-                updateNilai();
-            });
-        });
-        
-        function cancelInput(){
-			$('#inputrka').collapse('hide');
-            $('#tableInput').find('tbody').detach();
-            $('#tableInput').append($('<tbody>'));  
-            $('#forminput').form('clear');
+            // $('#npsn').val("<?=$_SESSION['username'];?>").attr('readonly','true');
+            // $('#ta').val("<?=$_SESSION['ta'];?>").attr('readonly','true');
+            // // $('#tw').val("<?=$_SESSION['triwulan'];?>").attr('readonly','true');
 		}
 
-        function editRka() {
-            // body...
-            var data = $('#dg').datagrid('getSelected');
-            console.log(data);
-            if (data){
-                $('#inputrka').collapse('show');
-                $('#addRow').hide();
-                $('#judulForm').text("Edit RKA");
-
-                $('#tableInput').find('tbody').detach();
-                $('#tableInput').append($('<tbody>'));  
-                $('#forminput').form('clear');
-
-                $('#npsn').val(data.npsn).attr('readonly','true');
-                $('#ta').val(data.ta).attr('readonly','true');
-                $('#tw').val(data.triwulan).attr('readonly','true');
-
-                $('#forminput').attr('action','config/rka/update.php?id='+data.id);
-                row = 1;
-                tambahBaris();
+        $('#cg').combogrid({
+            panelWidth:500,
+            url: 'config/rka/combogrid.php',
+            idField:'id',
+            textField:'uraian',
+            mode:'remote',
+            fitColumns:false,
+            columns: [[
+                // {field:'ta',title:'TA'},
+                {field:'triwulan',title:'Triwulan',align:'center'},
+                // {field:'npsn',width:'100',title:'NPSN'},
+                // {field:'sekolah',title:'Sekolah',width:'250',formatter:function(value,row){return row.sekolah.nama_sekolah;}},
+                {field:'uraian',title:'Uraian'},
+                {field:'nilai',width:'100',title:'Nilai',formatter:function(value, row){ return cetakIDR(value);}},
+                {field:'nilai',width:'100',title:'Sisa',formatter:function(value, row){ return cetakIDR(row.sisa.nilai);}},
+                {field:'program',title:'Program',width:'250',formatter:function(value,row){return row.program.nama_program;}},
+                {field:'kp',title:'KP',width:'250',formatter:function(value,row){return row.kp.nama_pembiayaan;}},
+                {field:'nama_rekening',width:'250',title:'Rekening'},
                 
-                $('#uraian1').val(data.uraian);
-
-                $('#namaprogram1').val(data.program.nama_program);
-                $('#idprogram1').val(data.program.id);
-                
-                $('#namakomponen1').val(data.kp.nama_pembiayaan);
-                $('#idkomponen1').val(data.kp.id);
-
-                $('#namarekening1').val(data.nama_rekening);
-                $('#idrekening1').val(data.rekening_id);
-
-                $('#nilai1').val(data.nilai);
-                updateNilai();
-            }
-        }
-
-        function destroyRka(){
-            var row = $('#dg').datagrid('getSelected');
-            if (row){
-                $.messager.confirm('Confirm','Apakah anda akan menghapus data rka '+row.sekolah.nama_sekolah+' dengan rekening: '+row.nama_rekening+'?',function(r){
-                    if (r){
-                        $.post('config/rka/destroy.php',{id:row.id},function(result){
-                            if (result.success){
-                                $('#dg').datagrid('reload');    // reload the user data
-                            } else {
-                                $.messager.show({   // show error message
-                                    title: 'Error',
-                                    msg: result.errorMsg
-                                });
-                            }
-                        },'json');
-                    }
-                });
-            }
-        }
+            ]]
+        });
 
         function logout() {
             // body...

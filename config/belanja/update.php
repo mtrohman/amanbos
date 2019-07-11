@@ -47,7 +47,6 @@ if (!empty($_POST)) {
 	}
 
 	// echo "tos";
-	$rkalama->uraian = $request->uraian[0];
 	$rkalama->program_id = $request->idprogram[0];
 	$rkalama->pembiayaan_id = $request->idkp[0];
 	$rkalama->rekening_id = $request->idrekening[0];

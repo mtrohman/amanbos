@@ -143,11 +143,13 @@ require_once 'config/dbmanager.php';
                                         
                                     </table>
                                     <div id="toolbar">
-                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newPagu()">Tambah</a>
-                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editPagu()">Edit</a>
-                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyPagu()">Hapus</a>
-                                        
-                                        <div class="ml-3">
+                                        <div>
+                                            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newPagu()">Tambah</a>
+                                            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editPagu()">Edit</a>
+                                            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyPagu()">Hapus</a>
+                                            
+                                        </div>
+                                        <div>
                                             <span>npsn:</span>
                                             <input id="npsn" style="line-height:26px;border:1px solid #ccc">
                                             <span>sekolah:</span>

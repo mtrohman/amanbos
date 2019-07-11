@@ -8,7 +8,7 @@ class Rka extends Model
 {
     use SoftDeletes;
     // protected $table = 'rka';
-    protected $fillable = ['ta', 'npsn', 'triwulan', 'program_id','pembiayaan_id','rekening_id','nilai'];
+    protected $fillable = ['ta', 'npsn', 'triwulan','uraian', 'program_id','pembiayaan_id','rekening_id','nilai'];
 
     /**
      * The attributes that should be mutated to dates.
@@ -18,7 +18,7 @@ class Rka extends Model
     protected $dates = ['deleted_at'];
     
     public function sisa(){
-        return $this->hasMany('App\Models\RkaSisa');
+        return $this->hasOne('App\Models\RkaSisa');
     }
 
     public function sekolah()
@@ -51,6 +51,11 @@ class Rka extends Model
     public function scopeNpsn($query, $npsn)
     {
         return $query->where('npsn', 'like', '%' . $npsn . '%');
+    }
+
+    public function scopeUraian($query, $uraian)
+    {
+        return $query->where('uraian', 'like', '%' . $uraian . '%');
     }
 
     public function scopeTa($query, $ta)
