@@ -136,8 +136,8 @@ include_once 'ceklogin.php';
                                         toolbar="#toolbar" pagination="true"
                                         rownumbers="true" fitColumns="false" singleSelect="true">
                                         <thead>
-                                            <tr>
-                                                <th field="npsn" width="100">NPSN</th>
+                                            <!-- <tr> -->
+                                                <!-- <th field="npsn" width="100">NPSN</th>
                                                 <th field="nama_sekolah" width="200">Nama Sekolah</th>
                                                 <th field="jenjang" width="80">Jenjang</th>
                                                 <th field="status" width="80">Status</th>
@@ -147,8 +147,8 @@ include_once 'ceklogin.php';
                                                 <th field="nip_kepsek" width="150">NIP Kepsek</th>
                                                 <th field="nama_bendahara" width="150">Nama Bendahara</th>
                                                 <th field="nip_bendahara" width="150">NIP Bendahara</th>
-                                                <th field="alamat" width="300">Alamat</th>
-                                            </tr>
+                                                <th field="alamat" width="300">Alamat</th> -->
+                                            <!-- </tr> -->
                                         </thead>
                                         
                                     </table>
@@ -217,24 +217,27 @@ include_once 'ceklogin.php';
     
     <script>
         $(document).ready(function(){
-            $('#tablesekolah thead tr').clone(true).appendTo( '#tablesekolah thead' );
-            $('#tablesekolah thead tr:eq(1) th').each( function (i) {
-                var title = $(this).text();
-                $(this).html( '<input class="form-control form-control-sm" type="text" placeholder="'+title+'" />' );
-         
-                $( 'input', this ).on( 'keyup change', function () {
-                    if ( table.column(i).search() !== this.value ) {
-                        table
-                            .column(i)
-                            .search( this.value )
-                            .draw();
-                    }
-                } );
-            } );
-            var table = $('#tablesekolah').DataTable( {
-                orderCellsTop: true,
-                dom: 'lrtip',
-            } );
+            $('#dg').datagrid({
+                columns: [[
+                    {field:"npsn", width:"100",title:"NPSN"},
+                    {field:"nama_sekolah",width:"200",title:"Nama Sekolah"},
+                    {field:"jenjang", width:"80", title:"Jenjang"},
+                    {field:"status", width:"80", title:"Status"},
+                    {field:"kecamatan", width:"150", title:"Kecamatan",formatter:function(value,row){return row.kecamatannya.nama_kecamatan;}},
+                    {field:"alamat", width:"200", title:"Alamat"},
+                    {field:"telepon", width:"150", title:"Telepon"},
+                    {field:"nama_kepsek", width:"150", title:"Nama Kepsek"},
+                    {field:"nip_kepsek", width:"150", title:"NIP Kepsek"},
+                    {field:"nama_bendahara", width:"150", title:"Nama Bendaha"},
+                    {field:"nip_bendahara", width:"150", title:"NIP Bendahara"},
+                    // {field:'npsn',width:'100',title:'NPSN'},
+                    // {field:'sekolah',title:'Sekolah',width:'250',formatter:function(value,row){return row.sekolah.nama_sekolah}},
+                    // {field:'saldo', width:'200',title:'Pencairan', formatter:function(value, row){ return cetakIDR(value) }},
+                    // {field:'sisa', width:'180',title:'Sisa Saldo', formatter:function(value, row){ return cetakIDR(row.sisa.saldo) }}
+                ]]
+            });
+
+            
         });
     </script>
     <!-- DT -->

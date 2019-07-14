@@ -12,7 +12,7 @@
         $request = (object)$_POST;
     }
 
-	$pagu= Sekolah::skip($offset)->take($rows)->get();
+	$pagu= Sekolah::with(['kecamatannya'])->skip($offset)->take($rows)->get();
     $pagucount= Sekolah::count();
 	$result = array();
 	$result["total"] = $pagucount;

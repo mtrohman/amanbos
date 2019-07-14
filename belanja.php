@@ -175,137 +175,24 @@ require_once 'config/dbmanager.php';
                                 </div>
 
                                 <div style="margin-bottom:10px">
-                                    <input name="nama" label="Belanja" id="nama" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                    <input name="nama" label="Uraian Belanja" id="nama" class="easyui-textbox" labelWidth="150" style="width:100%">
                                 </div>
 
                                 <div style="margin-bottom:10px">
-                                    <input name="nilai" label="Harga" id="harga" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                    <input name="nilai" label="Harga" id="harga" class="easyui-numberbox" labelWidth="150" style="width:100%" data-options="min:0,precision:2,decimalSeparator:',',groupSeparator:'.',prefix:'Rp '">
                                 </div>
 
                                 <div style="margin-bottom:10px">
-                                    <input name="tanggal" label="Tanggal" id="tgl" type="text" class="easyui-datebox" labelWidth="150" style="width:100%">
+                                    <input name="tanggal_belanja" label="Tanggal" id="tgl" type="text" class="easyui-datebox" labelWidth="150" style="width:100%" data-options="formatter:myformatter,parser:myparser">
                                 </div>
                                 
                                 
                             </form>
                         </div>
                         <div id="dlg-buttons">
-                            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="savePagu()" style="width:90px">Save</a>
+                            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveBelanja()" style="width:90px">Save</a>
                             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
                         </div>
-
-
-                        <!-- <div class="collapse" id="inputbelanja">
-                            <div class="card card-body">
-                                <div class="table-responsive">
-                                    <h3 class="card-title" id="judulForm">Tambah Belanja</h3>
-                                    <hr>
-                        
-                                    <div class="form-group row p-0 m-0" style="min-height:0.5rem">
-                                        <label class="control-label text-right col-md-3">NPSN</label>
-                                        <div class="col-md-9">
-                                            <input id="npsn" type="text" name="npsn" class="form-control p-0" style="min-height:0.5rem" form="forminput" >
-                                        </div>
-                                    </div>
-                                    <div class="form-group row p-0 m-0" style="min-height:0.5rem">
-                                        <label class="control-label text-right col-md-3">TA</label>
-                                        <div class="col-md-9">
-                                            <input id="ta" type="text" name="ta" class="form-control p-0" style="min-height:0.5rem" form="forminput" >
-                                        </div>
-                                    </div>
-                                    <div class="form-group row p-0 m-0" style="min-height:0.5rem">
-                                        <label class="control-label text-right col-md-3">Triwulan</label>
-                                        <div class="col-md-9">
-                                            <input id="tw" type="text" name="triwulan" class="form-control p-0" style="min-height:0.5rem" form="forminput" >
-                                        </div>
-                                    </div>
-                        
-                                    <hr>
-                                    <div class="alert alert-danger" id="spanvalidasi" style="display: none">
-                                    </div>
-                                    <button class="btn btn-sm btn-info m-b-5" id="addRow" >Add</button>
-                                    
-                                    <form class="form" method="POST" id="forminput">
-                                        <table style="width:1200px" class="table table-sm color-table info-table" id="tableInput">
-                                            <caption style="caption-side:top" ><b>Tambah RKA</b></caption>
-                                            <thead>
-                                                <tr>
-                                                    
-                                                    <th width="450" colspan="2">Program</th>
-                                                    <th width="450" colspan="2">KP</th>
-                                                    <th width="450" colspan="2">Rekening</th>
-                                                    <th width="150">Nilai</th>
-                                                    <th width="80">Hapus</th>
-                                                </tr>
-                                                <tr id="template" style="display: none">
-                                                   
-                                                    <td> 
-                                                        <input class="form-control p-0" style="min-height:0.5rem" name="program[]" type="text" id="namaprogram" readonly="">
-                                                        <input id="idprogram" name="idprogram[]" type="text" hidden="">
-                                                        
-                                                    </td>
-                                                    <td>
-                                                        <button id="btnprogram" class="btn btn-info p-t-0 p-b-0" type="button" >...</button>
-                                                    </td>
-                        
-                                                    <td>
-                                                        <input class="form-control p-0" style="min-height:0.5rem" name="kp[]" type="text" id="namakomponen" readonly="">
-                                                        <input id="idkomponen" name="idkp[]" type="text" hidden="">
-                                                        <input id="kp" type="text" class="form-control p-0" style="min-height:0.5rem" name="kp[]" />
-                                                    </td>
-                                                    <td>
-                                                        <button id="btnkp" class="btn btn-warning p-t-0 p-b-0" type="button" >...</button>
-                                                    </td>
-                                                    
-                                                    <td>
-                                                        <input class="form-control p-0" style="min-height:0.5rem" name="rekening[]" type="text" id="namarekening" readonly="">
-                                                        <input id="idrekening" name="idrekening[]" type="text" hidden="">
-                                                        <input id="rekening" type="text" class="form-control p-0" style="min-height:0.5rem" name="rekening[]" />
-                                                    </td>
-                                                    <td>
-                                                        <button id="btnrekening" class="btn btn-primary p-t-0 p-b-0" type="button" >...</button>
-                                                    </td>
-                                                    
-                                                    <td>
-                                                        <input id="nilai" type="text" class="form-control p-0 nilai" style="min-height:0.5rem" name="nilai[]" required="" />
-                                                    </td>
-                                                    
-                                                    <td>
-                                                        <button type="button" class="btn btn-sm btn-danger btn-hapus">Hapus</button>
-                                                    </td>
-                        
-                                                </tr>
-                                                
-                                            </thead>
-                                            <tbody>
-                                                
-                                            </tbody>
-                                            <tfoot>
-                                                <tr style="background-color: #1976d2; color: #ffffff;">
-                                                    <th>Total Baris <input id="totalBaris" type="text" name="totalbaris" class="p-0 ml-3"
-                                                        style="min-height:0.5rem;font-size: 1rem;
-                                                        line-height: 1.5;
-                                                        color: #495057;
-                                                        background-clip: padding-box;
-                                                        border: 1px solid #ced4da;
-                                                        border-radius: .25rem;
-                                                        text-align: center;
-                                                        width: 30px;background-color: #e9ecef;" readonly>
-                                                    </th>
-                                                    <th colspan="5" class="text-right">Total Nilai</th>
-                                                    <th><input id="totalNilai" name="totalnilai" type="text" class="form-control p-0" style="min-height:0.5rem" readonly=""></th>
-                                                    <th></th>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
-                                        <button class="btn btn-sm btn-danger" type="button" onclick="cancelInput()">Cancel</button>
-                                        <button class="btn btn-sm btn-success" type="button" onclick="saveBelanja()">Save</button>
-                                    </form>
-                                    
-                                </div>
-                            </div>
-                        </div> -->
-
 
                     </div>
                 </div>
@@ -369,18 +256,74 @@ require_once 'config/dbmanager.php';
     <script type="text/javascript" src="http://www.jeasyui.com/easyui/plugins/jquery.datagrid.js"></script>
     <script src="assets/js/fungsi.js"></script>
     <script>
+        function myformatter(date){
+            var y = date.getFullYear();
+            var m = date.getMonth()+1;
+            var d = date.getDate();
+            return (d<10?('0'+d):d)+'-'+(m<10?('0'+m):m)+'-'+y;
+        }
+
+        function myparser(s){
+            if (!s) return new Date();
+            var ss = (s.split('-'));
+            var y = parseInt(ss[2],10);
+            var m = parseInt(ss[1],10);
+            var d = parseInt(ss[0],10);
+            if (!isNaN(y) && !isNaN(m) && !isNaN(d)){
+                return new Date(y,m-1,d);
+            } else {
+                return new Date();
+            }
+        }
+
+        function sqldateparser(s){
+            if (!s) return new Date();
+            var ss = (s.split('-'));
+            var y = parseInt(ss[0],10);
+            var m = parseInt(ss[1],10);
+            var d = parseInt(ss[2],10);
+            if (!isNaN(y) && !isNaN(m) && !isNaN(d)){
+                return new Date(y,m-1,d);
+            } else {
+                return new Date();
+            }
+        }
+
         $('#dg').datagrid({
             columns: [[
-                {field:'tanggal_belanja',title:'Tanggal'},
+                {field:'triwulan',title:'Triwulan',align:'center'},
+                {field:'npsn',width:'100',title:'NPSN',formatter:function(value,row){return row.rka.npsn;}},
+                {field:'sekolah',title:'Sekolah',width:'250',formatter:function(value,row){return row.rka.sekolah.nama_sekolah;}},             
+                {field:'tanggal_belanja',title:'Tanggal',formatter:function(value, row){return myformatter(sqldateparser(value));}},
                 {field:'nama',width:'250',title:'Belanja'},
                 {field:'nilai',width:'170',title:'Harga',formatter:function(value, row){ return cetakIDR(value);}},
                 {field:'program',title:'Program',width:'100',align:'center',formatter:function(value,row){return row.rka.program.kode_program;}},
                 {field:'kp',title:'KP',width:'50',align:'center',formatter:function(value,row){return row.rka.kp.kode_pembiayaan;}},
                 {field:'nomor_rekening',width:'110',title:'Kode Rekening',align:'center'},
-                {field:'nama_rekening',width:'250',title:'Nama Rekening'}
-                // {field:'triwulan',title:'Triwulan'},
-                // {field:'npsn',width:'100',title:'NPSN'},
-                // {field:'sekolah',title:'Sekolah',width:'250',formatter:function(value,row){return row.sekolah.nama_sekolah;}}                
+                {field:'nama_rekening',width:'250',title:'Nama Rekening'},
+                {
+                    field:'keterangan',width:'250',title:'Keterangan',align:'center',
+                    formatter:function(value,row){
+                        // return row.rka.rekening.jenis;
+                        switch(row.rka.rekening.jenis){
+                                case 1: 
+                                {
+                                    return '<a href="belanjamodal.php?id='+full[11]+'"> <button class="btn-xs btn-primary"><i class="fa fa-shopping-cart"></i> Belanja Modal</button></a>';
+                                }
+                                break;
+                                case 2:
+                                {
+                                    return '<a href="belanjapersediaan.php"> <button class="btn-xs btn-info"><i class="fa fa-shopping-cart"></i> Belanja Persediaan</button></a>';
+                                }
+                                break;
+                                default:
+                                {
+                                    return '-';
+                                }
+                                break;
+                            }
+                    }
+                }
             ]]
         });
 
@@ -404,6 +347,7 @@ require_once 'config/dbmanager.php';
 
         $('#cg').combogrid({
             panelWidth:500,
+            // delay: 250,
             url: 'config/rka/combogrid.php',
             idField:'id',
             textField:'uraian',
@@ -414,15 +358,49 @@ require_once 'config/dbmanager.php';
                 {field:'triwulan',title:'Triwulan',align:'center'},
                 // {field:'npsn',width:'100',title:'NPSN'},
                 // {field:'sekolah',title:'Sekolah',width:'250',formatter:function(value,row){return row.sekolah.nama_sekolah;}},
+                // {field:'nilai',width:'100',title:'Sisa',formatter:function(value, row){ return cetakIDR(row.sisa.rka_id);}},
                 {field:'uraian',title:'Uraian'},
                 {field:'nilai',width:'100',title:'Nilai',formatter:function(value, row){ return cetakIDR(value);}},
-                {field:'nilai',width:'100',title:'Sisa',formatter:function(value, row){ return cetakIDR(row.sisa.nilai);}},
+                {field:'sisa',width:'100',title:'Sisa',formatter:function(value, row){ return cetakIDR(row.sisa.nilai);}},
                 {field:'program',title:'Program',width:'250',formatter:function(value,row){return row.program.nama_program;}},
                 {field:'kp',title:'KP',width:'250',formatter:function(value,row){return row.kp.nama_pembiayaan;}},
                 {field:'nama_rekening',width:'250',title:'Rekening'},
                 
             ]]
         });
+
+        function saveBelanja(){
+            $('#fm').form('submit',{
+                url: url,
+                onSubmit: function(){
+                    return $(this).form('validate');
+                },
+                success: function(result){
+                    var result = eval('('+result+')');
+                    if (result.errorMsg){
+                        $.messager.alert('Error',result.errorMsg,'error');
+                    } else {
+                        $('#dlg').dialog('close');        // close the dialog
+                        $('#dg').datagrid('reload');    // reload the user data
+                        $('#cg').combogrid('grid').datagrid('reload');
+                    }
+                }
+            });
+        }
+
+        function editBelanja(){
+            var row = $('#dg').datagrid('getSelected');
+            if (row){
+                $('#dlg').dialog('open').dialog('setTitle','Edit Belanja');
+                $('#fm').form('load',{
+                    rka_id: row.rka_id,
+                    nama: row.nama,
+                    nilai: row.nilai,
+                    tanggal_belanja: myformatter(sqldateparser(row.tanggal_belanja))
+                });
+                url = 'config/belanja/update.php?id='+row.id;
+            }
+        }
 
         function logout() {
             // body...

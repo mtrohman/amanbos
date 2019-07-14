@@ -21,6 +21,10 @@ class Rka extends Model
         return $this->hasOne('App\Models\RkaSisa');
     }
 
+    public function belanja(){
+        return $this->hasMany('App\Models\Belanja');
+    }
+
     public function sekolah()
     {
         return $this->belongsTo('App\Models\Sekolah', 'npsn', 'npsn')->select(array('id_sekolah', 'npsn', 'nama_sekolah'));
@@ -38,7 +42,7 @@ class Rka extends Model
 
     public function rekening()
     {
-        return $this->belongsTo('App\Models\KodeRekening','rekening_id')->select(array('id', 'kode_rekening', 'nama_rekening', 'parent_id'));
+        return $this->belongsTo('App\Models\KodeRekening','rekening_id')->select(array('id', 'kode_rekening', 'nama_rekening', 'parent_id','jenis'));
     }
 
     public function scopeNamaSekolah($query, $sekolah)

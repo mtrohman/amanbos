@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Belanja extends Model
 {
     use SoftDeletes;
-    // protected $fillable = ['nilai'];
+    protected $fillable = ['triwulan','nama','nilai','tanggal_belanja'];
     
     /**
      * The attributes that should be mutated to dates.

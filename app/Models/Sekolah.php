@@ -26,6 +26,18 @@ class Sekolah extends Model
         return $this->hasMany('App\Models\Pagu','npsn','npsn');
     }
 
+    public function pencairans(){
+        return $this->hasMany('App\Models\Pencairan','npsn','npsn');
+    }
+
+    public function belanjas(){
+        return $this->hasMany('App\Models\Belanja','npsn','npsn');
+    }
+
+    public function kecamatannya(){
+        return $this->belongsTo('App\Models\Kecamatan','kecamatan');
+    }
+
     public function scopeNpsn($query, $npsn)
     {
         return $query->where('npsn', 'like', '%' . $npsn . '%');

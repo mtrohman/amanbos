@@ -29,7 +29,7 @@ foreach ($res_kr as $key => $value) {
 $jsonbelanja = array();
 
 // 'npsn', 'like', '%' .$npsn. '%'
-$belanja = Belanja::with(['rka.program','rka.kp','rka.sekolah'])->ta($ta)->triwulan($triwulan)->npsn($npsn)->namaSekolah($sekolah)->skip($offset)->take($rows)->get();
+$belanja = Belanja::with(['rka.program','rka.kp','rka.sekolah','rka.rekening'])->ta($ta)->triwulan($triwulan)->npsn($npsn)->namaSekolah($sekolah)->skip($offset)->take($rows)->get();
 
 $belanjacount = Belanja::with(['rka.program','rka.kp','rka.sekolah'])->ta($ta)->triwulan($triwulan)->npsn($npsn)->namaSekolah($sekolah)->count();
 
