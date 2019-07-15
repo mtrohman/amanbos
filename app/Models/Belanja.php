@@ -49,10 +49,30 @@ class Belanja extends Model
     public function scopeTa($query, $ta)
     {
         if (!empty($ta)) {
-        	return $query->whereHas('rka', function ($q) use ($ta) {
-            	$q->where('ta', $ta);
-        	});
+            return $query->whereHas('rka', function ($q) use ($ta) {
+                $q->where('ta', $ta);
+            });
         }
+    }
+
+    public function scopePersediaan($query)
+    {
+        return $query->whereHas('rka', function ($qrka) {
+            $qrka->whereHas('rekening', function ($q) {
+                $q->where('jenis', 2);
+            });
+        });
+        
+    }
+
+    public function scopeModal($query)
+    {
+        return $query->whereHas('rka', function ($qrka) {
+            $qrka->whereHas('rekening', function ($q) {
+                $q->where('jenis', 1);
+            });
+        });
+        
     }
 
 }
