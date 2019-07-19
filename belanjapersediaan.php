@@ -1,6 +1,35 @@
 <?php 
 include_once 'config/db.php';
 include_once 'ceklogin.php';
+require_once 'config/dbmanager.php';
+use Illuminate\Database\Capsule\Manager as DB;
+use App\Models\Belanja;
+
+if (!empty($_GET['id'])) {
+    $id=$_GET['id'];
+    $belanja= Belanja::find($id);
+    if(!empty($belanja)){
+        if ($belanja->jenis_belanja==2) {
+            # code...
+            // echo $belanja->jenis_belanja;
+            $bp= $belanja->belanja_persediaan;
+            $kr_all = array();
+            $res_kr = DB::select('call koderekening_lengkap()');
+            foreach ($res_kr as $key => $value) {
+                $kr_all[$value->id] = $value;
+            }
+        }
+        else{
+            header("location:javascript://history.go(-1)");
+        }
+    }
+    else{
+        header("location:javascript://history.go(-1)");
+    }
+}
+else{
+    header("location:javascript://history.go(-1)");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,6 +75,9 @@ include_once 'ceklogin.php';
             }
         }
     </style>
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/material-teal/easyui.css">
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/color.css">
 </head>
 
 <body class="fix-header card-no-border">
@@ -124,27 +156,33 @@ include_once 'ceklogin.php';
                                 </div>
                                 <hr>
                                 
-                                
-                                <table class="table table-bordered color-bordered-table info-bordered-table">
-                                    <thead>
-                                        <th>Tahun Anggaran</th>
-                                        <th>Triwulan</th>
-                                        <th>NPSN</th>
-                                        <th>Nama Sekolah</th>
-                                        <th>Kecamatan</th>
-                                        
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>20XX</td>
-                                            <td>X</td>
-                                            <td>123456789</td>
-                                            <td>Sekolah Tes Tidak Asli Hanya Mencoba Negeri</td>
-                                            <td>Ungaran Barat</td>
-                                                     
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered color-bordered-table info-bordered-table table-sm nowrap">
+                                        <thead>
+                                            <!-- <th>Tahun Anggaran</th>
+                                            <th>Triwulan</th>
+                                            <th>NPSN</th>
+                                            <th>Nama Sekolah</th>-->
+                                            <th>Tanggal Belanja</th>
+                                            <th>Uraian Belanja</th>
+                                            <th>Nilai</th>
+                                            <th>Kode Rekening</th>
+                                            <th>Nama Rekening</th>
+                                            
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><?=tgl_indo($belanja->tanggal_belanja);?></td>
+                                                <td><?=$belanja->nama;?></td>
+                                                <td align="right"><?=rupiah($belanja->nilai);?></td>
+                                                <td align="center"><?=$kr_all[$belanja->rka->rekening_id]->path;?></td>
+                                                <td><?=$kr_all[$belanja->rka->rekening_id]->nama_rekening;?></td>
+                                                         
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                    
 
                             </div>
                         </div>
@@ -157,33 +195,51 @@ include_once 'ceklogin.php';
                             <div class="card-header">
                                 <h4 class="m-b-0 text-white">Data Persediaan</h4></div>
                             <div class="card-body">
-                                <button class="btn btn-info" type="button" data-toggle="modal" data-target="#modalpersediaan">Tambah</button>
-
-                                <table class="table table-sm table-bordered" id="tabelbelanjapersediaan">
-                                    <thead>
-                                        <tr>
-                                            <th>Nama Persediaan</th>
-                                            <th>Satuan</th>
-                                            <th>Harga (Satuan)</th>
-                                            <th>Saldo</th>
-                                            <th>Bln 1</th>
-                                            <th>Bln 2</th>
-                                            <th>Bln 3</th>
-                                            <th>Pilihan</th>
-                                        </tr>
-                                    </thead>
-                                    <tr>
-                                        <td>a</td>
-                                        <td>a</td>
-                                        <td>a</td>
-                                        <td>a</td>
-                                        <td>a</td>
-                                        <td>a</td>
-                                        <td>a</td>
-                                        <td>Edit | Hapus</td>
-                                    </tr>
+                                <table id="dg" title="" class="easyui-datagrid" style="width:100%;height:400px"
+                                        url="config/belanja/persediaan/getdata.php?id=<?=$belanja->id;?>"
+                                        toolbar="#toolbar" pagination="true"
+                                        fitColumns="false" singleSelect="true">
+                                        
                                 </table>
+                                <div id="toolbar">
+                                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newBelanjaPersediaan()">Tambah</a>
+                                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editBelanjaPersediaan()">Edit</a>
+                                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyBelanjaPersediaan()">Hapus</a>
+                                        
+                                </div>
                             </div>
+                        </div>
+                        <div id="dlg" class="easyui-dialog" style="width:500px;max-width:80%;padding:10px 20px;" closed="true" buttons="#dlg-buttons">
+                            <!-- <div class="ftitle">User Information</div> -->
+                            <form id="fm" method="post">
+                                
+
+                                <div style="margin-bottom:10px">
+                                    <input name="nama_persediaan" label="Nama Persediaan" id="nama" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                </div>
+                                <div style="margin-bottom:10px">
+                                    <input name="qty" label="Qty" id="qty" class="easyui-numberbox" labelWidth="150" style="width:100%">
+                                </div>
+                                <div style="margin-bottom:10px">
+                                    <input name="satuan" label="Satuan" id="satuan" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                </div>
+                                <div style="margin-bottom:10px">
+                                    <input name="harga_satuan" label="Harga Satuan" id="harga" class="easyui-numberbox" labelWidth="150" style="width:100%" data-options="min:0,precision:2,decimalSeparator:',',groupSeparator:'.',prefix:'Rp '">
+                                </div>
+                                <div style="margin-bottom:10px">
+                                    <input name="total" label="Total" id="total" class="easyui-numberbox" labelWidth="150" style="width:100%" data-options="min:0,precision:2,decimalSeparator:',',groupSeparator:'.',prefix:'Rp ',readonly:'true'">
+                                </div>
+
+                                <!-- <div style="margin-bottom:10px">
+                                    <input name="tanggal_belanja" label="Tanggal" id="tgl" type="text" class="easyui-datebox" labelWidth="150" style="width:100%" data-options="formatter:myformatter,parser:myparser">
+                                </div> -->
+                                
+                                
+                            </form>
+                        </div>
+                        <div id="dlg-buttons">
+                            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveBelanjaPersediaan()" style="width:90px">Save</a>
+                            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
                         </div>
                     </div>
                 </div>
@@ -234,10 +290,124 @@ include_once 'ceklogin.php';
     <!-- Sweet-Alert  -->
     <script src="assets/plugins/sweetalert/sweetalert2.min.js"></script>
     <script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
+    
+    <script type="text/javascript" src="http://www.jeasyui.com/easyui/plugins/jquery.datagrid.js"></script>
+
+    <script type="text/javascript" src="https://www.jeasyui.com/easyui/datagrid-detailview.js"></script>
+    <script src="assets/js/fungsi.js"></script>
     <script>
+        function myformatter(date){
+            var y = date.getFullYear();
+            var m = date.getMonth()+1;
+            var d = date.getDate();
+            return (d<10?('0'+d):d)+'-'+(m<10?('0'+m):m)+'-'+y;
+        }
+
+        function myparser(s){
+            if (!s) return new Date();
+            var ss = (s.split('-'));
+            var y = parseInt(ss[2],10);
+            var m = parseInt(ss[1],10);
+            var d = parseInt(ss[0],10);
+            if (!isNaN(y) && !isNaN(m) && !isNaN(d)){
+                return new Date(y,m-1,d);
+            } else {
+                return new Date();
+            }
+        }
+
+        function sqldateparser(s){
+            if (!s) return new Date();
+            var ss = (s.split('-'));
+            var y = parseInt(ss[0],10);
+            var m = parseInt(ss[1],10);
+            var d = parseInt(ss[2],10);
+            if (!isNaN(y) && !isNaN(m) && !isNaN(d)){
+                return new Date(y,m-1,d);
+            } else {
+                return new Date();
+            }
+        }
         $(document).ready(function(){
-            $('#tabelbelanjapersediaan').DataTable();
+            $('#dg').datagrid({
+                rownumbers:"true",
+                showFooter:true,
+                columns:[[
+                    {field:'nama_persediaan',title:'Nama Persediaan',width:200},
+                    {field:'qty',title:'Qty',width:80,align:'center'},
+                    {field:'satuan',title:'Satuan',width:100,align:'center'},
+                    {field:'harga_satuan',title:'Harga Satuan',width:100,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
+                    {field:'total',title:'Total',width:100,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
+                    
+                ]]
+            });
+
+            $('#qty').numberbox({
+                onChange:function(newValue,oldValue) {
+                    var harga = $('#harga').numberbox('getValue');
+                    var total = harga*newValue;
+                    $('#total').numberbox('setValue', total);
+                }
+            });
+
+            $('#harga').numberbox({
+                onChange:function(newValue,oldValue) {
+                    var qty = $('#qty').numberbox('getValue');
+                    var total = qty*newValue;
+                    $('#total').numberbox('setValue', total);
+                }
+            });
         });
+        var url;
+        function newBelanjaPersediaan(){
+            $('#dlg').dialog('open').dialog('setTitle','Tambah Belanja Persediaan');
+            $('#fm').form('clear');
+            url = 'config/belanja/persediaan/save.php?id=<?=$id;?>';
+        }
+        function saveBelanjaPersediaan(){
+            $('#fm').form('submit',{
+                url: url,
+                onSubmit: function(){
+                    return $(this).form('validate');
+                },
+                success: function(result){
+                    var result = eval('('+result+')');
+                    if (result.errorMsg){
+                        $.messager.alert('Error',result.errorMsg,'error');
+                    } else {
+                        $('#dlg').dialog('close');        // close the dialog
+                        $('#dg').datagrid('reload');    // reload the user data
+                    }
+                }
+            });
+        }
+        function editBelanjaPersediaan(){
+            var row = $('#dg').datagrid('getSelected');
+            if (row){
+                $('#dlg').dialog('open').dialog('setTitle','Edit Belanja');
+                $('#fm').form('load',row);
+                
+                url = 'config/belanja/persediaan/update.php?persediaan='+row.id;
+            }
+        }
+        function destroyBelanjaPersediaan(){
+            var row = $('#dg').datagrid('getSelected');
+            if (row){
+                $.messager.confirm('Confirm','Apakah anda yakin akan menghapus Persediaan '+row.nama_persediaan+'?',function(r){
+                    if (r){
+                        $.post('config/belanja/persediaan/destroy.php',{id:row.id},function(result){
+                            if (result.success){
+                                $('#dg').datagrid('reload');    // reload the user data
+                            } else {
+                                $.messager.alert('Error',result.errorMsg,'error');
+                            }
+                        },'json');
+                    }
+                });
+            }
+        }
+
         function logout() {
             // body...
              swal({

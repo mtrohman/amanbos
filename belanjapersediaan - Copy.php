@@ -1,33 +1,6 @@
 <?php 
 include_once 'config/db.php';
 include_once 'ceklogin.php';
-require_once 'config/dbmanager.php';
-use Illuminate\Database\Capsule\Manager as DB;
-use App\Models\Belanja;
-
-if (!empty($_GET['id'])) {
-    $id=$_GET['id'];
-    $belanja= Belanja::find($id);
-    if(!empty($belanja)){
-        if ($belanja->jenis_belanja==1) {
-            $bm= $belanja->belanja_modal;
-            $kr_all = array();
-            $res_kr = DB::select('call koderekening_lengkap()');
-            foreach ($res_kr as $key => $value) {
-                $kr_all[$value->id] = $value;
-            }
-        }
-        else{
-            header("location:javascript://history.go(-1)");
-        }
-    }
-    else{
-        header("location:javascript://history.go(-1)");
-    }
-}
-else{
-    header("location:javascript://history.go(-1)");
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +14,7 @@ else{
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/x-icon" sizes="16x16" href="assets/images/favicon.ico">
-    <title>Belanja Modal - <?php echo $namaweb;?></title>
+    <title>Belanja Persediaan - <?php echo $namaweb;?></title>
     <!-- Bootstrap Core CSS -->
     <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
@@ -73,9 +46,6 @@ else{
             }
         }
     </style>
-    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/material-teal/easyui.css">
-    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/icon.css">
-    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/color.css">
 </head>
 
 <body class="fix-header card-no-border">
@@ -117,12 +87,12 @@ else{
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-5 align-self-center">
-                    <h3 class="text-themecolor">Belanja Modal</h3>
+                    <h3 class="text-themecolor">Belanja Persediaan</h3>
                 </div>
                 <div class="col-md-7 align-self-center">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                        <li class="breadcrumb-item active">Belanja Modal</li>
+                        <li class="breadcrumb-item active">Belanja Persediaan</li>
                     </ol>
                 </div>
                 <!-- <div>
@@ -139,7 +109,7 @@ else{
                 <!-- ============================================================== -->
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
-                
+                <?php include_once "config/modalpersediaan.php" ;?>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
@@ -148,39 +118,33 @@ else{
                                     <div class="col-lg-12">
                                         <div class="text-center text-md-left db">
                                             <img src="assets/images/semarangkab.png" class="logospecial">
-                                            <h1 class="h1special pull-right d-none d-md-block">Belanja Modal</h1>
+                                            <h1 class="h1special pull-right d-none d-md-block">Belanja Persediaan</h1>
                                         </div> 
                                     </div>
                                 </div>
                                 <hr>
                                 
-                                <div class="table-responsive">
-                                    <table class="table table-bordered color-bordered-table primary-bordered-table table-sm nowrap">
-                                        <thead>
-                                            <!-- <th>Tahun Anggaran</th>
-                                            <th>Triwulan</th>
-                                            <th>NPSN</th>
-                                            <th>Nama Sekolah</th>-->
-                                            <th>Tanggal Belanja</th>
-                                            <th>Uraian Belanja</th>
-                                            <th>Nilai</th>
-                                            <th>Kode Rekening</th>
-                                            <th>Nama Rekening</th>
-                                            
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><?=tgl_indo($belanja->tanggal_belanja);?></td>
-                                                <td><?=$belanja->nama;?></td>
-                                                <td align="right"><?=rupiah($belanja->nilai);?></td>
-                                                <td align="center"><?=$kr_all[$belanja->rka->rekening_id]->path;?></td>
-                                                <td><?=$kr_all[$belanja->rka->rekening_id]->nama_rekening;?></td>
-                                                         
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                    
+                                
+                                <table class="table table-bordered color-bordered-table info-bordered-table">
+                                    <thead>
+                                        <th>Tahun Anggaran</th>
+                                        <th>Triwulan</th>
+                                        <th>NPSN</th>
+                                        <th>Nama Sekolah</th>
+                                        <th>Kecamatan</th>
+                                        
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>20XX</td>
+                                            <td>X</td>
+                                            <td>123456789</td>
+                                            <td>Sekolah Tes Tidak Asli Hanya Mencoba Negeri</td>
+                                            <td>Ungaran Barat</td>
+                                                     
+                                        </tr>
+                                    </tbody>
+                                </table>
 
                             </div>
                         </div>
@@ -189,55 +153,37 @@ else{
                 <div class="row justify-content-md-center">
                     
                     <div class="col-lg-12">
-                        <div class="card card-outline-primary">
+                        <div class="card card-outline-info">
                             <div class="card-header">
-                                <h4 class="m-b-0 text-white">Data Modal</h4></div>
+                                <h4 class="m-b-0 text-white">Data Persediaan</h4></div>
                             <div class="card-body">
-                                <table id="dg" title="" class="easyui-datagrid" style="width:100%;height:400px"
-                                        url="config/belanja/modal/getdata.php?id=<?=$belanja->id;?>"
-                                        toolbar="#toolbar" pagination="true"
-                                        fitColumns="false" singleSelect="true">
-                                        
+                                <button class="btn btn-info" type="button" data-toggle="modal" data-target="#modalpersediaan">Tambah</button>
+
+                                <table class="table table-sm table-bordered" id="tabelbelanjapersediaan">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama Persediaan</th>
+                                            <th>Satuan</th>
+                                            <th>Harga (Satuan)</th>
+                                            <th>Saldo</th>
+                                            <th>Bln 1</th>
+                                            <th>Bln 2</th>
+                                            <th>Bln 3</th>
+                                            <th>Pilihan</th>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>a</td>
+                                        <td>a</td>
+                                        <td>a</td>
+                                        <td>a</td>
+                                        <td>a</td>
+                                        <td>a</td>
+                                        <td>a</td>
+                                        <td>Edit | Hapus</td>
+                                    </tr>
                                 </table>
-                                <div id="toolbar">
-                                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newBelanjaModal()">Tambah</a>
-                                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editBelanjaModal()">Edit</a>
-                                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyBelanjaModal()">Hapus</a>
-                                        
-                                </div>
                             </div>
-                        </div>
-                        <div id="dlg" class="easyui-dialog" style="width:500px;max-width:80%;padding:10px 20px;" closed="true" buttons="#dlg-buttons">
-                            <!-- <div class="ftitle">User Information</div> -->
-                            <form id="fm" method="post">
-                                
-
-                                <div style="margin-bottom:10px">
-                                    <input name="nama_persediaan" label="Nama Modal" id="nama" class="easyui-textbox" labelWidth="150" style="width:100%">
-                                </div>
-                                <div style="margin-bottom:10px">
-                                    <input name="qty" label="Qty" id="qty" class="easyui-numberbox" labelWidth="150" style="width:100%">
-                                </div>
-                                <div style="margin-bottom:10px">
-                                    <input name="satuan" label="Satuan" id="satuan" class="easyui-textbox" labelWidth="150" style="width:100%">
-                                </div>
-                                <div style="margin-bottom:10px">
-                                    <input name="harga_satuan" label="Harga Satuan" id="harga" class="easyui-numberbox" labelWidth="150" style="width:100%" data-options="min:0,precision:2,decimalSeparator:',',groupSeparator:'.',prefix:'Rp '">
-                                </div>
-                                <div style="margin-bottom:10px">
-                                    <input name="total" label="Total" id="total" class="easyui-numberbox" labelWidth="150" style="width:100%" data-options="min:0,precision:2,decimalSeparator:',',groupSeparator:'.',prefix:'Rp ',readonly:'true'">
-                                </div>
-
-                                <!-- <div style="margin-bottom:10px">
-                                    <input name="tanggal_belanja" label="Tanggal" id="tgl" type="text" class="easyui-datebox" labelWidth="150" style="width:100%" data-options="formatter:myformatter,parser:myparser">
-                                </div> -->
-                                
-                                
-                            </form>
-                        </div>
-                        <div id="dlg-buttons">
-                            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveBelanjaModal()" style="width:90px">Save</a>
-                            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
                         </div>
                     </div>
                 </div>
@@ -288,49 +234,9 @@ else{
     <!-- Sweet-Alert  -->
     <script src="assets/plugins/sweetalert/sweetalert2.min.js"></script>
     <script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="http://www.jeasyui.com/easyui/plugins/jquery.datagrid.js"></script>
-    <script type="text/javascript" src="https://www.jeasyui.com/easyui/datagrid-detailview.js"></script>
-    <script src="assets/js/fungsi.js"></script>
     <script>
         $(document).ready(function(){
-            $('#dg').datagrid({
-                rownumbers:"true",
-                showFooter:true,
-                columns:[
-                [
-                    {title:'Data Barang', halign: 'center',colspan:4},
-                    // {title: 'column band', halign: 'center'},
-                    // {title: 'column band', halign: 'center'},
-                    // {title: 'column band', halign: 'center'},
-                    {title: 'Jumlah', halign: 'center',colspan:2},
-                    // {title: 'column band', halign: 'center'},
-                    {title: 'Harga', halign: 'center',colspan:2},
-                    // {title: 'column band', halign: 'center'},
-                    {title: 'Bukti Pembelian', halign: 'center',colspan:3},
-
-                ],
-                [
-                    
-                    {field:'nama_barang',title:'Nama Barang',width:200},
-                    {field:'merek',title:'Merek',width:100},
-                    {field:'tipe',title:'tipe',width:100},
-                    {field:'bahan',title:'bahan',width:100},
-
-                    {field:'qty',title:'Qty',width:80,align:'center'},
-                    {field:'satuan',title:'Satuan',width:100,align:'center'},
-                    {field:'harga_satuan',title:'Harga Satuan',width:100,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
-                    {field:'total',title:'Total',width:100,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
-
-                    {field:'bukti_tanggal',title:'tanggal',width:100},
-                    {field:'bukti_bulan',title:'bulan',width:100},
-                    {field:'bukti_nomor',title:'nomor',width:100},
-
-                    // {field:'bukti',title:'Nomor Pembelian',width:200,align:'center',formatter:function(value, row){ return row.bukti_tanggal+"-"+row.bukti_bulan+"-"+row.bukti_nomor;}},
-
-                    
-                ]]
-            });
+            $('#tabelbelanjapersediaan').DataTable();
         });
         function logout() {
             // body...

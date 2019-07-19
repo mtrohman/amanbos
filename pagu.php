@@ -145,6 +145,7 @@ require_once 'config/dbmanager.php';
                                     <div id="toolbar">
                                         <div>
                                             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newPagu()">Tambah</a>
+                                            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-upload" plain="true" onclick="uploadPagu()">Upload</a>
                                             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editPagu()">Edit</a>
                                             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyPagu()">Hapus</a>
                                             

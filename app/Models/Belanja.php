@@ -18,7 +18,7 @@ class Belanja extends Model
 
     public function rka()
     {
-        return $this->belongsTo('App\Models\Rka')->select(array('id', 'ta', 'npsn', 'program_id','pembiayaan_id','rekening_id'));;
+        return $this->belongsTo('App\Models\Rka')->select(array('id', 'ta', 'npsn', 'program_id','pembiayaan_id','rekening_id'));
     }
 
     public function scopeNamaSekolah($query, $sekolah)
@@ -55,6 +55,49 @@ class Belanja extends Model
         }
     }
 
+
+
+    protected $appends = ['jenis_belanja','keterangan'];
+
+    public function getJenisBelanjaAttribute()
+    {
+        // return "{$this->first_name} {$this->last_name}";
+        if($this->rka->rekening->jenis){
+            return $this->rka->rekening->jenis;
+        }
+        // ;
+    }
+
+    public function getKeteranganAttribute()
+    {
+        switch ($this->jenis_belanja) {
+            case 1:
+                // Modal...
+                if ($this->nilai==$this->belanja_modal()->sum('total')) {
+                    # code...
+                    return 1;
+                }
+                else{
+                    return -1;
+                }
+                break;
+            case 2:
+                // Persediaan
+                if ($this->nilai==$this->belanja_persediaan()->sum('total')) {
+                    # code...
+                    return 1;
+                }
+                else{
+                    return -1;
+                }
+                break;
+            default:
+                // Something else
+                # code...
+                break;
+        }
+    }
+
     public function scopePersediaan($query)
     {
         return $query->whereHas('rka', function ($qrka) {
@@ -65,6 +108,11 @@ class Belanja extends Model
         
     }
 
+    public function belanja_persediaan()
+    {
+        return $this->hasMany('App\Models\BelanjaPersediaan');
+    }
+
     public function scopeModal($query)
     {
         return $query->whereHas('rka', function ($qrka) {
@@ -73,6 +121,11 @@ class Belanja extends Model
             });
         });
         
+    }
+
+    public function belanja_modal()
+    {
+        return $this->hasMany('App\Models\BelanjaModal');
     }
 
 }

@@ -305,8 +305,37 @@ require_once 'config/dbmanager.php';
                     field:'keterangan',width:'250',
                     title:'Keterangan',align:'center',
                     formatter:function(value,row){
+                        switch(row.jenis_belanja){
+                            case 1:
+                                if (value != 1) {
+                                    return "Mohon isi detail belanja modal!";
+                                }
+                                else {
+                                    return "-";
+                                }
+                            break;
+                            case 2:
+                                if (value != 1) {
+                                    return "Mohon isi detail belanja persediaan!";
+                                }
+                                else {
+                                    return "-";
+                                }
+                            break;
+                            default:
+                            {
+                                return '-';
+                            }
+                            break;
+                        }
+                    }
+                },
+                {
+                    field:'ext',width:'200',
+                    title:'Extra',align:'center',
+                    formatter:function(value,row){
                         // return row.rka.rekening.jenis;
-                        switch(row.rka.rekening.jenis){
+                        switch(row.jenis_belanja){
                             case 1: 
                             {
                                 return '<a href="belanjamodal.php?id='+row.id+'"> <button class="btn-xs btn-primary"><i class="fa fa-shopping-cart"></i> Belanja Modal</button></a>';

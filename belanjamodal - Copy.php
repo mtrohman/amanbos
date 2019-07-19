@@ -1,33 +1,6 @@
 <?php 
 include_once 'config/db.php';
 include_once 'ceklogin.php';
-require_once 'config/dbmanager.php';
-use Illuminate\Database\Capsule\Manager as DB;
-use App\Models\Belanja;
-
-if (!empty($_GET['id'])) {
-    $id=$_GET['id'];
-    $belanja= Belanja::find($id);
-    if(!empty($belanja)){
-        if ($belanja->jenis_belanja==1) {
-            $bm= $belanja->belanja_modal;
-            $kr_all = array();
-            $res_kr = DB::select('call koderekening_lengkap()');
-            foreach ($res_kr as $key => $value) {
-                $kr_all[$value->id] = $value;
-            }
-        }
-        else{
-            header("location:javascript://history.go(-1)");
-        }
-    }
-    else{
-        header("location:javascript://history.go(-1)");
-    }
-}
-else{
-    header("location:javascript://history.go(-1)");
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -73,9 +46,6 @@ else{
             }
         }
     </style>
-    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/material-teal/easyui.css">
-    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/icon.css">
-    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/color.css">
 </head>
 
 <body class="fix-header card-no-border">
@@ -153,91 +123,178 @@ else{
                                     </div>
                                 </div>
                                 <hr>
-                                
-                                <div class="table-responsive">
-                                    <table class="table table-bordered color-bordered-table primary-bordered-table table-sm nowrap">
-                                        <thead>
-                                            <!-- <th>Tahun Anggaran</th>
-                                            <th>Triwulan</th>
-                                            <th>NPSN</th>
-                                            <th>Nama Sekolah</th>-->
-                                            <th>Tanggal Belanja</th>
-                                            <th>Uraian Belanja</th>
-                                            <th>Nilai</th>
-                                            <th>Kode Rekening</th>
-                                            <th>Nama Rekening</th>
+                                <form action="">
+                                    <div class="form-group row">
+                                        <div class="col-lg-6">
+                                            <div class="row">
+                                                <a data-toggle="collapse" href="#tabelinv" role="button" aria-expanded="false" aria-controls="collapseExample" class="col-lg-4 col-form-label text-dark">Kode Belanja</a>
+                                                <div class="col-lg-8">
+                                                    <div class="input-group">
+                                                        <input class="form-control" type="text" id="noregister" name="noreg" placeholder="Masukkan Kode Belanja">
+                                                        <div class="input-group-append">
+                                                            <button type="button" data-toggle="modal" data-target="#modalinvestasi" class="btn">. . .</button>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>              
+                                        </div>
+                                        <div class="col-lg-6">
                                             
+                                            <button class="btn btn-info">Proses</button>
+                                        </div>
+                                        
+                                    </div>
+                                </form>
+                                
+                                <div class="collapse" id="tabelinv">
+                                    <table class="table table-bordered color-bordered-table info-bordered-table">
+                                        <thead>
+                                            <th>Tanggal</th>
+                                            <th>Kode Belanja</th>
+                                            <th>Belanja</th>
+                                            <th>Harga</th>
+                                            <th>Program</th>
+                                            <th>Kode Pembiayaan</th>
+                                            <th>No Rekening</th>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td><?=tgl_indo($belanja->tanggal_belanja);?></td>
-                                                <td><?=$belanja->nama;?></td>
-                                                <td align="right"><?=rupiah($belanja->nilai);?></td>
-                                                <td align="center"><?=$kr_all[$belanja->rka->rekening_id]->path;?></td>
-                                                <td><?=$kr_all[$belanja->rka->rekening_id]->nama_rekening;?></td>
-                                                         
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>          
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>
                                     
+                                </div>
 
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row justify-content-md-center">
-                    
                     <div class="col-lg-12">
-                        <div class="card card-outline-primary">
+                        <div class="card card-outline-info">
                             <div class="card-header">
-                                <h4 class="m-b-0 text-white">Data Modal</h4></div>
+                                <h4 class="m-b-0 text-white">Pengadaan Barang</h4></div>
                             <div class="card-body">
-                                <table id="dg" title="" class="easyui-datagrid" style="width:100%;height:400px"
-                                        url="config/belanja/modal/getdata.php?id=<?=$belanja->id;?>"
-                                        toolbar="#toolbar" pagination="true"
-                                        fitColumns="false" singleSelect="true">
-                                        
-                                </table>
-                                <div id="toolbar">
-                                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newBelanjaModal()">Tambah</a>
-                                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editBelanjaModal()">Edit</a>
-                                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyBelanjaModal()">Hapus</a>
-                                        
+                                <form action="" method="POST">
+                                <div class="card-body">
+                                    
+                                    <div class="form-group row">
+                                        <label for="example-text-input" class="col-lg-3 col-form-label">Nama Barang</label>
+                                        <div class="col-lg-9">
+                                            <input class="form-control" type="text" name="namabarang" placeholder="Masukkan Nama Barang">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="example-text-input" class="col-lg-3 col-form-label">Merk</label>
+                                        <div class="col-lg-9">
+                                            <input class="form-control" type="text" name="merk" placeholder="Masukkan Merk">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="example-text-input" class="col-lg-3 col-form-label">Type</label>
+                                        <div class="col-lg-9">
+                                            <input class="form-control" type="text" name="type" placeholder="Masukkan Type">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="example-text-input" class="col-lg-3 col-form-label">Bahan</label>
+                                        <div class="col-lg-9">
+                                            <input class="form-control" type="text" name="bahan" placeholder="Masukkan Bahan">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="example-text-input" class="col-lg-3 col-form-label">Bukti Pembelian</label>
+                                        <div class="col-lg-9">
+                                            <div class="input-group">
+                                                <input class="form-control" type="text" name="bahan" placeholder="Masukkan Tanggal">
+                                                <input class="form-control" type="text" name="bulan" placeholder="Masukkan bulan">
+                                                <input class="form-control" type="text" name="nomor" placeholder="Masukkan nomor">
+                                                
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="example-text-input" class="col-lg-3 col-form-label">Jumlah</label>
+                                        <div class="col-lg-9">
+                                            <div class="input-group">
+                                                <input class="form-control" type="text" name="jumlahbarang" placeholder="Masukkan Jumlah Barang">
+                                                <input class="form-control" type="text" name="satuan" placeholder="Masukkan satuan">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="example-text-input" class="col-lg-3 col-form-label">Harga</label>
+                                        <div class="col-lg-9">
+                                            <div class="input-group">
+                                                <input class="form-control" type="text" name="hargasatuan" placeholder="Masukkan hargasatuan">
+                                                <input class="form-control" type="text" name="jumlahharga" placeholder="jumlah harga" readonly="">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-info"><i class="fa fa-upload"></i> Simpan</button>
+                                        </div>
+                                    </div> 
+
                                 </div>
+                                
+                                
+                                </form>
                             </div>
                         </div>
-                        <div id="dlg" class="easyui-dialog" style="width:500px;max-width:80%;padding:10px 20px;" closed="true" buttons="#dlg-buttons">
-                            <!-- <div class="ftitle">User Information</div> -->
-                            <form id="fm" method="post">
-                                
-
-                                <div style="margin-bottom:10px">
-                                    <input name="nama_persediaan" label="Nama Modal" id="nama" class="easyui-textbox" labelWidth="150" style="width:100%">
-                                </div>
-                                <div style="margin-bottom:10px">
-                                    <input name="qty" label="Qty" id="qty" class="easyui-numberbox" labelWidth="150" style="width:100%">
-                                </div>
-                                <div style="margin-bottom:10px">
-                                    <input name="satuan" label="Satuan" id="satuan" class="easyui-textbox" labelWidth="150" style="width:100%">
-                                </div>
-                                <div style="margin-bottom:10px">
-                                    <input name="harga_satuan" label="Harga Satuan" id="harga" class="easyui-numberbox" labelWidth="150" style="width:100%" data-options="min:0,precision:2,decimalSeparator:',',groupSeparator:'.',prefix:'Rp '">
-                                </div>
-                                <div style="margin-bottom:10px">
-                                    <input name="total" label="Total" id="total" class="easyui-numberbox" labelWidth="150" style="width:100%" data-options="min:0,precision:2,decimalSeparator:',',groupSeparator:'.',prefix:'Rp ',readonly:'true'">
-                                </div>
-
-                                <!-- <div style="margin-bottom:10px">
-                                    <input name="tanggal_belanja" label="Tanggal" id="tgl" type="text" class="easyui-datebox" labelWidth="150" style="width:100%" data-options="formatter:myformatter,parser:myparser">
-                                </div> -->
-                                
-                                
-                            </form>
-                        </div>
-                        <div id="dlg-buttons">
-                            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveBelanjaModal()" style="width:90px">Save</a>
-                            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="card card-outline-info">
+                            <div class="card-header">
+                                <h4 class="m-b-0 text-white">Data Pengadaan Barang</h4></div>
+                            <div class="card-body">
+                                <table class="table table-sm table-bordered" id="tabelbelanjamodal">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama Barang</th>
+                                            <th>Merk</th>
+                                            <th>Type</th>
+                                            <th>Bahan</th>
+                                            <th>Tanggal</th>
+                                            <th>Bulan</th>
+                                            <th>Nomor</th>
+                                            <th>Jumlah</th>
+                                            <th>Satuan</th>
+                                            <th>Harga Satuan</th>
+                                            <th>Jumlah</th>
+                                        </tr>
+                                    </thead>
+                                    <tr>
+                                        <td>a</td>
+                                        <td>a</td>
+                                        <td>a</td>
+                                        <td>a</td>
+                                        <td>a</td>
+                                        <td>a</td>
+                                        <td>a</td>
+                                        <td>a</td>
+                                        <td>a</td>
+                                        <td>a</td>
+                                        <td>a</td>
+                                        
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -288,49 +345,9 @@ else{
     <!-- Sweet-Alert  -->
     <script src="assets/plugins/sweetalert/sweetalert2.min.js"></script>
     <script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="http://www.jeasyui.com/easyui/plugins/jquery.datagrid.js"></script>
-    <script type="text/javascript" src="https://www.jeasyui.com/easyui/datagrid-detailview.js"></script>
-    <script src="assets/js/fungsi.js"></script>
     <script>
         $(document).ready(function(){
-            $('#dg').datagrid({
-                rownumbers:"true",
-                showFooter:true,
-                columns:[
-                [
-                    {title:'Data Barang', halign: 'center',colspan:4},
-                    // {title: 'column band', halign: 'center'},
-                    // {title: 'column band', halign: 'center'},
-                    // {title: 'column band', halign: 'center'},
-                    {title: 'Jumlah', halign: 'center',colspan:2},
-                    // {title: 'column band', halign: 'center'},
-                    {title: 'Harga', halign: 'center',colspan:2},
-                    // {title: 'column band', halign: 'center'},
-                    {title: 'Bukti Pembelian', halign: 'center',colspan:3},
-
-                ],
-                [
-                    
-                    {field:'nama_barang',title:'Nama Barang',width:200},
-                    {field:'merek',title:'Merek',width:100},
-                    {field:'tipe',title:'tipe',width:100},
-                    {field:'bahan',title:'bahan',width:100},
-
-                    {field:'qty',title:'Qty',width:80,align:'center'},
-                    {field:'satuan',title:'Satuan',width:100,align:'center'},
-                    {field:'harga_satuan',title:'Harga Satuan',width:100,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
-                    {field:'total',title:'Total',width:100,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
-
-                    {field:'bukti_tanggal',title:'tanggal',width:100},
-                    {field:'bukti_bulan',title:'bulan',width:100},
-                    {field:'bukti_nomor',title:'nomor',width:100},
-
-                    // {field:'bukti',title:'Nomor Pembelian',width:200,align:'center',formatter:function(value, row){ return row.bukti_tanggal+"-"+row.bukti_bulan+"-"+row.bukti_nomor;}},
-
-                    
-                ]]
-            });
+            $('#tabelbelanjamodal').DataTable();
         });
         function logout() {
             // body...

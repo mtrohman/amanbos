@@ -142,6 +142,10 @@ require_once 'config/dbmanager.php';
                                         fitColumns="false" singleSelect="true">
                                         
                                     </table>
+                                    <div id="toolbar">
+                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editBelanjaPersediaan()">Edit</a>
+                                        
+                                    </div>
                                 </div>
 
                             </div>
@@ -251,16 +255,16 @@ require_once 'config/dbmanager.php';
                 onExpandRow: function(index,row){
                     var ddv = $(this).datagrid('getRowDetail',index).find('table.ddv');
                     ddv.datagrid({
-                        url:'datagrid22_getdetail.php?itemid='+row.id,
+                        url:'config/belanja/detailpersediaan.php?id='+row.id,
                         fitColumns:true,
                         singleSelect:true,
                         rownumbers:true,
                         loadMsg:'..please wait..',
                         height:'auto',
                         columns:[[
-                            {field:'a',title:'Nama Persediaan',width:100},
-                            {field:'b',title:'Satuan',width:100,align:'center'},
-                            {field:'c',title:'Harga Satuan',width:100,align:'center'}
+                            {field:'nama_persediaan',title:'Nama Persediaan',width:100},
+                            {field:'satuan',title:'Satuan',width:100,align:'center'},
+                            {field:'harga_satuan',title:'Harga Satuan',width:100,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
                         ]],
                         onResize:function(){
                             $('#dg').datagrid('fixDetailRowHeight',index);
@@ -269,6 +273,9 @@ require_once 'config/dbmanager.php';
                             setTimeout(function(){
                                 $('#dg').datagrid('fixDetailRowHeight',index);
                             },0);
+                        },
+                        onBeforeSelect:function(index,row) {
+                            return false;
                         }
                     });
                     $('#dg').datagrid('fixDetailRowHeight',index);
@@ -286,8 +293,15 @@ require_once 'config/dbmanager.php';
 	                {field:'nilai',width:'170',title:'Harga',formatter:function(value, row){ return cetakIDR(value);}},
 				]]
             });
-
         });
+        function editBelanjaPersediaan(){
+            var row = $('#dg').datagrid('getSelected');
+            if (row){
+                var pageto = 'belanjapersediaan.php?id='+row.id;
+                window.location = pageto;
+                // console.log("tes");
+            }
+        }
     </script>
     <!-- DT -->
     <script>
