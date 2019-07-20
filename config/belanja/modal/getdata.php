@@ -31,7 +31,7 @@ $bmcount= $bmall->count();
 $bmfooter= array(
 	'nama_barang' => 'Total',
 	'qty' => (int)$bmall->sum('qty'),
-	'harga_satuan' => (float)$bmall->sum('harga_satuan'),
+	// 'harga_satuan' => (float)$bmall->sum('harga_satuan'),
 	'total' => (float)$bmall->sum('total'),
 
 );

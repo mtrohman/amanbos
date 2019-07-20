@@ -271,6 +271,12 @@ require_once 'config/dbmanager.php';
 			url = 'config/pagu/save.php';
 		}
 
+        function uploadPagu(){
+            $('#dlgupload').dialog('open').dialog('setTitle','Upload Pagu');
+            $('#fmupload').form('clear');
+            url = 'config/pagu/upload.php';
+        }
+
         function savePagu(){
             $('#fm').form('submit',{
                 url: url,

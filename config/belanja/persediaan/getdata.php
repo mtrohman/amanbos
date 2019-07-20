@@ -31,7 +31,7 @@ $bpcount= $bpall->count();
 $bpfooter= array(
 	'nama_persediaan' => 'Total',
 	'qty' => (int)$bpall->sum('qty'),
-	'harga_satuan' => (float)$bpall->sum('harga_satuan'),
+	// 'harga_satuan' => (float)$bpall->sum('harga_satuan'),
 	'total' => (float)$bpall->sum('total'),
 
 );

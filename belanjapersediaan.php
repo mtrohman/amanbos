@@ -337,7 +337,12 @@ else{
                     {field:'nama_persediaan',title:'Nama Persediaan',width:200},
                     {field:'qty',title:'Qty',width:80,align:'center'},
                     {field:'satuan',title:'Satuan',width:100,align:'center'},
-                    {field:'harga_satuan',title:'Harga Satuan',width:100,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
+                    {field:'harga_satuan',title:'Harga Satuan',width:100,align:'center',formatter:function(value, row){ 
+                            if (value) {
+                                return cetakIDR(value);
+                            }
+                        }
+                    },
                     {field:'total',title:'Total',width:100,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
                     
                 ]]

@@ -142,6 +142,10 @@ require_once 'config/dbmanager.php';
                                         fitColumns="false" singleSelect="true">
                                         
                                     </table>
+                                    <div id="toolbar">
+                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editBelanjaModal()">Edit</a>
+                                        
+                                    </div>
                                 </div>
 
                             </div>
@@ -253,26 +257,47 @@ require_once 'config/dbmanager.php';
                 onExpandRow: function(index,row){
                     var ddv = $(this).datagrid('getRowDetail',index).find('table.ddv');
                     ddv.datagrid({
-                        url:'config/belanja/'+row.id,
+                        url:'config/belanja/modal/getdata.php?id='+row.id,
                         fitColumns:false,
                         singleSelect:true,
                         rownumbers:true,
                         // emptyMsg:'Tidak ada data tersedia',
                         loadMsg:'..please wait..',
                         height:'auto',
-                        columns:[[
-                            {field:'a',title:'Nama Barang',width:150},
-                            {field:'b',title:'Merek',width:100,align:'center'},
-                            {field:'c',title:'Type',width:100,align:'center'},
-                            {field:'c',title:'Bahan',width:100,align:'center'},
+                        columns:
+                        [
+                            [
+                                {title:'Data Barang', halign: 'center',colspan:4},
+                                
+                                {title: 'Bukti Pembelian', halign: 'center',colspan:3},
+                                
+                                {title: 'Jumlah', halign: 'center',colspan:2},
+                                
+                                {title: 'Harga', halign: 'center',colspan:2},
 
-                            {field:'c',title:'Tanggal',width:100,align:'center'},
-                            {field:'c',title:'Bulan',width:100,align:'center'},
-                            {field:'c',title:'Nomor',width:100,align:'center'},
-                            {field:'c',title:'Jumlah',width:100,align:'center'},
-                            {field:'c',title:'Satuan',width:100,align:'center'},
-                            {field:'c',title:'Harga Satuan',width:100,align:'center'}
-                        ]],
+                            ],
+                            [
+                                
+                                {field:'nama_barang',title:'Nama Barang',width:200},
+                                {field:'merek',title:'Merek',width:100,align:'center'},
+                                {field:'tipe',title:'tipe',width:100,align:'center'},
+                                {field:'bahan',title:'bahan',width:100,align:'center'},
+
+                                {field:'bukti_tanggal',title:'Tgl',align:'center',width:50},
+                                {field:'bukti_bulan',title:'Bln',align:'center',width:50},
+                                {field:'bukti_nomor',title:'Nomor',align:'center',width:80},
+
+                                {field:'qty',title:'Qty',width:80,align:'center'},
+                                {field:'satuan',title:'Satuan',width:100,align:'center'},
+
+                                {field:'harga_satuan',title:'Harga Satuan',width:100,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
+                                {field:'total',title:'Total',width:100,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
+
+                                // {field:'bukti',title:'Nomor Pembelian',width:200,align:'center',formatter:function(value, row){ return row.bukti_tanggal+"-"+row.bukti_bulan+"-"+row.bukti_nomor;}},
+
+                                
+                            ]
+                        ],
                         onResize:function(){
                             $('#dg').datagrid('fixDetailRowHeight',index);
                             // ('fixColumnSize');
@@ -282,6 +307,9 @@ require_once 'config/dbmanager.php';
                             setTimeout(function(){
                                 $('#dg').datagrid('fixDetailRowHeight',index);
                             },0);
+                        },
+                        onBeforeSelect:function(index,row) {
+                            return false;
                         }
                     });
                     ddv.datagrid('fixColumnSize');
@@ -302,6 +330,15 @@ require_once 'config/dbmanager.php';
             });
 
         });
+
+        function editBelanjaModal(){
+            var row = $('#dg').datagrid('getSelected');
+            if (row){
+                var pageto = 'belanjamodal.php?id='+row.id;
+                window.location = pageto;
+                // console.log("tes");
+            }
+        }
     </script>
     <!-- DT -->
     <script>

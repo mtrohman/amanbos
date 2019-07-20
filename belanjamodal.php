@@ -55,6 +55,9 @@ else{
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/material-teal/easyui.css">
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/color.css">
     <style type="text/css">
         .h1special {
             font-size: 1.5rem;
@@ -72,10 +75,11 @@ else{
                 height: 70px;
             }
         }
+        .datagrid-header td,
+        .datagrid-body td {
+          border-color: #ebebeb;
+        }
     </style>
-    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/material-teal/easyui.css">
-    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/icon.css">
-    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/color.css">
 </head>
 
 <body class="fix-header card-no-border">
@@ -213,8 +217,28 @@ else{
                                 
 
                                 <div style="margin-bottom:10px">
-                                    <input name="nama_persediaan" label="Nama Modal" id="nama" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                    <input name="nama_barang" label="Nama Barang" id="nama" class="easyui-textbox" labelWidth="150" style="width:100%">
                                 </div>
+                                <div style="margin-bottom:10px">
+                                    <input name="merek" label="Merek" id="merek" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                </div>
+                                <div style="margin-bottom:10px">
+                                    <input name="tipe" label="Tipe" id="tipe" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                </div>
+                                <div style="margin-bottom:10px">
+                                    <input name="bahan" label="Bahan" id="bahan" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                </div>
+
+                                <div style="margin-bottom:10px">
+                                    <input name="bukti_tanggal" label="Bukti Tanggal" id="bukti_tanggal" class="easyui-numberbox" labelWidth="150" style="width:100%">
+                                </div>
+                                <div style="margin-bottom:10px">
+                                    <input name="bukti_bulan" label="Bukti Bulan" id="bukti_bulan" class="easyui-numberbox" labelWidth="150" style="width:100%">
+                                </div>
+                                <div style="margin-bottom:10px">
+                                    <input name="bukti_nomor" label="Bukti Nomor" id="bukti_nomor" class="easyui-numberbox" labelWidth="150" style="width:100%">
+                                </div>
+
                                 <div style="margin-bottom:10px">
                                     <input name="qty" label="Qty" id="qty" class="easyui-numberbox" labelWidth="150" style="width:100%">
                                 </div>
@@ -297,41 +321,113 @@ else{
             $('#dg').datagrid({
                 rownumbers:"true",
                 showFooter:true,
-                columns:[
+                columns:
                 [
-                    {title:'Data Barang', halign: 'center',colspan:4},
-                    // {title: 'column band', halign: 'center'},
-                    // {title: 'column band', halign: 'center'},
-                    // {title: 'column band', halign: 'center'},
-                    {title: 'Jumlah', halign: 'center',colspan:2},
-                    // {title: 'column band', halign: 'center'},
-                    {title: 'Harga', halign: 'center',colspan:2},
-                    // {title: 'column band', halign: 'center'},
-                    {title: 'Bukti Pembelian', halign: 'center',colspan:3},
+                    [
+                        {title:'Data Barang', halign: 'center',colspan:4},
+                        
+                        {title: 'Bukti Pembelian', halign: 'center',colspan:3},
+                        
+                        {title: 'Jumlah', halign: 'center',colspan:2},
+                        
+                        {title: 'Harga', halign: 'center',colspan:2},
 
-                ],
-                [
-                    
-                    {field:'nama_barang',title:'Nama Barang',width:200},
-                    {field:'merek',title:'Merek',width:100},
-                    {field:'tipe',title:'tipe',width:100},
-                    {field:'bahan',title:'bahan',width:100},
+                    ],
+                    [
+                        
+                        {field:'nama_barang',title:'Nama Barang',width:200},
+                        {field:'merek',title:'Merek',width:100,align:'center'},
+                        {field:'tipe',title:'tipe',width:100,align:'center'},
+                        {field:'bahan',title:'bahan',width:100,align:'center'},
 
-                    {field:'qty',title:'Qty',width:80,align:'center'},
-                    {field:'satuan',title:'Satuan',width:100,align:'center'},
-                    {field:'harga_satuan',title:'Harga Satuan',width:100,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
-                    {field:'total',title:'Total',width:100,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
+                        {field:'bukti_tanggal',title:'Tgl',align:'center',width:50},
+                        {field:'bukti_bulan',title:'Bln',align:'center',width:50},
+                        {field:'bukti_nomor',title:'Nomor',align:'center',width:80},
 
-                    {field:'bukti_tanggal',title:'tanggal',width:100},
-                    {field:'bukti_bulan',title:'bulan',width:100},
-                    {field:'bukti_nomor',title:'nomor',width:100},
+                        {field:'qty',title:'Qty',width:80,align:'center'},
+                        {field:'satuan',title:'Satuan',width:100,align:'center'},
 
-                    // {field:'bukti',title:'Nomor Pembelian',width:200,align:'center',formatter:function(value, row){ return row.bukti_tanggal+"-"+row.bukti_bulan+"-"+row.bukti_nomor;}},
+                        {field:'harga_satuan',title:'Harga Satuan',width:100,align:'center',formatter:function(value, row){ 
+                                if (value) {
+                                    return cetakIDR(value);
+                                }
+                            }
+                        },
+                        {field:'total',title:'Total',width:100,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
 
-                    
-                ]]
+                        // {field:'bukti',title:'Nomor Pembelian',width:200,align:'center',formatter:function(value, row){ return row.bukti_tanggal+"-"+row.bukti_bulan+"-"+row.bukti_nomor;}},
+
+                        
+                    ]
+                ]
+            });
+
+            $('#qty').numberbox({
+                onChange:function(newValue,oldValue) {
+                    var harga = $('#harga').numberbox('getValue');
+                    var total = harga*newValue;
+                    $('#total').numberbox('setValue', total);
+                }
+            });
+
+            $('#harga').numberbox({
+                onChange:function(newValue,oldValue) {
+                    var qty = $('#qty').numberbox('getValue');
+                    var total = qty*newValue;
+                    $('#total').numberbox('setValue', total);
+                }
             });
         });
+
+        var url;
+        function newBelanjaModal(){
+            $('#dlg').dialog('open').dialog('setTitle','Tambah Belanja Modal');
+            $('#fm').form('clear');
+            url = 'config/belanja/modal/save.php?id=<?=$id;?>';
+        }
+        function saveBelanjaModal(){
+            $('#fm').form('submit',{
+                url: url,
+                onSubmit: function(){
+                    return $(this).form('validate');
+                },
+                success: function(result){
+                    var result = eval('('+result+')');
+                    if (result.errorMsg){
+                        $.messager.alert('Error',result.errorMsg,'error');
+                    } else {
+                        $('#dlg').dialog('close');        // close the dialog
+                        $('#dg').datagrid('reload');    // reload the user data
+                    }
+                }
+            });
+        }
+        function editBelanjaModal(){
+            var row = $('#dg').datagrid('getSelected');
+            if (row){
+                $('#dlg').dialog('open').dialog('setTitle','Edit Belanja');
+                $('#fm').form('load',row);
+                
+                url = 'config/belanja/modal/update.php?modal='+row.id;
+            }
+        }
+        function destroyBelanjaModal(){
+            var row = $('#dg').datagrid('getSelected');
+            if (row){
+                $.messager.confirm('Confirm','Apakah anda yakin akan menghapus Modal '+row.nama_persediaan+'?',function(r){
+                    if (r){
+                        $.post('config/belanja/modal/destroy.php',{id:row.id},function(result){
+                            if (result.success){
+                                $('#dg').datagrid('reload');    // reload the user data
+                            } else {
+                                $.messager.alert('Error',result.errorMsg,'error');
+                            }
+                        },'json');
+                    }
+                });
+            }
+        }
+
         function logout() {
             // body...
              swal({
