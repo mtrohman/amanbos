@@ -29,6 +29,11 @@ require_once 'config/dbmanager.php';
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/material-teal/easyui.css">
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/color.css">
+    <!-- <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/demo/demo.css"> -->
+    
     <style type="text/css">
         @font-face {
           font-family: 'Roboto Mono';
@@ -50,13 +55,13 @@ require_once 'config/dbmanager.php';
                 height: 70px;
             }
         }
+        .datagrid-header td,
+        .datagrid-body td {
+          border-color: #ebebeb;
+        }
     </style>
 
-    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/material-teal/easyui.css">
-	<link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/icon.css">
-	<link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/color.css">
-	<!-- <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/demo/demo.css"> -->
-	
+    
 </head>
 
 <body class="fix-header card-no-border">
@@ -137,12 +142,12 @@ require_once 'config/dbmanager.php';
 
                                 <div class="table-responsive">
                                     <table id="dg" title="" class="easyui-datagrid" style="width:100%;height:400px"
-                                        url="config/pencairan/getdata.php"
-                                        toolbar="#toolbar" pagination="true"
-                                        rownumbers="true" fitColumns="false" singleSelect="true">
+                                        pagination="true"
+                                        rownumbers="true" fitColumns="false" singleSelect="true"
+                                        <?=($_SESSION['role']==1) ? 'toolbar="#toolbar"' : '';?>>
                                         
                                     </table>
-                                    <div id="toolbar">
+                                    <div id="toolbar" style="display: none">
                                         <div>
                                             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newPencairan()">Tambah</a>
                                             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-upload" plain="true" onclick="uploadPencairan()">Upload</a>
@@ -276,15 +281,17 @@ require_once 'config/dbmanager.php';
     <script type="text/javascript" src="http://www.jeasyui.com/easyui/plugins/jquery.datagrid.js"></script>
     <script src="assets/js/fungsi.js"></script>
     <script>
-        
+        var npsn="<?=($_SESSION['role']==2) ? $_SESSION['username'] : '';?>";
         $('#dg').datagrid({
+            url:'config/pencairan/getdata.php?npsn='+npsn,
+            emptyMsg:'Tidak ada data tersedia',
             columns: [[
                 {field:'ta',title:'TA'},
                 {field:'triwulan',title:'Triwulan',align:'center'},
                 {field:'npsn',width:'100',title:'NPSN'},
-                {field:'sekolah',title:'Sekolah',width:'250',formatter:function(value,row){return row.sekolah.nama_sekolah}},
-                {field:'saldo', width:'200',title:'Pencairan', formatter:function(value, row){ return cetakIDR(value) }},
-                {field:'sisa', width:'180',title:'Sisa Saldo', formatter:function(value, row){ return cetakIDR(row.sisa.saldo) }}
+                {field:'sekolah',title:'Sekolah',width:'250',formatter:function(value,row){return row.sekolah.nama_sekolah; }},
+                {field:'saldo', width:'200',title:'Pencairan', formatter:function(value, row){ return cetakIDR(value); }},
+                // {field:'sisa', width:'180',title:'Sisa Saldo', formatter:function(value, row){ return cetakIDR(row.sisa.saldo) }}
             ]]
         });
 

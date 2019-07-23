@@ -29,6 +29,12 @@ require_once 'config/dbmanager.php';
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+    
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/material-teal/easyui.css">
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/color.css">
+    <!-- <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/demo/demo.css"> -->
+    
     <style type="text/css">
         @font-face {
           font-family: 'Roboto Mono';
@@ -50,13 +56,12 @@ require_once 'config/dbmanager.php';
                 height: 70px;
             }
         }
+        .datagrid-header td,
+        .datagrid-body td {
+          border-color: #ebebeb;
+        }
     </style>
 
-    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/material-teal/easyui.css">
-	<link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/icon.css">
-	<link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/color.css">
-	<!-- <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/demo/demo.css"> -->
-	
 </head>
 
 <body class="fix-header card-no-border">
@@ -142,7 +147,6 @@ require_once 'config/dbmanager.php';
 
                                 <div class="table-responsive">
                                     <table id="dg" title="" class="easyui-datagrid" style="width:100%;height:400px"
-                                        url="config/belanja/getdata.php"
                                         toolbar="#toolbar" pagination="true"
                                         rownumbers="true" fitColumns="false" singleSelect="true">
                                         
@@ -289,7 +293,10 @@ require_once 'config/dbmanager.php';
             }
         }
 
+        var npsn="<?=($_SESSION['role']==2) ? $_SESSION['username'] : '';?>";
         $('#dg').datagrid({
+            url:"config/belanja/getdata.php?npsn="+npsn,
+            emptyMsg:'Tidak ada data tersedia',
             columns: [[
                 {field:'triwulan',title:'Triwulan',align:'center'},
                 {field:'npsn',width:'100',title:'NPSN',formatter:function(value,row){return row.rka.npsn;}},

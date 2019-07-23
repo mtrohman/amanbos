@@ -1,6 +1,6 @@
 <?php
 use App\Models\Pencairan;
-
+use App\Models\Saldo;
 include_once '../db.php';
 // include_once '../../ceklogin.php';
 require_once '../dbmanager.php';
@@ -18,12 +18,22 @@ if (!empty($_POST)) {
 	else{
 		$selisih= 0;
 	}
+	$sukses=false;
 	// echo $selisih;
 	if($selisih != 0){
 		$pencairanlama->saldo += $selisih;
 		if($pencairanlama->save()){
-			$pencairanlama->sisa->saldo += $selisih;
-			$sukses=$pencairanlama->push();
+			// $pencairanlama->sisa->saldo += $selisih;
+			// $sukses=$pencairanlama->push();
+			$saldo= Saldo::firstOrNew(
+				[
+					'ta' => $pencairanlama->ta,
+					'npsn' => $request->npsn
+				]
+			);
+			$saldo->sisa += $selisih;
+			$sukses=$saldo->save();
+
 		}
 
 	}

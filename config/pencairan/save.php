@@ -1,5 +1,6 @@
 <?php
 use App\Models\Pencairan;
+use App\Models\Saldo;
 
 include_once '../db.php';
 // include_once '../../ceklogin.php';
@@ -17,9 +18,18 @@ if (!empty($_POST)) {
 		$pencairanbaru->npsn= $request->npsn;
 		$pencairanbaru->saldo= $request->saldo;
 		if($pencairanbaru->save()){
-			$sukses=$pencairanbaru->sisa()->create([
-			    'saldo' => $request->saldo
-			]);
+			$sukses= Saldo::updateOrCreate(
+				[
+					'ta' => $ta,
+					'npsn' => $request->npsn
+				],
+				[
+					'sisa' => $request->saldo
+				]
+			);
+			// $sukses=$pencairanbaru->sisa()->create([
+			//     'saldo' => $request->saldo
+			// ]);
 		}	
 
 	}

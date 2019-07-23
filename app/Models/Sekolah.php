@@ -16,6 +16,8 @@ class Sekolah extends Model
      */
     protected $dates = ['deleted_at'];
 
+    protected $hidden = ['password'];
+
     protected $primaryKey = 'id_sekolah';
 
     public function rkas(){
@@ -30,6 +32,10 @@ class Sekolah extends Model
         return $this->hasMany('App\Models\Pencairan','npsn','npsn');
     }
 
+    public function saldos(){
+        return $this->hasMany('App\Models\Saldo','npsn','npsn');
+    }
+
     public function belanjas(){
         return $this->hasMany('App\Models\Belanja','npsn','npsn');
     }
@@ -41,6 +47,11 @@ class Sekolah extends Model
     public function scopeNpsn($query, $npsn)
     {
         return $query->where('npsn', 'like', '%' . $npsn . '%');
+    }
+
+    public function scopeNamaSekolah($query, $sekolah)
+    {
+        return $query->where('nama_sekolah', 'like', '%' . $sekolah . '%');
     }
 
 }

@@ -1,5 +1,5 @@
 <?php
-    use App\Models\Pencairan;
+    use App\Models\Saldo;
 
     include_once '../db.php';
     // include_once '../../ceklogin.php';
@@ -20,15 +20,16 @@
     else{
     	$npsn='';
     }
+
 	$sekolah = isset($_POST['sekolah']) ? $_POST['sekolah'] : '';
-	$triwulan = isset($_POST['triwulan']) ? $_POST['triwulan'] : '';
+	// $triwulan = isset($_POST['triwulan']) ? $_POST['triwulan'] : '';
 	
 // 'npsn', 'like', '%' .$npsn. '%'
-	$pencairan = Pencairan::ta($ta)->triwulan($triwulan)->npsn($npsn)->namaSekolah($sekolah)->with('sekolah','sisa')->skip($offset)->take($rows)->get();
-    $pencairancount= Pencairan::ta($ta)->triwulan($triwulan)->npsn($npsn)->namaSekolah($sekolah)->count();
+	$saldo = Saldo::ta($ta)->npsn($npsn)->namaSekolah($sekolah)->with('sekolah')->skip($offset)->take($rows)->get();
+    $saldocount= Saldo::ta($ta)->npsn($npsn)->namaSekolah($sekolah)->count();
 	$result = array();
-	$result["total"] = $pencairancount;
-	$result["rows"] = $pencairan;
+	$result["total"] = $saldocount;
+	$result["rows"] = $saldo;
 	
 	echo json_encode($result);
 ?>

@@ -14,7 +14,17 @@ $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
 $rows = isset($_POST['rows']) ? intval($_POST['rows']) : 10;
 $offset = ($page - 1) * $rows;
 
-$npsn = isset($_POST['npsn']) ? $_POST['npsn'] : '';
+// $npsn = isset($_POST['npsn']) ? $_POST['npsn'] : '';
+if (isset($_POST['npsn'])) {
+    	$npsn=$_POST['npsn'];
+    }
+    else if(isset($_GET['npsn'])){
+    	$npsn=$_GET['npsn'];
+    }
+    else{
+    	$npsn='';
+    }
+    
 $sekolah = isset($_POST['sekolah']) ? $_POST['sekolah'] : '';
 $triwulan = isset($_POST['triwulan']) ? $_POST['triwulan'] : '';
 
