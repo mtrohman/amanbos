@@ -178,11 +178,14 @@ require_once 'config/dbmanager.php';
                                             <div class="fitem" style="margin-bottom:10px">
                                                 <input name="triwulan" label="Triwulan" id="ftriwulan" class="easyui-textbox" labelWidth="150" style="width:100%">
                                             </div>
-                                            <div class="fitem" style="margin-bottom:10px">
-                                                <input name="npsn" label="npsn" id="fnpsn" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                            <div style="margin-bottom:10px">
+                                                <input name="npsn" id="cg" label="Sekolah" labelWidth="150" style="width:100%">
                                             </div>
+                                            <!-- <div class="fitem" style="margin-bottom:10px">
+                                                <input name="npsn" label="npsn" id="fnpsn" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                            </div> -->
                                             <div class="fitem" style="margin-bottom:10px">
-                                                <input name="saldo" label="Pencairan" id="fpencairan" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                                <input name="saldo" label="Pencairan" id="fpencairan" class="easyui-numberbox" labelWidth="150" style="width:100%" data-options="min:0,precision:2,decimalSeparator:',',groupSeparator:'.',prefix:'Rp '">
                                             </div>
                                             
                                         </form>
@@ -201,12 +204,12 @@ require_once 'config/dbmanager.php';
                                                 <input name="firstname" required="true">
                                             </div> -->
                                             <div class="fitem" style="margin-bottom:10px">
-                                                <input name="ta" label="TA" id="fta" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                                <input name="ta" label="TA" id="futa" class="easyui-textbox" labelWidth="150" style="width:100%">
                                             </div>
                                             <div class="fitem" style="margin-bottom:10px">
-                                                <input name="triwulan" label="Triwulan" id="ftriwulan" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                                <input name="triwulan" label="Triwulan" id="futriwulan" class="easyui-textbox" labelWidth="150" style="width:100%">
                                             </div>
-                                            <input class="easyui-filebox" labelWidth="150" label="File"  data-options="prompt:'Xlsx File...'" style="width:100%">
+                                            <input class="easyui-filebox" labelWidth="150" label="File" id="fufile"  data-options="prompt:'Xlsx File...'" style="width:100%">
                                             
                                         </form>
                                     </div>
@@ -295,10 +298,35 @@ require_once 'config/dbmanager.php';
             ]]
         });
 
+        $('#cg').combogrid({
+            panelWidth:500,
+            // delay: 250,
+            url: 'config/sekolah/combogrid.php',
+            idField:'npsn',
+            textField:'nama_sekolah',
+            mode:'remote',
+            fitColumns:false,
+            columns: [[
+                {field:"npsn", width:"100",title:"NPSN"},
+                {field:"nama_sekolah",width:"200",title:"Nama Sekolah"},
+                {field:"jenjang", width:"80", title:"Jenjang"},
+                {field:"status", width:"80", title:"Status"},
+                {field:"kecamatan", width:"150", title:"Kecamatan",formatter:function(value,row){return row.kecamatannya.nama_kecamatan;}},
+                {field:"alamat", width:"200", title:"Alamat"},
+                {field:"telepon", width:"150", title:"Telepon"},
+                
+            ]]
+        });
+
         var url;
 		function newPencairan(){
 			$('#dlg').dialog('open').dialog('setTitle','Tambah Pencairan');
 			$('#fm').form('clear');
+            $('#fta').textbox('readonly');
+            $('#fta').textbox('setValue','<?=$_SESSION["ta"];?>');
+            $('#ftriwulan').textbox('readonly',false);
+            $('#cg').combogrid('readonly',false);
+
 			url = 'config/pencairan/save.php';
 		}
 
@@ -323,6 +351,8 @@ require_once 'config/dbmanager.php';
         function uploadPencairan(){
             $('#dlgupload').dialog('open').dialog('setTitle','Upload Pencairan');
             $('#fmupload').form('clear');
+            $('#futa').textbox('readonly');
+            $('#futa').textbox('setValue','<?=$_SESSION["ta"];?>');
             url = 'config/pencairan/upload.php';
         }
 
@@ -333,6 +363,9 @@ require_once 'config/dbmanager.php';
 			if (row){
 				$('#dlg').dialog('open').dialog('setTitle','Edit Pencairan');
 				$('#fm').form('load',row);
+                $('#fta').textbox('readonly');
+                $('#ftriwulan').textbox('readonly');
+                $('#cg').combogrid('readonly');
 				url = 'config/pencairan/update.php?id='+row.id;
 			}
 		}

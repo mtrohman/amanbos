@@ -312,6 +312,7 @@ require_once 'config/dbmanager.php';
 		function newPagu(){
 			$('#dlg').dialog('open').dialog('setTitle','Tambah Pagu');
 			$('#fm').form('clear');
+            $('#cg').combogrid('readonly',false);
 			url = 'config/pagu/save.php';
 		}
 
@@ -319,6 +320,9 @@ require_once 'config/dbmanager.php';
         function uploadPagu(){
             $('#dlgupload').dialog('open').dialog('setTitle','Upload Pagu');
             $('#fmupload').form('clear');
+
+            $('#fta').textbox('setValue','<?=$_SESSION["ta"];?>');
+            $('#fta').textbox('readonly',true);  // enable readonly mode
             urlupload = 'config/pagu/upload.php';
         }
 
@@ -328,8 +332,17 @@ require_once 'config/dbmanager.php';
                 onSubmit: function(){
                     return $(this).form('validate');
                 },
-                success:function(data){
-                    $.messager.alert('Info', data, 'info');
+                success:function(result){
+                    var resultupload= JSON.parse(result);
+                    if (resultupload.errorMsg){
+                        $.messager.alert('Error', resultupload.errorMsg, 'error');
+                    }
+                    else{
+                        $('#dlgupload').dialog('close');        // close the dialog
+                        $.messager.alert('Info', resultupload.pesan, 'info');
+                        $('#dg').datagrid('reload');    // reload the user data
+                    }
+                    // $.messager.alert('Info', data, 'info');
                 }
             });
         }
@@ -359,11 +372,9 @@ require_once 'config/dbmanager.php';
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
 				$('#dlg').dialog('open').dialog('setTitle','Edit User');
-				$('#fm').form('load',{
-                    npsn: row.npsn,
-                    nama_sekolah: row.sekolah.nama_sekolah,
-                    pagu: row.pagu,
-                });
+				$('#fm').form('load',row);
+                $('#cg').combogrid('setValue',{npsn: row.npsn ,nama_sekolah:row.sekolah.nama_sekolah});
+                $('#cg').combogrid('readonly');  // enable readonly mode
 				url = 'config/pagu/update.php?id='+row.id;
 			}
 		}
