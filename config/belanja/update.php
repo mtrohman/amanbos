@@ -1,6 +1,6 @@
 <?php
 use App\Models\Sekolah;
-// use App\Models\Rka;
+use App\Models\Belanja;
 header('Content-Type: application/json');
 include_once '../db.php';
 // include_once '../../ceklogin.php';
@@ -11,13 +11,12 @@ $triwulan= (!empty($_POST['triwulan'])) ? $_POST['triwulan'] : (!empty($_SESSION
 	
 if (!empty($_POST)) {
     $request = (object)$_POST;
-    $sekolah = Sekolah::npsn($npsn)->first();
-    $rka=$sekolah->rkas()->with(['sisa'])->where('id',$request->rka_id)->first();
-    $saldo=$sekolah->pencairans()->with(['sisa'])->triwulan($rka->triwulan)->ta($rka->ta)->first();
-    
-    $tanggalbelanja= DateTime::createFromFormat('d-m-Y', $request->tanggal_belanja);
+    $belanjaan= Belanja::find($id);
 
-    $belanjaan= $rka->belanja()->find($id);
+    $rka=$belanjaan->rka()->with(['sisa'])->first();
+    $sekolah = $rka->sekolah()->npsn($rka->npsn)->first();
+    $saldo= $sekolah->saldos()->where('ta',$rka->ta)->first();
+
     $nilailama= $belanjaan->nilai;
 	$nilaibaru= $request->nilai;
 
@@ -32,10 +31,23 @@ if (!empty($_POST)) {
 	// echo $selisih;
 	if($selisih != 0){
 		$belanjaan->nilai += $selisih;
-		if($belanjaan->save()){
-			$rka->sisa->nilai -= $selisih;
-			$saldo->sisa->saldo -= $selisih;
-			$sukses=($rka->push() && $saldo->push());
+		$rka->sisa->nilai -= $selisih;
+		$saldo->sisa -= $selisih;
+		if($rka->sisa->nilai >= 0){
+			if ($saldo->sisa >= 0) {
+				if($belanjaan->save()){
+					$sukses=($rka->push() && $saldo->save());
+				}
+				else{
+					$pesan="belanjaan gagal tersimpan";
+				}
+			}
+			else{
+				$pesan="saldo tidak cukup";
+			}
+		}
+		else{
+			$pesan="sisa rka tidak cukup";
 		}
 
 	}
@@ -48,7 +60,7 @@ if (!empty($_POST)) {
 		// header('location: /rka.php');
 	}
 	else {
-		echo json_encode(array('errorMsg'=>'Some errors occured.','rka'=>$rka,'saldo'=>$saldo,'belanjaan'=>$belanjaan));
+		echo json_encode(array('errorMsg'=>$pesan,'rka'=>$rka,'saldo'=>$saldo,'belanjaan'=>$belanjaan));
 	}
 }
 ?>

@@ -439,6 +439,24 @@ require_once 'config/dbmanager.php';
             }
         }
 
+        function destroyBelanja(){
+            var row = $('#dg').datagrid('getSelected');
+            if (row){
+                $.messager.confirm('Confirm','Apakah anda akan menghapus data belanja '+row.nama+'?',function(r){
+                    if (r){
+                        $.post('config/belanja/destroy.php',{id:row.id},function(result){
+                            if (result.success){
+                                $('#dg').datagrid('reload');    // reload the user data
+                                $('#cg').combogrid('grid').datagrid('reload');
+                            } else {
+                                $.messager.alert('Error',result.errorMsg,'error');
+                            }
+                        },'json');
+                    }
+                });
+            }
+        }
+
         function logout() {
             // body...
              swal({

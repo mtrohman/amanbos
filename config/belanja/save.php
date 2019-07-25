@@ -20,10 +20,11 @@ if (!empty($_POST)) {
 
     $sekolah= Sekolah::npsn($npsn)->first();
     $rka=$sekolah->rkas()->with(['sisa'])->where('id',$request->rka_id)->first();
-    $saldo=$sekolah->pencairans()->with(['sisa'])->triwulan($triwulan)->ta($ta)->first();
+    // $saldo=$sekolah->pencairans()->with(['sisa'])->triwulan($triwulan)->ta($ta)->first();
+    $saldo= $sekolah->saldos()->where('ta',$ta)->first();
     
     if ($request->nilai <= $rka->sisa->nilai) {
-    	if ($request->nilai <= $saldo->sisa->saldo) {
+    	if ($request->nilai <= $saldo->sisa) {
     		$tambahbelanja= $rka->belanja()->create([
     			'triwulan' => $triwulan,
 			    'rka_id' => $request->rka_id,
@@ -34,8 +35,8 @@ if (!empty($_POST)) {
 			]);
 			if ($tambahbelanja) {
 				$rka->sisa->nilai -= $request->nilai;
-				$saldo->sisa->saldo -= $request->nilai;
-				if ($rka->push() && $saldo->push()) {
+				$saldo->sisa -= $request->nilai;
+				if ($rka->push() && $saldo->save()) {
 					# code...
 					echo json_encode(array('success'=> true,'request' => $request,'saldo'=>$saldo,'rka'=>$rka));
 				} else {
@@ -47,7 +48,7 @@ if (!empty($_POST)) {
 			}
 			
     	} else {
-    		echo json_encode(array('errorMsg'=>'Some errors occured. #Saldo Tidak Cukup'));
+    		echo json_encode(array('errorMsg'=>'Some errors occured. #Saldo Tidak Cukup','saldo'=>$saldo));
     	}
     	
     } else {

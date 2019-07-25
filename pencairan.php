@@ -198,7 +198,7 @@ require_once 'config/dbmanager.php';
 
                                     <div id="dlgupload" class="easyui-dialog" style="width:400px;max-width:80%;padding:10px 20px;" closed="true" buttons="#dialogbuttonupload">
                                         <!-- <div class="ftitle">User Information</div> -->
-                                        <form id="fmupload" method="post">
+                                        <form id="fmupload" method="post" enctype="multipart/form-data">
                                             <!-- <div class="fitem">
                                                 <label>First Name:</label>
                                                 <input name="firstname" required="true">
@@ -209,13 +209,13 @@ require_once 'config/dbmanager.php';
                                             <div class="fitem" style="margin-bottom:10px">
                                                 <input name="triwulan" label="Triwulan" id="futriwulan" class="easyui-textbox" labelWidth="150" style="width:100%">
                                             </div>
-                                            <input class="easyui-filebox" labelWidth="150" label="File" id="fufile"  data-options="prompt:'Xlsx File...'" style="width:100%">
+                                            <input class="easyui-filebox" name="file" labelWidth="150" label="File" id="fufile"  data-options="prompt:'Xlsx File...'" style="width:100%">
                                             
                                         </form>
                                     </div>
                                     
                                     <div id="dialogbuttonupload">
-                                        <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="prosesuploadPencairan()" style="width:90px">Upload</a>
+                                        <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="doUploadPencairan()" style="width:90px">Upload</a>
                                         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgupload').dialog('close')" style="width:90px">Cancel</a>
                                     </div>
 
@@ -348,15 +348,35 @@ require_once 'config/dbmanager.php';
             });
         }
 
+        var urlupload;
         function uploadPencairan(){
             $('#dlgupload').dialog('open').dialog('setTitle','Upload Pencairan');
             $('#fmupload').form('clear');
             $('#futa').textbox('readonly');
             $('#futa').textbox('setValue','<?=$_SESSION["ta"];?>');
-            url = 'config/pencairan/upload.php';
+            urlupload = 'config/pencairan/upload.php';
         }
 
-
+        function doUploadPencairan(){
+            $('#fmupload').form('submit',{
+                url: urlupload,
+                onSubmit: function(){
+                    return $(this).form('validate');
+                },
+                success:function(result){
+                    var resultupload= JSON.parse(result);
+                    if (resultupload.errorMsg){
+                        $.messager.alert('Error', resultupload.errorMsg, 'error');
+                    }
+                    else{
+                        $('#dlgupload').dialog('close');        // close the dialog
+                        $.messager.alert('Info', resultupload.pesan, 'info');
+                        $('#dg').datagrid('reload');    // reload the user data
+                    }
+                    // $.messager.alert('Info', data, 'info');
+                }
+            });
+        }
 
         function editPencairan(){
 			var row = $('#dg').datagrid('getSelected');
