@@ -215,6 +215,8 @@ require_once 'config/dbmanager.php';
                                     </div>
                                     
                                     <div id="dialogbuttonupload">
+                                        <a href="format/formatpencairan.xlsx" class="easyui-linkbutton pull-left" iconCls="icon-help" style="width:120px">Sample xlsx</a>
+
                                         <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="doUploadPencairan()" style="width:90px">Upload</a>
                                         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgupload').dialog('close')" style="width:90px">Cancel</a>
                                     </div>

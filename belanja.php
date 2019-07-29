@@ -345,7 +345,7 @@ require_once 'config/dbmanager.php';
                         switch(row.jenis_belanja){
                             case 1: 
                             {
-                                return '<a href="belanjamodal.php?id='+row.id+'"> <button class="btn-xs btn-primary"><i class="fa fa-shopping-cart"></i> Belanja Modal</button></a>';
+                                return '<a href="belanjamodal.php?id='+row.id+'"> <button class="btn-xs btn-success"><i class="fa fa-shopping-cart"></i> Belanja Modal</button></a>';
                             }
                             break;
                             case 2:
