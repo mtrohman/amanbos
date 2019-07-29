@@ -159,7 +159,7 @@ else{
                                 <hr>
                                 
                                 <div class="table-responsive">
-                                    <table class="table table-bordered color-bordered-table primary-bordered-table table-sm nowrap">
+                                    <table class="table table-bordered color-bordered-table success-bordered-table table-sm nowrap">
                                         <thead>
                                             <!-- <th>Tahun Anggaran</th>
                                             <th>Triwulan</th>
@@ -193,7 +193,7 @@ else{
                 <div class="row justify-content-md-center">
                     
                     <div class="col-lg-12">
-                        <div class="card card-outline-primary">
+                        <div class="card card-outline-success">
                             <div class="card-header">
                                 <h4 class="m-b-0 text-white">Data Modal</h4></div>
                             <div class="card-body">
