@@ -19,6 +19,7 @@ if (isset($_POST['npsn'])) {
     else{
     	$npsn='';
     }
+
 $triwulan = isset($_GET['triwulan']) ? $_GET['triwulan'] : '';
 $q = isset($_POST['q']) ? strval($_POST['q']) : '';
 
@@ -29,7 +30,7 @@ foreach ($res_kr as $key => $value) {
 }
 $jsonrka = array();
 
-$rka = Rka::with(['sekolah', 'program', 'kp', 'sisa'])->uraian($q)->get();
+$rka = Rka::with(['sekolah', 'program', 'kp', 'sisa'])->npsn($npsn)->uraian($q)->get();
 foreach ($rka as $key => $value) {
     $jsonrka[$key] = $value;
     $jsonrka[$key]['nomor_rekening'] = $kr_all[$value->rekening_id]->path;
