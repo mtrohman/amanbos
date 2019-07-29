@@ -385,7 +385,7 @@ require_once 'config/dbmanager.php';
         $('#cg').combogrid({
             panelWidth:500,
             // delay: 250,
-            url: 'config/rka/combogrid.php',
+            url: 'config/rka/combogrid.php?npsn='+npsn,
             idField:'id',
             textField:'uraian',
             mode:'remote',
