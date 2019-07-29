@@ -18,7 +18,7 @@ if (!empty($_POST)) {
 		$pencairanbaru->npsn= $request->npsn;
 		$pencairanbaru->saldo= $request->saldo;
 		if($pencairanbaru->save()){
-			$sukses= Saldo::updateOrCreate(
+			/*$sukses= Saldo::updateOrCreate(
 				[
 					'ta' => $ta,
 					'npsn' => $request->npsn
@@ -26,7 +26,15 @@ if (!empty($_POST)) {
 				[
 					'sisa' => $request->saldo
 				]
+			);*/
+			$saldo= Saldo::firstOrNew(
+				[
+					'ta' => $ta,
+					'npsn' => $request->npsn
+				]
 			);
+			$saldo->sisa += $request->saldo;
+			$sukses = $saldo->save();
 			// $sukses=$pencairanbaru->sisa()->create([
 			//     'saldo' => $request->saldo
 			// ]);
