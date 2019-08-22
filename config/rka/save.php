@@ -73,7 +73,7 @@ if (!empty($_POST)) {
 	
 	}
 	else{
-		// header('location: /rka.php?gagalinput');
+		echo "<script>alert(\"Maaf Pagu tidak cukup\"); window.location.href=\"/rka.php\";</script>";
 	}
 
 

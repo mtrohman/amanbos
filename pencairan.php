@@ -187,6 +187,10 @@ require_once 'config/dbmanager.php';
                                             <div class="fitem" style="margin-bottom:10px">
                                                 <input name="saldo" label="Pencairan" id="fpencairan" class="easyui-numberbox" labelWidth="150" style="width:100%" data-options="min:0,precision:2,decimalSeparator:',',groupSeparator:'.',prefix:'Rp '">
                                             </div>
+                                            <div style="margin-bottom:10px">
+                                                <input name="tanggal_pencairan" label="Tanggal" id="tgl" type="text" class="easyui-datebox" labelWidth="150" style="width:100%" data-options="formatter:myformatter,parser:myparser">
+                                            </div>
+
                                             
                                         </form>
                                     </div>
@@ -286,11 +290,54 @@ require_once 'config/dbmanager.php';
     <script type="text/javascript" src="http://www.jeasyui.com/easyui/plugins/jquery.datagrid.js"></script>
     <script src="assets/js/fungsi.js"></script>
     <script>
+        function myformatter(date){
+            var y = date.getFullYear();
+            var m = date.getMonth()+1;
+            var d = date.getDate();
+            return (d<10?('0'+d):d)+'-'+(m<10?('0'+m):m)+'-'+y;
+        }
+
+        function myparser(s){
+            if (!s) return new Date();
+            var ss = (s.split('-'));
+            var y = parseInt(ss[2],10);
+            var m = parseInt(ss[1],10);
+            var d = parseInt(ss[0],10);
+            if (!isNaN(y) && !isNaN(m) && !isNaN(d)){
+                return new Date(y,m-1,d);
+            } else {
+                return new Date();
+            }
+        }
+
+        function sqldateparser(s){
+            if (!s) return new Date();
+            var ss = (s.split('-'));
+            var y = parseInt(ss[0],10);
+            var m = parseInt(ss[1],10);
+            var d = parseInt(ss[2],10);
+            if (!isNaN(y) && !isNaN(m) && !isNaN(d)){
+                return new Date(y,m-1,d);
+            } else {
+                return new Date();
+            }
+        }
         var npsn="<?=($_SESSION['role']==2) ? $_SESSION['username'] : '';?>";
         $('#dg').datagrid({
             url:'config/pencairan/getdata.php?npsn='+npsn,
             emptyMsg:'Tidak ada data tersedia',
             columns: [[
+                {
+                    field:'tanggal_pencairan',title:'Tanggal',align:'center',
+                    formatter:function(value, row){
+                        if(value){
+                            return myformatter(sqldateparser(value));
+                        }
+                        else{
+                            return "-";
+                        }
+                    }
+                },
                 {field:'ta',title:'TA'},
                 {field:'triwulan',title:'Triwulan',align:'center'},
                 {field:'npsn',width:'100',title:'NPSN'},
@@ -384,7 +431,12 @@ require_once 'config/dbmanager.php';
 			var row = $('#dg').datagrid('getSelected');
 			if (row){
 				$('#dlg').dialog('open').dialog('setTitle','Edit Pencairan');
-				$('#fm').form('load',row);
+				$('#fm').form('load',{
+                    // rka_id: row.rka_id,
+                    // nama: row.nama,
+                    ta: row.ta,
+                    tanggal_pencairan: myformatter(sqldateparser(row.tanggal_pencairan))
+                });
                 $('#fta').textbox('readonly');
                 $('#ftriwulan').textbox('readonly');
                 $('#cg').combogrid('readonly');

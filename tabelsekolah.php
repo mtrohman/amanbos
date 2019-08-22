@@ -125,14 +125,14 @@ include_once 'ceklogin.php';
                                     <div class="col-lg-12">
                                         <div class="text-center text-md-left db">
                                             <img src="assets/images/semarangkab.png" class="logospecial">
-                                            <h1 class="h1special pull-right d-none d-md-block">Daftar Sekolah</h1>
+                                            <h1 class="h1special pull-right d-none d-md-block">Data Sekolah</h1>
                                         </div> 
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="table-responsive">
                                     <table id="dg" title="" class="easyui-datagrid" style="width:100%;height:400px"
-                                        url="config/sekolah/getdata.php"
+                                        
                                         toolbar="#toolbar" pagination="true"
                                         rownumbers="true" fitColumns="false" singleSelect="true">
                                         <thead>
@@ -217,7 +217,9 @@ include_once 'ceklogin.php';
     
     <script>
         $(document).ready(function(){
+            var npsn="<?=($_SESSION['role']==2) ? $_SESSION['username'] : '';?>";
             $('#dg').datagrid({
+                url:"config/sekolah/getdata.php?npsn="+npsn,
                 columns: [[
                     {field:"npsn", width:"100",title:"NPSN"},
                     {field:"nama_sekolah",width:"200",title:"Nama Sekolah"},

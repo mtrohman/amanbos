@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Pencairan extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['ta','triwulan','npsn','saldo'];
+    protected $fillable = ['ta','triwulan','npsn','saldo','sumber_dana','tanggal_pencairan'];
     
     /**
      * The attributes that should be mutated to dates.

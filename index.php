@@ -1,6 +1,35 @@
 <?php 
 include_once 'config/db.php';
+include_once 'config/dbmanager.php';
 include_once 'ceklogin.php';
+use App\Models\Sekolah;
+use App\Models\Pagu;
+use App\Models\Belanja;
+use App\Models\Pencairan;
+if ($_SESSION['role']==1) {
+    # code...
+    $countsekolah= Sekolah::count();
+    $totalpagu= Pagu::ta($_SESSION['ta'])->sum('pagu');
+    $totalbelanja= Belanja::ta($_SESSION['ta'])->sum('nilai');
+    $totalpencairan= Pencairan::ta($_SESSION['ta'])->sum('saldo');
+}
+else{
+    $datasekolah= Sekolah::npsn($_SESSION['username'])->first();
+    // echo json_encode($datasekolah);
+    $jumlahpagu= $datasekolah->pagus()->ta($_SESSION['ta'])->sum('pagu');
+    $saldothlalu= $datasekolah->saldos()->ta($_SESSION['ta']-1)->sum('sisa');
+    $saldothberjalan= $datasekolah->saldos()->ta($_SESSION['ta'])->sum('sisa');
+    $rkasekolah= $datasekolah->rkas()->with('belanja')->get();
+    $totalbelanja= $rkasekolah->sum('belanja.nilai');
+    // if (!empty($rkasekolah)) {
+    //     // $totalbelanja=0;
+    // }
+    // else{
+        // $totalbelanja= $rkasekolah->belanja()->ta($_SESSION['ta'])->sum('nilai');
+    // }
+    // echo json_encode($rkasekolah);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,62 +122,133 @@ include_once 'ceklogin.php';
                 <!-- ============================================================== -->
                 <div class="row">
                     <div class="col-12">
-                        <!-- row -->
-                        <div class="row">
-                            <!-- Column -->
-                            <div class="col-lg-3 col-md-6">
-                                <div class="card">
-                                    <div class="d-flex flex-row">
-                                        <div class="p-10 bg-info">
-                                            <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
-                                        <div class="align-self-center m-l-20">
-                                            <h3 class="m-b-0 text-info">$18090</h3>
-                                            <h5 class="text-muted m-b-0">Income</h5></div>
+                        <?php 
+                        if($_SESSION['role']==1){
+                        ?>
+                            <!-- row -->
+                            <div class="row">
+                                <!-- Column -->
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="card">
+                                        <div class="d-flex flex-row">
+                                            <div class="p-10 bg-info">
+                                                <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
+                                            <div class="align-self-center m-l-20">
+                                                <h3 class="m-b-0 text-info"><?php echo $countsekolah;?></h3>
+                                                <h6 class="text-muted m-b-0">Jumlah Sekolah</h6>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- Column -->
-                            <!-- Column -->
-                            <div class="col-lg-3 col-md-6">
-                                <div class="card">
-                                    <div class="d-flex flex-row">
-                                        <div class="p-10 bg-warning">
-                                            <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
-                                        <div class="align-self-center m-l-20">
-                                            <h3 class="m-b-0 text-warning">$18090</h3>
-                                            <h5 class="text-muted m-b-0">Income</h5></div>
+                                <!-- Column -->
+                                <!-- Column -->
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="card">
+                                        <div class="d-flex flex-row">
+                                            <div class="p-10 bg-warning">
+                                                <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
+                                            <div class="align-self-center m-l-20">
+                                                <h5 class="m-b-0 text-warning"><?=rupiah($totalpagu);?></h5>
+                                                <h6 class="text-muted m-b-0">Jumlah Pagu</h6>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- Column -->
-                            <!-- Column -->
-                            <div class="col-lg-3 col-md-6">
-                                <div class="card">
-                                    <div class="d-flex flex-row">
-                                        <div class="p-10 bg-primary">
-                                            <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
-                                        <div class="align-self-center m-l-20">
-                                            <h3 class="m-b-0 text-primary">$18090</h3>
-                                            <h5 class="text-muted m-b-0">Income</h5></div>
+                                <!-- Column -->
+                                <!-- Column -->
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="card">
+                                        <div class="d-flex flex-row">
+                                            <div class="p-10 bg-primary">
+                                                <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
+                                            <div class="align-self-center m-l-20">
+                                                <h5 class="m-b-0 text-primary"><?=rupiah($totalbelanja);?></h5>
+                                                <h6 class="text-muted m-b-0">Total Belanja</h6>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- Column -->
-                            <!-- Column -->
-                            <div class="col-lg-3 col-md-6">
-                                <div class="card">
-                                    <div class="d-flex flex-row">
-                                        <div class="p-10 bg-danger">
-                                            <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
-                                        <div class="align-self-center m-l-20">
-                                            <h3 class="m-b-0 text-danger">$18090</h3>
-                                            <h5 class="text-muted m-b-0">Income</h5></div>
+                                <!-- Column -->
+                                <!-- Column -->
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="card">
+                                        <div class="d-flex flex-row">
+                                            <div class="p-10 bg-danger">
+                                                <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
+                                            <div class="align-self-center m-l-20">
+                                                <h5 class="m-b-0 text-danger"><?=rupiah($totalpencairan);?></h5>
+                                                <h6 class="text-muted m-b-0">Anggaran dicairkan</h6>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- Column -->
                             </div>
-                            <!-- Column -->
-                        </div>
-                        <!-- /row -->
+                            <!-- /row -->
+                        <?php
+                        }
+                        else{
+                        ?>
+                            <!-- row -->
+                            <div class="row">
+                                <!-- Column -->
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="card">
+                                        <div class="d-flex flex-row">
+                                            <div class="p-10 bg-info">
+                                                <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
+                                            <div class="align-self-center m-l-20">
+                                                <h5 class="m-b-0 text-info"><?=rupiah($jumlahpagu);?></h5>
+                                                <h6 class="text-muted m-b-0">Jumlah Pagu</h6></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Column -->
+                                <!-- Column -->
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="card">
+                                        <div class="d-flex flex-row">
+                                            <div class="p-10 bg-warning">
+                                                <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
+                                            <div class="align-self-center m-l-20">
+                                                <h5 class="m-b-0 text-warning"><?=rupiah($saldothlalu);?></h5>
+                                                <h6 class="text-muted m-b-0">Saldo Tahun Lalu</h6></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Column -->
+                                <!-- Column -->
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="card">
+                                        <div class="d-flex flex-row">
+                                            <div class="p-10 bg-primary">
+                                                <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
+                                            <div class="align-self-center m-l-20">
+                                                <h5 class="m-b-0 text-primary"><?=rupiah($saldothberjalan);?></h5>
+                                                <h6 class="text-muted m-b-0">Saldo Tahun Berjalan</h6></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Column -->
+                                <!-- Column -->
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="card">
+                                        <div class="d-flex flex-row">
+                                            <div class="p-10 bg-danger">
+                                                <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
+                                            <div class="align-self-center m-l-20">
+                                                <h5 class="m-b-0 text-danger"><?=rupiah($totalbelanja);?></h5>
+                                                <h6 class="text-muted m-b-0">Total Belanja</h6></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Column -->
+                            </div>
+                            <!-- /row -->
+                        <?php
+                        }
+                        ?>
+                        
 
                         <!-- row -->
                         <div class="row">
@@ -188,7 +288,7 @@ include_once 'ceklogin.php';
                         <div class="card">
                             <div class="card-body">
                                 
-                                abcde
+                                Selamat datang
                             </div>
                         </div>
                     </div>
