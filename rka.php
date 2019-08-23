@@ -2,6 +2,8 @@
 include_once 'config/db.php';
 include_once 'ceklogin.php';
 require_once 'config/dbmanager.php';
+use App\Models\Sekolah;
+use App\Models\Pagu;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -130,6 +132,80 @@ require_once 'config/dbmanager.php';
                 <!-- ============================================================== -->
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
+                <?php
+                    if($_SESSION['role']==2){
+                        $npsn= $_SESSION['username'];
+                        $sekolah= Sekolah::npsn($npsn)->first();
+                        $sisapagu1= $sekolah->pagus()->ta($ta)->with('sisa')->get()->sum('sisa.tw1');
+                        // echo json_encode($sisapagu1);
+                        // ->sum('sisa.tw1');
+                        $sisapagu2= $sekolah->pagus()->ta($ta)->with('sisa')->get()->sum('sisa.tw2');
+                        // echo json_encode($sisapagu2);
+                        // ->sum('sisa.tw2');
+                        $sisapagu3= $sekolah->pagus()->ta($ta)->with('sisa')->get()->sum('sisa.tw3');
+                        // echo json_encode($sisapagu3);
+                        // ->sum('sisa.tw3');
+                        $sisapagu4= $sekolah->pagus()->ta($ta)->with('sisa')->get()->sum('sisa.tw4');
+                        // echo json_encode($sisapagu4);
+                        // ->sum('sisa.tw4');
+                ?>
+                    <!-- row -->
+                    <div class="row">
+                        <!-- Column -->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card">
+                                <div class="d-flex flex-row">
+                                    <div class="p-10 bg-info">
+                                        <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
+                                    <div class="align-self-center m-l-20">
+                                        <h5 class="m-b-0 text-info"><?=rupiah($sisapagu1);?></h5>
+                                        <h6 class="text-muted m-b-0">Pagu Triwulan 1</h6></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Column -->
+                        <!-- Column -->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card">
+                                <div class="d-flex flex-row">
+                                    <div class="p-10 bg-warning">
+                                        <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
+                                    <div class="align-self-center m-l-20">
+                                        <h5 class="m-b-0 text-warning"><?=rupiah($sisapagu2);?></h5>
+                                        <h6 class="text-muted m-b-0">Pagu Triwulan 2</h6></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Column -->
+                        <!-- Column -->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card">
+                                <div class="d-flex flex-row">
+                                    <div class="p-10 bg-primary">
+                                        <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
+                                    <div class="align-self-center m-l-20">
+                                        <h5 class="m-b-0 text-primary"><?=rupiah($sisapagu3);?></h5>
+                                        <h6 class="text-muted m-b-0">Pagu Triwulan 3</h6></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Column -->
+                        <!-- Column -->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card">
+                                <div class="d-flex flex-row">
+                                    <div class="p-10 bg-danger">
+                                        <h3 class="text-white box m-b-0"><i class="ti-wallet"></i></h3></div>
+                                    <div class="align-self-center m-l-20">
+                                        <h5 class="m-b-0 text-danger"><?=rupiah($sisapagu4);?></h5>
+                                        <h6 class="text-muted m-b-0">Pagu Triwulan 4</h6></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Column -->
+                    </div>
+                    <!-- /row -->
+                <?php }?>
                 <div class="row justify-content-md-center">
                     <div class="col-lg-12">
                         <div class="card">
@@ -151,12 +227,18 @@ require_once 'config/dbmanager.php';
                                         
                                     </table>
                                     <div id="toolbar">
+                                    <?php
+                                    if ($role==2) {
+                                        ?>
                                         <div>
                                             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newRka()">Tambah</a>
                                             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editRka()">Edit</a>
                                             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyRka()">Hapus</a>
-                                            
+                                        
                                         </div>
+                                        <?php
+                                    }
+                                    ?>
                                         <div>
                                             <!-- <span>npsn:</span>
                                             <input id="npsn" style="line-height:26px;border:1px solid #ccc"> -->

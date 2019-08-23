@@ -435,6 +435,10 @@ require_once 'config/dbmanager.php';
                     // rka_id: row.rka_id,
                     // nama: row.nama,
                     ta: row.ta,
+                    triwulan: row.triwulan,
+                    npsn: row.npsn,
+                    nama_sekolah:row.sekolah.nama_sekolah,
+                    saldo: row.saldo,
                     tanggal_pencairan: myformatter(sqldateparser(row.tanggal_pencairan))
                 });
                 $('#fta').textbox('readonly');

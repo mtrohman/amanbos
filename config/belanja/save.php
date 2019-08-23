@@ -10,12 +10,17 @@ include_once '../db.php';
 require_once '../dbmanager.php';
 $ta= $_SESSION['ta'];
 $npsn = (!empty($_POST['npsn'])) ? $_POST['npsn'] : ($_SESSION['role']=="2") ? $_SESSION['username'] : '' ;
-$triwulan= (!empty($_POST['triwulan'])) ? $_POST['triwulan'] : (!empty($_SESSION['triwulan'])) ? $_SESSION['triwulan'] : '' ;
+// $triwulan= (!empty($_POST['triwulan'])) ? $_POST['triwulan'] : (!empty($_SESSION['triwulan'])) ? $_SESSION['triwulan'] : '' ;
 // $triwulan=1;
+
+
+
 	
 if (!empty($_POST)) {
     $request = (object)$_POST;
     // echo(json_encode($request));
+    $triwulan= (!empty($_POST['triwulan'])) ? $_POST['triwulan'] : triwulan($request->tanggal_belanja);
+
     $tanggalbelanja= DateTime::createFromFormat('d-m-Y', $request->tanggal_belanja);
 
     $sekolah= Sekolah::npsn($npsn)->first();

@@ -19,15 +19,19 @@ else{
     $jumlahpagu= $datasekolah->pagus()->ta($_SESSION['ta'])->sum('pagu');
     $saldothlalu= $datasekolah->saldos()->ta($_SESSION['ta']-1)->sum('sisa');
     $saldothberjalan= $datasekolah->saldos()->ta($_SESSION['ta'])->sum('sisa');
-    $rkasekolah= $datasekolah->rkas()->with('belanja')->get();
-    $totalbelanja= $rkasekolah->sum('belanja.nilai');
+    $belanja= Belanja::npsn($_SESSION['username'])->ta($_SESSION['ta'])->get();
+    $totalbelanja= $belanja->sum('nilai');
+    // $rkasekolah= $datasekolah->rkas()->with('belanja')->get();
+    // $totalbelanja= $rkasekolah->sum('belanja.nilai');
+    // $totalbelanja= collect($rkasekolah)->sum('belanja.nilai');
+    // echo $totalbelanja;
     // if (!empty($rkasekolah)) {
     //     // $totalbelanja=0;
     // }
     // else{
         // $totalbelanja= $rkasekolah->belanja()->ta($_SESSION['ta'])->sum('nilai');
     // }
-    // echo json_encode($rkasekolah);
+    // echo json_encode($belanja);
 }
 
 ?>

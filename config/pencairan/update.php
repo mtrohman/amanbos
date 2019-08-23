@@ -11,6 +11,7 @@ if (!empty($_POST)) {
 	$pencairanlama= Pencairan::find($id);
 	$nilailama= $pencairanlama->saldo;
 	$nilaibaru= $request->saldo;
+	$tanggalpencairan= DateTime::createFromFormat('d-m-Y', $request->tanggal_pencairan);
 
 	if ($nilaibaru != $nilailama) {
 		$selisih= $nilaibaru-$nilailama;
@@ -20,6 +21,8 @@ if (!empty($_POST)) {
 	}
 	$sukses=false;
 	// echo $selisih;
+
+	$pencairanlama->tanggal_pencairan= $tanggalpencairan;
 	if($selisih != 0){
 		$pencairanlama->saldo += $selisih;
 		if($pencairanlama->save()){
@@ -37,6 +40,7 @@ if (!empty($_POST)) {
 		}
 
 	}
+	$sukses=$pencairanlama->save();
 
 	if ($sukses){	
 		echo json_encode($request);

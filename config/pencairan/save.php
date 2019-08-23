@@ -10,11 +10,13 @@ $ta= $_SESSION['ta'];
 if (!empty($_POST)) {
     $request = (object)$_POST;
 	$sukses=false;
+	$tanggalpencairan= DateTime::createFromFormat('d-m-Y', $request->tanggal_pencairan);
 	$cek= Pencairan::ta($ta)->triwulan($request->triwulan)->npsn($request->npsn)->count();
 	if($cek==0){	
 		$pencairanbaru = New Pencairan();
 		$pencairanbaru->ta= $request->ta;
 		$pencairanbaru->triwulan= $request->triwulan;
+		$pencairanbaru->tanggal_pencairan= $tanggalpencairan;
 		$pencairanbaru->npsn= $request->npsn;
 		$pencairanbaru->saldo= $request->saldo;
 		if($pencairanbaru->save()){
