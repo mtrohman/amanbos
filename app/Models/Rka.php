@@ -73,4 +73,26 @@ class Rka extends Model
             return $query->where('triwulan', $tw);
         }
     }
+
+    public function scopeSampaiTriwulan($query, $tw)
+    {
+        if (!empty($tw)) {
+            return $query->where('triwulan','<=', $tw);
+        }
+    }
+
+    public function scopeThBerjalan($query)
+    {
+        return $query->where('jenis_rka', 'RKA Tahun Berjalan');
+    }
+
+    public function scopePerubahan($query)
+    {
+        return $query->where('jenis_rka', 'RKA Perubahan');
+    }
+
+    public function scopeThLalu($query)
+    {
+        return $query->where('jenis_rka', 'RKA Tahun Lalu');
+    }
 }

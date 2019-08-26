@@ -30,7 +30,7 @@ foreach ($res_kr as $key => $value) {
 }
 $jsonrka = array();
 
-$rka = Rka::with(['sekolah', 'program', 'kp', 'sisa'])->npsn($npsn)->uraian($q)->get();
+$rka = Rka::with(['sekolah', 'program', 'kp', 'sisa'])->thBerjalan()->npsn($npsn)->ta($_SESSION['ta'])->sampaiTriwulan(2)->uraian($q)->get();
 foreach ($rka as $key => $value) {
     $jsonrka[$key] = $value;
     $jsonrka[$key]['nomor_rekening'] = $kr_all[$value->rekening_id]->path;

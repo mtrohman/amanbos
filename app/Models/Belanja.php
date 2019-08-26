@@ -46,6 +46,13 @@ class Belanja extends Model
         }
     }
 
+    public function scopeSampaiTriwulan($query, $tw)
+    {
+        if (!empty($tw)) {
+            return $query->where('triwulan','<=', $tw);
+        }
+    }
+
     public function scopeTa($query, $ta)
     {
         if (!empty($ta)) {

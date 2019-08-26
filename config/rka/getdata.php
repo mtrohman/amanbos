@@ -34,8 +34,8 @@ foreach ($res_kr as $key => $value) {
 $jsonrka = array();
 
 // 'npsn', 'like', '%' .$npsn. '%'
-$rka = Rka::ta($ta)->triwulan($triwulan)->npsn($npsn)->namaSekolah($sekolah)->with(['sekolah', 'program', 'kp'])->skip($offset)->take($rows)->get();
-$rkacount = Rka::ta($ta)->triwulan($triwulan)->npsn($npsn)->namaSekolah($sekolah)->count();
+$rka = Rka::ta($ta)->thBerjalan()->triwulan($triwulan)->npsn($npsn)->namaSekolah($sekolah)->with(['sekolah', 'program', 'kp'])->skip($offset)->take($rows)->get();
+$rkacount = Rka::ta($ta)->thBerjalan()->triwulan($triwulan)->npsn($npsn)->namaSekolah($sekolah)->count();
 // $rka['nomor_rekening']="tes";
 foreach ($rka as $key => $value) {
     $jsonrka[$key] = $value;

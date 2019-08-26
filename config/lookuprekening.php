@@ -6,7 +6,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body table-responsive">
-                <table id="lookuprekening" class="dt table table-bordered table-sm table-hover table-striped nowrap">
+                <table id="lookuprekening" style="width: 100%;font-family: 'Roboto Mono', monospace;" class="dt table table-bordered table-sm table-hover nowrap">
                      <thead>
                          <tr>
                             <th>Kode Rekening</th>
@@ -20,7 +20,7 @@
                         </tr>
                         <?php
                          //Data mentah yang ditampilkan ke tabel    
-                        $qwith= "WITH RECURSIVE category_path (id, nama_rekening, path) AS
+                        /*$qwith= "WITH RECURSIVE category_path (id, nama_rekening, path) AS
                             (
                               SELECT id, nama_rekening, kode_rekening as path
                                 FROM koderekening
@@ -33,11 +33,14 @@
                             SELECT * FROM category_path
                             ORDER BY path";
                         $sql = mysqli_query($link,$qwith);
-                        while ($r = mysqli_fetch_array($sql)) {
+                        while ($r = mysqli_fetch_array($sql)) {*/
+                        use Illuminate\Database\Capsule\Manager as DB;
+                        $rekening= collect(DB::select('call koderekening_lengkap()'))->where('deleted_at','=',null);
+                        foreach ($rekening as $key => $r) {
                             ?>
-                            <tr class="pilihrekening" data-namarekening="<?php echo $r['nama_rekening']; ?>" data-koderekening="<?php echo $r['path'];?>" data-idrekening="<?php echo $r['id']; ?>">
-                                <td><?php echo $r['path']; ?></td>
-                                <td><?php echo $r['nama_rekening']; ?></td>   
+                            <tr class="pilihrekening" data-namarekening="<?php echo $r->nama_rekening; ?>" data-koderekening="<?php echo $r->path;?>" data-idrekening="<?php echo $r->id; ?>">
+                                <td><?php echo $r->path; ?></td>
+                                <td><?php echo $r->nama_rekening; ?></td>   
                                  
                             </tr>
                             <?php

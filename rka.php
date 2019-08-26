@@ -572,6 +572,15 @@ use App\Models\Pagu;
             $('#inputrka').collapse('show');
             $('#addRow').show();
             $('#judulForm').text("Tambah RKA");
+            // 
+            $('html, body').animate(
+                {
+                  scrollTop: $('#inputrka').offset().top,
+                },
+                500,
+                'linear'
+              )
+            //
             $('#tw').val('').removeAttr('readonly');
             $('#tableInput').find('tbody').detach();
             $('#tableInput').append($('<tbody>'));  
@@ -649,7 +658,15 @@ use App\Models\Pagu;
                 $('#inputrka').collapse('show');
                 $('#addRow').hide();
                 $('#judulForm').text("Edit RKA");
-
+                // 
+                $('html, body').animate(
+                    {
+                      scrollTop: $('#inputrka').offset().top,
+                    },
+                    500,
+                    'linear'
+                  )
+                //
                 $('#tableInput').find('tbody').detach();
                 $('#tableInput').append($('<tbody>'));  
                 $('#forminput').form('clear');
