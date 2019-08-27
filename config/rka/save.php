@@ -50,30 +50,22 @@ if (!empty($_POST)) {
 			});
 			
 			$sisapagu=$pagu->sisa()->first();
+			echo json_encode($sisapagu);
+			echo $sisapagu->$triwulan - collect($simpanrkas)->sum('nilai');
 			$sisapagu->$triwulan= $sisapagu->$triwulan - collect($simpanrkas)->sum('nilai');
 			$sisapagu->save();
 		}
-		
-		
-		// $jumlahrka =$simpanrkas->count();
-		// foreach ($simpanrkas as $key => $value) {
-		// for ($i=0; $i < $jumlahrka ; $i++) { 
-		// 	# code...
-		// 	$simpanrkas->sisas()->create([
-		// 	    'nilai' => $simpanrkas->nilai,
-		// 	]);
-		// }
-		// }
-// echo $triwulan;
 
-		// echo json_encode($sisapagu);
-		// if ($simpanrkas) {
+		echo json_encode($simpanrkas);
+		if ($simpanrkas) {
 			header('location: /rka.php');
-		// }
-	
+		}	
 	}
 	else{
-		echo "<script>alert(\"Maaf Pagu tidak cukup\"); window.location.href=\"/rka.php\";</script>";
+		echo "<script>";
+		echo "alert(\"Maaf Pagu tidak cukup\");";
+		echo "window.location.href=\"/rka.php\";";
+		echo "</script>";
 	}
 
 

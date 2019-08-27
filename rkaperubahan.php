@@ -142,7 +142,8 @@ use App\Models\Rka;
                         $belanja= Belanja::npsn($_SESSION['username'])->ta($_SESSION['ta']);
                         $belanjasampaitw2= $belanja->sampaiTriwulan(2)->get()->sum('nilai');
                         
-                        $pagu= PaguPerubahan::npsn($npsn)->ta($ta)->first()->pagu;
+                        // $pagu= PaguPerubahan::npsn($npsn)->ta($ta)->first()->pagu;
+                        $pagu= PaguPerubahan::npsn($npsn)->ta($ta)->get()->sum('pagu');
                         $rkaperubahan= Rka::npsn($npsn)->ta($ta)->where('jenis_rka','RKA Perubahan');
                         $rkaperubahansampaitw3= $rkaperubahan->sampaiTriwulan(3)->get()->sum('nilai');
                         $rkaperubahansampaitw4= $rkaperubahan->sampaiTriwulan(4)->get()->sum('nilai');

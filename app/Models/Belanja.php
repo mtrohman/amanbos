@@ -135,4 +135,25 @@ class Belanja extends Model
         return $this->hasMany('App\Models\BelanjaModal');
     }
 
+    public function scopeThBerjalan($query)
+    {
+        return $query->whereHas('rka', function ($qrka) {
+            $qrka->where('jenis_rka', 'RKA Tahun Berjalan');
+        });    
+    }
+
+    public function scopePerubahan($query)
+    {
+        return $query->whereHas('rka', function ($qrka) {
+            $qrka->where('jenis_rka', 'RKA Perubahan');
+        });    
+    }
+
+    public function scopeThLalu($query)
+    {
+        return $query->whereHas('rka', function ($qrka) {
+            $qrka->where('jenis_rka', 'RKA Tahun Lalu');
+        });    
+    }
+
 }

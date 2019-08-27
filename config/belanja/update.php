@@ -51,6 +51,11 @@ if (!empty($_POST)) {
 		}
 
 	}
+	else{
+		$belanjaan->tanggal_belanja= $tanggalbelanja;
+		$belanjaan->nama= $request->nama;
+		$sukses=$belanjaan->save();
+	}
     
 	// echo $sisapagu->$triwulan;
 

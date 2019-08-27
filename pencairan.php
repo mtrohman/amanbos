@@ -213,6 +213,9 @@ require_once 'config/dbmanager.php';
                                             <div class="fitem" style="margin-bottom:10px">
                                                 <input name="triwulan" label="Triwulan" id="futriwulan" class="easyui-textbox" labelWidth="150" style="width:100%">
                                             </div>
+                                            <div style="margin-bottom:10px">
+                                                <input name="tanggal_pencairan" label="Tanggal" id="tgl" type="text" class="easyui-datebox" labelWidth="150" style="width:100%" data-options="formatter:myformatter,parser:myparser">
+                                            </div>
                                             <input class="easyui-filebox" name="file" labelWidth="150" label="File" id="fufile"  data-options="prompt:'Xlsx File...'" style="width:100%">
                                             
                                         </form>
