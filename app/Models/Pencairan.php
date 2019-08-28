@@ -50,4 +50,11 @@ class Pencairan extends Model
         }
     }
 
+    public function scopeSumberDana($query, $sumberdana)
+    {
+        if (!empty($sumberdana) && ($sumberdana=="BOS" || $sumberdana=="Dana Lainnya") ) {
+            return $query->where('sumber_dana', $sumberdana);
+        }
+    }
+
 }

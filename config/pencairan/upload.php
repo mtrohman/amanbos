@@ -16,6 +16,8 @@ $pesan="";
 
 $ta   = htmlspecialchars($_REQUEST['ta']);
 $triwulan   = htmlspecialchars($_REQUEST['triwulan']);
+$tanggal_pencairan= DateTime::createFromFormat('d-m-Y', $_REQUEST['tanggal_pencairan']);
+$sumber_dana = htmlspecialchars($_REQUEST['sumber_dana']);
 $file = $_FILES['file']['name'];
 
 $targetPath = 'upload/pencairan/' . $_FILES['file']['name'];
@@ -33,45 +35,75 @@ if ($FileType == "xlsx") {
     	$npsn= $worksheet->getCellByColumnAndRow(2, $row)->getValue();
     	$pencairan= $worksheet->getCellByColumnAndRow(4, $row)->getValue();
 
-		$pencairan_baru= Pencairan::firstOrNew([
-			'ta' => $ta,
-			'npsn' => $npsn,
-			'triwulan' => $triwulan
-		]);
+    	if ($sumber_dana=='BOS') {
+    		$pencairan_baru= Pencairan::firstOrNew([
+    			'sumber_dana' => $sumber_dana,
+				'ta' => $ta,
+				'npsn' => $npsn,
+				'triwulan' => $triwulan
+			]);
 
-		$selisih[$row]=0;
-		$pencairan_lama[$row]=false;
-		if(!empty($pencairan_baru->saldo)){ //jika pencairan sudah ada sebelumnya maka cari selisihnya
-			$pencairan_lama[$row]= true;
-			$nilailama= $pencairan_baru->saldo;
-			$nilaibaru= $pencairan;
+			$selisih[$row]=0;
+			$pencairan_lama[$row]=false;
+			if(!empty($pencairan_baru->saldo)){ //jika pencairan sudah ada sebelumnya maka cari selisihnya
+				$pencairan_lama[$row]= true;
+				$nilailama= $pencairan_baru->saldo;
+				$nilaibaru= $pencairan;
 
-			if ($nilaibaru != $nilailama) {
-				$selisih[$row]= $nilaibaru-$nilailama;
+				if ($nilaibaru != $nilailama) {
+					$selisih[$row]= $nilaibaru-$nilailama;
+				}
+				
 			}
-			
-		}
 
-		$pencairan_baru->saldo = $pencairan;
-		if($pencairan_baru->save()){
-			$saldo= Saldo::firstOrNew(
-				[
-					'ta' => $ta,
-					'npsn' => $npsn
-				]
-			);
-			
-			if($pencairan_lama[$row]){//berarti pencairan sudah ada sebelumnya
-				$saldo->sisa += $selisih[$row];
+			$pencairan_baru->saldo = $pencairan;
+			$pencairan_baru->tanggal_pencairan = $tanggal_pencairan;
+			if($pencairan_baru->save()){
+				$saldo= Saldo::firstOrNew(
+					[
+						'ta' => $ta,
+						'npsn' => $npsn
+					]
+				);
+				
+				if($pencairan_lama[$row]){//berarti pencairan sudah ada sebelumnya
+					$saldo->sisa += $selisih[$row];
+				}
+				else{
+					$saldo->sisa += $pencairan;
+				}
+
+				$sukses[($row-1)] = $saldo->save();
+				if($sukses[($row-1)]) $jumlahsukses++;
+				else $pesan .= "data ke ".($row-1)." tidak tersimpan\n";
 			}
-			else{
+    	}
+    	elseif($sumber_dana=='Dana Lainnya'){
+    		$pencairan_baru						= new Pencairan();
+			$pencairan_baru->npsn 				= $npsn;
+			$pencairan_baru->ta 				= $ta;
+			$pencairan_baru->triwulan 			= $triwulan;
+			$pencairan_baru->sumber_dana 		= $sumber_dana;
+			$pencairan_baru->tanggal_pencairan	= $tanggal_pencairan;
+			$pencairan_baru->saldo 				= $pencairan;
+
+			if($pencairan_baru->save()){
+				$saldo= Saldo::firstOrNew(
+					[
+						'ta' => $ta,
+						'npsn' => $npsn
+					]
+				);
+
 				$saldo->sisa += $pencairan;
-			}
 
-			$sukses[($row-1)] = $saldo->save();
-			if($sukses[($row-1)]) $jumlahsukses++;
-			else $pesan .= "data ke ".($row-1)." tidak tersimpan\n";
-		}
+				$sukses[($row-1)] = $saldo->save();
+				if($sukses[($row-1)]) $jumlahsukses++;
+				else $pesan .= "data ke ".($row-1)." tidak tersimpan\n";
+			}
+    	}
+
+		
 
 // 		if($pagu_baru){
 // 			$sisa_pagu= $pagu_baru->sisa()->updateOrCreate(

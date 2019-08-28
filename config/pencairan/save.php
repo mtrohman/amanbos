@@ -11,24 +11,24 @@ if (!empty($_POST)) {
     $request = (object)$_POST;
 	$sukses=false;
 	$tanggalpencairan= DateTime::createFromFormat('d-m-Y', $request->tanggal_pencairan);
-	$cek= Pencairan::ta($ta)->triwulan($request->triwulan)->npsn($request->npsn)->count();
+	if ($request->sumber_dana=="BOS") {
+		$cek= Pencairan::sumberDana('BOS')->ta($ta)->triwulan($request->triwulan)->npsn($request->npsn)->count();
+	}
+	elseif($request->sumber_dana=="Dana Lainnya"){
+		$cek=0;
+	}
+	else{
+		$cek=-1;
+	}
 	if($cek==0){	
 		$pencairanbaru = New Pencairan();
+		$pencairanbaru->sumber_dana= $request->sumber_dana;
 		$pencairanbaru->ta= $request->ta;
 		$pencairanbaru->triwulan= $request->triwulan;
 		$pencairanbaru->tanggal_pencairan= $tanggalpencairan;
 		$pencairanbaru->npsn= $request->npsn;
 		$pencairanbaru->saldo= $request->saldo;
 		if($pencairanbaru->save()){
-			/*$sukses= Saldo::updateOrCreate(
-				[
-					'ta' => $ta,
-					'npsn' => $request->npsn
-				],
-				[
-					'sisa' => $request->saldo
-				]
-			);*/
 			$saldo= Saldo::firstOrNew(
 				[
 					'ta' => $ta,
@@ -39,7 +39,7 @@ if (!empty($_POST)) {
 			$sukses = $saldo->save();
 			// $sukses=$pencairanbaru->sisa()->create([
 			//     'saldo' => $request->saldo
-			// ]);
+			// ]);			
 		}	
 
 	}
@@ -50,7 +50,11 @@ if (!empty($_POST)) {
 	if ($sukses){	
 		echo json_encode($pencairanbaru);
 	} else {
-		echo json_encode(array('errorMsg'=>'Some errors occured.'));
+		echo json_encode(
+			array(
+				'errorMsg'=>'Pencairan Dana BOS pada triwulan tsb sudah ada'
+			)
+		);
 	}
 }
 ?>

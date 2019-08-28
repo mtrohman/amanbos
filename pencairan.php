@@ -173,6 +173,12 @@ require_once 'config/dbmanager.php';
                                                 <input name="firstname" required="true">
                                             </div> -->
                                             <div class="fitem" style="margin-bottom:10px">
+                                                <select class="easyui-combobox" name="sumber_dana" label="Sumber Dana" id="fsumber_dana" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                                    <option value="BOS" selected>BOS</option>
+                                                    <option value="Dana Lainnya">Dana Lainnya</option>
+                                                </select>
+                                            </div>
+                                            <div class="fitem" style="margin-bottom:10px">
                                                 <input name="ta" label="TA" id="fta" class="easyui-textbox" labelWidth="150" style="width:100%">
                                             </div>
                                             <div class="fitem" style="margin-bottom:10px">
@@ -208,12 +214,18 @@ require_once 'config/dbmanager.php';
                                                 <input name="firstname" required="true">
                                             </div> -->
                                             <div class="fitem" style="margin-bottom:10px">
+                                                <select class="easyui-combobox" name="sumber_dana" label="Sumber Dana" id="fusumber_dana" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                                    <option value="BOS" selected>BOS</option>
+                                                    <option value="Dana Lainnya">Dana Lainnya</option>
+                                                </select>
+                                            </div>
+                                            <div class="fitem" style="margin-bottom:10px">
                                                 <input name="ta" label="TA" id="futa" class="easyui-textbox" labelWidth="150" style="width:100%">
                                             </div>
                                             <div class="fitem" style="margin-bottom:10px">
                                                 <input name="triwulan" label="Triwulan" id="futriwulan" class="easyui-textbox" labelWidth="150" style="width:100%">
                                             </div>
-                                            <div style="margin-bottom:10px">
+                                            <div class="fitem" style="margin-bottom:10px">
                                                 <input name="tanggal_pencairan" label="Tanggal" id="tgl" type="text" class="easyui-datebox" labelWidth="150" style="width:100%" data-options="formatter:myformatter,parser:myparser">
                                             </div>
                                             <input class="easyui-filebox" name="file" labelWidth="150" label="File" id="fufile"  data-options="prompt:'Xlsx File...'" style="width:100%">
@@ -330,6 +342,7 @@ require_once 'config/dbmanager.php';
             url:'config/pencairan/getdata.php?npsn='+npsn,
             emptyMsg:'Tidak ada data tersedia',
             columns: [[
+                {field:'sumber_dana',title:'Sumber Dana'},
                 {
                     field:'tanggal_pencairan',title:'Tanggal',align:'center',
                     formatter:function(value, row){
@@ -374,6 +387,7 @@ require_once 'config/dbmanager.php';
 		function newPencairan(){
 			$('#dlg').dialog('open').dialog('setTitle','Tambah Pencairan');
 			$('#fm').form('clear');
+            $('#fsumber_dana').combobox('setValue', 'BOS');
             $('#fta').textbox('readonly');
             $('#fta').textbox('setValue','<?=$_SESSION["ta"];?>');
             $('#ftriwulan').textbox('readonly',false);
@@ -404,6 +418,7 @@ require_once 'config/dbmanager.php';
         function uploadPencairan(){
             $('#dlgupload').dialog('open').dialog('setTitle','Upload Pencairan');
             $('#fmupload').form('clear');
+            $('#fusumber_dana').combobox('setValue', 'BOS');
             $('#futa').textbox('readonly');
             $('#futa').textbox('setValue','<?=$_SESSION["ta"];?>');
             urlupload = 'config/pencairan/upload.php';
@@ -437,6 +452,7 @@ require_once 'config/dbmanager.php';
 				$('#fm').form('load',{
                     // rka_id: row.rka_id,
                     // nama: row.nama,
+                    sumber_dana: row.sumber_dana,
                     ta: row.ta,
                     triwulan: row.triwulan,
                     npsn: row.npsn,
