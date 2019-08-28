@@ -19,4 +19,9 @@ class Kecamatan extends Model
     // protected $dates = ['deleted_at'];
     public $timestamps = false;
 
+    public function scopeNamaKecamatan($query, $kecamatan)
+    {
+        return $query->where('nama_kecamatan', 'like', '%' . $kecamatan . '%');
+    }
+
 }

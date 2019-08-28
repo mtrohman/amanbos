@@ -152,7 +152,123 @@ include_once 'ceklogin.php';
                                         </thead>
                                         
                                     </table>
+                                    <div id="toolbar" style="display: none">
+                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newSekolah()">Tambah</a>
+                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editSekolah()">Edit</a>
+                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroySekolah()">Hapus</a>
+
+                                    <?php
+                                        if ($role==1) {
+                                            ?>
+                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="resetPassword()">Reset Password</a>
+
+                                            <?php
+                                        }
+                                        else{
+                                            ?>
+                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editPassword()">Edit Password</a>
+
+                                            <?php
+                                        }
+                                    ?>
+
+                                        <div>
+
+                                            <span>npsn:</span>
+                                            <input id="snpsn" style="line-height:26px;border:1px solid #ccc">
+                                            <span>sekolah:</span>
+                                            <input id="ssekolah" style="line-height:26px;border:1px solid #ccc">
+                                            <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">Cari</a>
+                                        </div>
+                                    </div>
                                 </div>
+
+                                <div id="dlg" class="easyui-dialog" style="width:500px;max-width:80%;padding:10px 20px;" closed="true" buttons="#dlg-buttons">
+                                    <!-- <div class="ftitle">User Information</div> -->
+                                    <form id="fm" method="post">
+                                        <div style="margin-bottom:10px">
+                                            <input name="npsn" label="NPSN" id="fnpsn" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                        </div>
+                                        <div style="margin-bottom:10px">
+                                            <input name="nama_sekolah" label="Nama Sekolah" id="fnama_sekolah" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                        </div>
+                                        <div style="margin-bottom:10px">
+                                            <input name="jenjang" label="Jenjang" id="fjenjang"  labelWidth="150" style="width:100%"
+                                            class="easyui-combobox" data-options="
+                                            valueField: 'label',
+                                            textField: 'value',
+                                            data: [{
+                                                label: 'SD',
+                                                value: 'SD'
+                                            },{
+                                                label: 'SMP',
+                                                value: 'SMP'
+                                            }]" />
+                                        </div>
+                                        <div style="margin-bottom:10px">
+                                            <input name="status" label="Status" id="fstatus" labelWidth="150" style="width:100%"
+                                            class="easyui-combobox" data-options="
+                                            valueField: 'label',
+                                            textField: 'value',
+                                            data: [{
+                                                label: 'Negeri',
+                                                value: 'Negeri'
+                                            },{
+                                                label: 'Swasta',
+                                                value: 'Swasta'
+                                            }]" />
+                                        </div>
+                                        
+                                        <div style="margin-bottom:10px">
+                                            <input name="kecamatan" label="Kecamatan" id="fkecamatan" labelWidth="150" style="width:100%" class="easyui-combobox" data-options="valueField:'id',textField:'nama_kecamatan',url:'config/sekolah/combobox_kecamatan.php'">
+                                        </div>
+                                        <div style="margin-bottom:10px">
+                                            <input name="alamat" label="Alamat" id="falamat" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                        </div>
+                                        <div style="margin-bottom:10px">
+                                            <input name="telepon" label="Telepon" id="ftelepon" class="easyui-numberbox" labelWidth="150" style="width:100%">
+                                        </div>
+                                        <div style="margin-bottom:10px">
+                                            <input name="nama_kepsek" label="Nama Kepsek" id="fnama_kepsek" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                        </div>
+                                        <div style="margin-bottom:10px">
+                                            <input name="nip_kepsek" label="Nip Kepsek" id="fnip_kepsek" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                        </div>
+                                        <div style="margin-bottom:10px">
+                                            <input name="nama_bendahara" label="Nama Bendahara" id="fnama_bendahara" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                        </div>
+                                        <div style="margin-bottom:10px">
+                                            <input name="nip_bendahara" label="Nip Bendahara" id="fnip_bendahara" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                        </div>
+                                        
+                                        
+                                    </form>
+                                </div>
+                                <div id="dlg-buttons">
+                                    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveSekolah()" style="width:90px">Save</a>
+                                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
+                                </div>
+
+                                <!-- Edit Password -->
+                                <div id="dlgpw" class="easyui-dialog" style="width:500px;max-width:80%;padding:10px 20px;" closed="true" buttons="#dlgpw-buttons">
+                                    <!-- <div class="ftitle">User Information</div> -->
+                                    <form id="fmpw" method="post">
+                                        <div style="margin-bottom:10px">
+                                            <input name="password_lama" label="Password Lama" id="fppasswordlama" class="easyui-textbox" labelWidth="170" style="width:100%">
+                                        </div>
+                                        <div style="margin-bottom:10px">
+                                            <input name="password" label="Password Baru" id="fppasswordbaru" class="easyui-textbox" labelWidth="170" style="width:100%">
+                                        </div>
+                                        <div style="margin-bottom:10px">
+                                            <input name="konfirmasi" label="Konfirmasi Password" id="fppasswordkonfirmasi" class="easyui-textbox" labelWidth="170" style="width:100%">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div id="dlgpw-buttons">
+                                    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="savePassword()" style="width:90px">Save</a>
+                                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgpw').dialog('close')" style="width:90px">Cancel</a>
+                                </div>
+                                <!-- Edit Password -->
 
                             </div>
                         </div>
@@ -241,6 +357,62 @@ include_once 'ceklogin.php';
 
             
         });
+        function newSekolah(){
+            $('#dlg').dialog('open').dialog('setTitle','Tambah Sekolah');
+            $('#fm').form('clear');
+            url = 'config/sekolah/save.php';
+        }
+        function editSekolah(){
+            var row = $('#dg').datagrid('getSelected');
+            if (row){
+                $('#dlg').dialog('open').dialog('setTitle','Edit Sekolah');
+                $('#fm').form('load',row);
+                
+                url = 'config/sekolah/update.php?id='+row.id_sekolah;
+            }
+        }
+        function editPassword(){
+            var row = $('#dg').datagrid('getSelected');
+            if (row){
+                $('#dlgpw').dialog('open').dialog('setTitle','Edit Password');
+                // $('#fmpw').form('load',row);
+                
+                url = 'config/sekolah/ubah_password.php?id='+row.id_sekolah;
+            }
+        }
+        function saveSekolah(){
+            $('#fm').form('submit',{
+                url: url,
+                onSubmit: function(){
+                    return $(this).form('validate');
+                },
+                success: function(result){
+                    var result = eval('('+result+')');
+                    if (result.errorMsg){
+                        $.messager.alert('Error',result.errorMsg,'error');
+                    } else {
+                        $('#dlg').dialog('close');        // close the dialog
+                        $('#dg').datagrid('reload');    // reload the user data
+                    }
+                }
+            });
+        }
+        function resetPassword(){
+            var row = $('#dg').datagrid('getSelected');
+            if (row){
+                $.messager.confirm('Confirm','Apakah anda akan mereset Password '+row.nama_sekolah+'?',function(r){
+                    if (r){
+                        $.post('config/sekolah/reset_password.php',{id:row.id_sekolah},function(result){
+                            if (result.success){
+                                $('#dg').datagrid('reload');    // reload the user data
+                            } else {
+                                $.messager.alert('Error',result.errorMsg,'error');
+                            }
+                        },'json');
+                    }
+                });
+            }
+        }
     </script>
     <!-- DT -->
     <script>

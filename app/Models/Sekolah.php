@@ -8,6 +8,7 @@ class Sekolah extends Model
 {
     use SoftDeletes;
     protected $table = 'sekolah';
+    protected $fillable = ['npsn','nama_sekolah','jenjang','status','kecamatan','role','alamat','telepon','foto','nama_kepsek','nip_kepsek','nama_bendahara','nip_bendahara','password'];
 
     /**
      * The attributes that should be mutated to dates.
