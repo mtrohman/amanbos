@@ -175,9 +175,15 @@ require_once 'config/dbmanager.php';
                             <!-- <div class="ftitle">User Information</div> -->
                             <form id="fm" method="post">
                                 <div style="margin-bottom:10px">
-                                    <input name="rka_id" id="cg" label="RKAS" labelWidth="150" style="width:100%">
-                                </div>
+                                    <input name="program" label="Program" id="program" class="easyui-combobox" labelWidth="150" style="width:100%" data-options="valueField:'id',textField:'nama_program',url:'config/belanjathlalu/combo_program.php'">
 
+                                </div>
+                                <div style="margin-bottom:10px">
+                                    <input name="kp" label="KP" id="kp" class="easyui-combobox" labelWidth="150" style="width:100%" data-options="valueField:'id',textField:'nama_pembiayaan',url:'config/belanjathlalu/combo_kp.php'">
+                                </div>
+                                <div style="margin-bottom:10px">
+                                    <input name="rekening" label="Rekening" id="rekening" class="easyui-combobox" labelWidth="150" style="width:100%" data-options="valueField:'id',textField:'nama_rekening',url:'config/belanjathlalu/combo_rekening.php'">
+                                </div>
                                 <div style="margin-bottom:10px">
                                     <input name="nama" label="Uraian Belanja" id="nama" class="easyui-textbox" labelWidth="150" style="width:100%">
                                 </div>
