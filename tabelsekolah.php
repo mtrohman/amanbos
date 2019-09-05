@@ -153,25 +153,15 @@ include_once 'ceklogin.php';
                                         
                                     </table>
                                     <div id="toolbar" style="display: none">
-                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newSekolah()">Tambah</a>
-                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editSekolah()">Edit</a>
-                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroySekolah()">Hapus</a>
+                                        
 
                                     <?php
                                         if ($role==1) {
                                             ?>
+                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newSekolah()">Tambah</a>
+                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editSekolah()">Edit</a>
+                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroySekolah()">Hapus</a>
                                         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="resetPassword()">Reset Password</a>
-
-                                            <?php
-                                        }
-                                        else{
-                                            ?>
-                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editPassword()">Edit Password</a>
-
-                                            <?php
-                                        }
-                                    ?>
-
                                         <div>
 
                                             <span>npsn:</span>
@@ -180,6 +170,19 @@ include_once 'ceklogin.php';
                                             <input id="ssekolah" style="line-height:26px;border:1px solid #ccc">
                                             <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">Cari</a>
                                         </div>
+                                            <?php
+                                        }
+                                        else{
+                                            ?>
+                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editSekolah()">Edit</a>
+                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroySekolah()">Hapus</a>
+                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editPassword()">Edit Password</a>
+
+                                            <?php
+                                        }
+                                    ?>
+
+                                        
                                     </div>
                                 </div>
 
@@ -252,15 +255,17 @@ include_once 'ceklogin.php';
                                 <!-- Edit Password -->
                                 <div id="dlgpw" class="easyui-dialog" style="width:500px;max-width:80%;padding:10px 20px;" closed="true" buttons="#dlgpw-buttons">
                                     <!-- <div class="ftitle">User Information</div> -->
+                                    <div class="alert alert-danger" id="spanvalidasi" style="display: none">
+                                    </div>
                                     <form id="fmpw" method="post">
                                         <div style="margin-bottom:10px">
-                                            <input name="password_lama" label="Password Lama" id="fppasswordlama" class="easyui-textbox" labelWidth="170" style="width:100%">
+                                            <input name="password_lama" type="password" label="Password Lama" id="fppasswordlama" class="easyui-textbox" labelWidth="170" style="width:100%" required="required">
                                         </div>
                                         <div style="margin-bottom:10px">
-                                            <input name="password" label="Password Baru" id="fppasswordbaru" class="easyui-textbox" labelWidth="170" style="width:100%">
+                                            <input name="password" type="password" label="Password Baru" id="fppasswordbaru" labelWidth="170" style="width:100%" class=" easyui-textbox" required="required">
                                         </div>
                                         <div style="margin-bottom:10px">
-                                            <input name="konfirmasi" label="Konfirmasi Password" id="fppasswordkonfirmasi" class="easyui-textbox" labelWidth="170" style="width:100%">
+                                            <input name="konfirmasi" type="password" label="Konfirmasi Password" id="fppasswordkonfirmasi" labelWidth="170" style="width:100%" class=" easyui-textbox" required="required">
                                         </div>
                                     </form>
                                 </div>
@@ -411,6 +416,33 @@ include_once 'ceklogin.php';
                         },'json');
                     }
                 });
+            }
+        }
+        function savePassword(){
+            if ($('#fppasswordbaru').textbox('getValue')==$('#fppasswordkonfirmasi').textbox('getValue')) {
+                if ($('#fppasswordlama').textbox('getValue') != '' && $('#fppasswordbaru').textbox('getValue') != '') {
+                    $('#fmpw').form('submit',{
+                        url: url,
+                        onSubmit: function(){
+                            return $(this).form('validate');
+                        },
+                        success: function(result){
+                            var result = eval('('+result+')');
+                            if (result.errorMsg){
+                                $.messager.alert('Error',result.errorMsg,'error');
+                            } else {
+                                $('#dlgpw').dialog('close');        // close the dialog
+                                $('#dg').datagrid('reload');    // reload the user data
+                            }
+                        }
+                    });
+                }
+                else{
+                    $("#spanvalidasi").text("Mohon lengkapi form terlebih dahulu").show().fadeOut( 3000 );    
+                }
+            }
+            else{
+                $("#spanvalidasi").text("Mohon cocokkan kembali konfirmasi password baru anda").show().fadeOut( 3000 );
             }
         }
     </script>

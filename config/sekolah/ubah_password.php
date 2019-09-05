@@ -11,9 +11,15 @@ if (!empty($_POST)) {
 	$sekolahlama= Sekolah::find($_GET['id']);
 	$pesan="";
 	if (!empty($sekolahlama)) {
-		// $sekolahlama->fill($_POST);
-		$sekolahlama->password= $sekolahlama->npsn;
-		$sukses= $sekolahlama->save();
+		if ($sekolahlama->password==$request->password_lama) {
+			# code...
+			$sekolahlama->password= $request->password;
+			$sukses= $sekolahlama->save();
+		}
+		else{
+			$sukses= false;
+			$pesan="Password Lama anda salah";
+		}
 	}
 	else{
 		$sukses= false;
