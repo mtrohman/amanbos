@@ -1,6 +1,9 @@
 <?php 
+use App\Models\KodeProgram;
+
 include_once 'config/db.php';
 include_once 'ceklogin.php';
+require_once 'config/dbmanager.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +17,7 @@ include_once 'ceklogin.php';
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/x-icon" sizes="16x16" href="assets/images/favicon.ico">
-    <title>Data Saldo - <?php echo $namaweb;?></title>
+    <title>Data Belanja Modal - <?php echo $namaweb;?></title>
     <!-- Bootstrap Core CSS -->
     <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
@@ -28,6 +31,9 @@ include_once 'ceklogin.php';
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/material-teal/easyui.css">
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/color.css">
     <style type="text/css">
         @font-face {
           font-family: 'Roboto Mono';
@@ -49,11 +55,12 @@ include_once 'ceklogin.php';
                 height: 70px;
             }
         }
+        .datagrid-header td,
+        .datagrid-body td {
+          border-color: #ebebeb;
+        }
     </style>
-    <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/material-teal/easyui.css">
-	<link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/icon.css">
-	<link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/color.css">
-	
+    
 </head>
 
 <body class="fix-header card-no-border">
@@ -95,12 +102,12 @@ include_once 'ceklogin.php';
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-5 align-self-center">
-                    <h3 class="text-themecolor">Data Saldo</h3>
+                    <h3 class="text-themecolor">Data Belanja Modal</h3>
                 </div>
                 <div class="col-md-7 align-self-center">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                        <li class="breadcrumb-item active">Data Saldo</li>
+                        <li class="breadcrumb-item active">Belanja Modal</li>
                     </ol>
                 </div>
                 <!-- <div>
@@ -117,35 +124,31 @@ include_once 'ceklogin.php';
                 <!-- ============================================================== -->
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
-                <div class="row">
-                    <div class="col-12">
+                <div class="row justify-content-md-center">
+                    <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="text-center text-md-left db">
                                             <img src="assets/images/semarangkab.png" class="logospecial">
-                                            <h1 class="h1special pull-right d-none d-md-block">Saldo Th Lalu</h1>
+                                            <h1 class="h1special pull-right d-none d-md-block">Belanja Modal (Tahun Lalu)</h1>
                                         </div> 
                                     </div>
                                 </div>
                                 <hr>
+                                <?php
+                                
+                                ?>
                                 <div class="table-responsive">
                                     <table id="dg" title="" class="easyui-datagrid" style="width:100%;height:400px"
-                                        pagination="true"
-                                        rownumbers="true" fitColumns="false" singleSelect="true"
-                                        <?=($_SESSION['role']==1) ? 'toolbar="#toolbar"' : '';?>>
+                                        toolbar="#toolbar" pagination="true"
+                                        fitColumns="false" singleSelect="true">
                                         
                                     </table>
-                                    <div id="toolbar" style="display: none">
+                                    <div id="toolbar">
+                                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editBelanjaModal()">Edit</a>
                                         
-                                        <div>
-                                            <span>npsn:</span>
-                                            <input id="npsn" style="line-height:26px;border:1px solid #ccc">
-                                            <span>sekolah:</span>
-                                            <input id="sekolah" style="line-height:26px;border:1px solid #ccc">
-                                            <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">Cari</a>
-                                        </div>
                                     </div>
                                 </div>
 
@@ -208,33 +211,139 @@ include_once 'ceklogin.php';
     <script src="assets/js/dtbutton/buttons.html5.js"></script>
     <script src="assets/js/dtbutton/buttons.print.js"></script>
     <script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
+    
     <script type="text/javascript" src="http://www.jeasyui.com/easyui/plugins/jquery.datagrid.js"></script>
+
+    <script type="text/javascript" src="https://www.jeasyui.com/easyui/datagrid-detailview.js"></script>
     <script src="assets/js/fungsi.js"></script>
     <script>
+    	function myformatter(date){
+            var y = date.getFullYear();
+            var m = date.getMonth()+1;
+            var d = date.getDate();
+            return (d<10?('0'+d):d)+'-'+(m<10?('0'+m):m)+'-'+y;
+        }
+
+        function myparser(s){
+            if (!s) return new Date();
+            var ss = (s.split('-'));
+            var y = parseInt(ss[2],10);
+            var m = parseInt(ss[1],10);
+            var d = parseInt(ss[0],10);
+            if (!isNaN(y) && !isNaN(m) && !isNaN(d)){
+                return new Date(y,m-1,d);
+            } else {
+                return new Date();
+            }
+        }
+
+        function sqldateparser(s){
+            if (!s) return new Date();
+            var ss = (s.split('-'));
+            var y = parseInt(ss[0],10);
+            var m = parseInt(ss[1],10);
+            var d = parseInt(ss[2],10);
+            if (!isNaN(y) && !isNaN(m) && !isNaN(d)){
+                return new Date(y,m-1,d);
+            } else {
+                return new Date();
+            }
+        }
         $(document).ready(function(){
             var npsn="<?=($_SESSION['role']==2) ? $_SESSION['username'] : '';?>";
             $('#dg').datagrid({
-                url:'config/pencairan/getsaldo.php?thlalu&&npsn='+npsn,
+                url:"config/belanja/getmodal.php?npsn="+npsn,
                 emptyMsg:'Tidak ada data tersedia',
-                columns: [[
-                    {field:'ta',title:'TA'},
-                    {field:'npsn',width:'100',title:'NPSN'},
-                    {field:'sekolah',title:'Sekolah',width:'250',formatter:function(value,row){return row.sekolah.nama_sekolah; }},
-                    // {field:'saldo', width:'200',title:'Pencairan', formatter:function(value, row){ return cetakIDR(value); }},
-                    {
-                        field:'sisa', width:'180',title:'Sisa Saldo', 
-                        formatter:function(value, row){ 
-                            if (value) {
-                                return cetakIDR(value);
-                            }
-                            else if(value==0){
-                                return "-";
-                            }
+				rownumbers:true,
+            	view: detailview,
+                detailFormatter:function(index,row){
+                    return '<div style="padding:2px;position:relative;"><table class="ddv"></table></div>';
+                },
+                onExpandRow: function(index,row){
+                    var ddv = $(this).datagrid('getRowDetail',index).find('table.ddv');
+                    ddv.datagrid({
+                        url:'config/belanja/modal/getdata.php?id='+row.id,
+                        fitColumns:false,
+                        singleSelect:true,
+                        rownumbers:true,
+                        // emptyMsg:'Tidak ada data tersedia',
+                        loadMsg:'..please wait..',
+                        height:'auto',
+                        columns:
+                        [
+                            [
+                                {title:'Data Barang', halign: 'center',colspan:4},
+                                
+                                {title: 'Bukti Pembelian', halign: 'center',colspan:3},
+                                
+                                {title: 'Jumlah', halign: 'center',colspan:2},
+                                
+                                {title: 'Harga', halign: 'center',colspan:2},
+
+                            ],
+                            [
+                                
+                                {field:'nama_barang',title:'Nama Barang',width:200},
+                                {field:'merek',title:'Merek',width:100,align:'center'},
+                                {field:'tipe',title:'tipe',width:100,align:'center'},
+                                {field:'bahan',title:'bahan',width:100,align:'center'},
+
+                                {field:'bukti_tanggal',title:'Tgl',align:'center',width:50},
+                                {field:'bukti_bulan',title:'Bln',align:'center',width:50},
+                                {field:'bukti_nomor',title:'Nomor',align:'center',width:80},
+
+                                {field:'qty',title:'Qty',width:80,align:'center'},
+                                {field:'satuan',title:'Satuan',width:100,align:'center'},
+
+                                {field:'harga_satuan',title:'Harga Satuan',width:100,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
+                                {field:'total',title:'Total',width:100,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
+
+                                // {field:'bukti',title:'Nomor Pembelian',width:200,align:'center',formatter:function(value, row){ return row.bukti_tanggal+"-"+row.bukti_bulan+"-"+row.bukti_nomor;}},
+
+                                
+                            ]
+                        ],
+                        onResize:function(){
+                            $('#dg').datagrid('fixDetailRowHeight',index);
+                            // ('fixColumnSize');
+
+                        },
+                        onLoadSuccess:function(){
+                            setTimeout(function(){
+                                $('#dg').datagrid('fixDetailRowHeight',index);
+                            },0);
+                        },
+                        onBeforeSelect:function(index,row) {
+                            return false;
                         }
-                    }
-                ]]
-            });  
+                    });
+                    ddv.datagrid('fixColumnSize');
+                    $('#dg').datagrid('fixDetailRowHeight',index);
+                },
+            	columns: [[
+                	// {field:'triwulan',title:'Triwulan',align:'center'},
+	                // {field:'npsn',width:'100',title:'NPSN',formatter:function(value,row){return row.rka.npsn;}},
+	                // {field:'sekolah',title:'Sekolah',width:'250',formatter:function(value,row){return row.rka.sekolah.nama_sekolah;}},             
+	                // {field:'program',title:'Program',width:'100',align:'center',formatter:function(value,row){return row.rka.program.kode_program;}},
+	                // {field:'kp',title:'KP',width:'50',align:'center',formatter:function(value,row){return row.rka.kp.kode_pembiayaan;}},
+	                {field:'nomor_rekening',width:'110',title:'Kode Rekening',align:'center'},
+	                {field:'nama_rekening',width:'250',title:'Nama Rekening'},
+	                {field:'tanggal_belanja',width:'110',title:'Tanggal',align:'center',formatter:function(value, row){return myformatter(sqldateparser(value));}},
+	                {field:'nama',width:'200',title:'Belanja'},
+	                {field:'nilai',width:'170',title:'Harga',formatter:function(value, row){ return cetakIDR(value);}},
+				]]
+            });
+
         });
+
+        function editBelanjaModal(){
+            var row = $('#dg').datagrid('getSelected');
+            if (row){
+                var pageto = 'belanjamodal.php?id='+row.id;
+                window.location = pageto;
+                // console.log("tes");
+            }
+        }
     </script>
     <!-- DT -->
     <script>

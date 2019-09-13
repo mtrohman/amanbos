@@ -215,7 +215,9 @@ else{
                             <!-- <div class="ftitle">User Information</div> -->
                             <form id="fm" method="post">
                                 
-
+                                <div style="margin-bottom:10px">
+                                    <input name="kode_barang" label="Kode Barang" id="kode_barang" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                </div>
                                 <div style="margin-bottom:10px">
                                     <input name="nama_barang" label="Nama Barang" id="nama" class="easyui-textbox" labelWidth="150" style="width:100%">
                                 </div>
@@ -226,17 +228,21 @@ else{
                                     <input name="tipe" label="Tipe" id="tipe" class="easyui-textbox" labelWidth="150" style="width:100%">
                                 </div>
                                 <div style="margin-bottom:10px">
+                                    <input name="warna" label="Warna Barang" id="warna" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                </div>
+                                <div style="margin-bottom:10px">
                                     <input name="bahan" label="Bahan" id="bahan" class="easyui-textbox" labelWidth="150" style="width:100%">
                                 </div>
 
                                 <div style="margin-bottom:10px">
-                                    <input name="bukti_tanggal" label="Bukti Tanggal" id="bukti_tanggal" class="easyui-numberbox" labelWidth="150" style="width:100%">
+                                    <!-- <input name="bukti_tanggal" label="Bukti Tanggal" id="bukti_tanggal" class="easyui-numberbox" labelWidth="150" style="width:100%"> -->
+                                    <input name="bukti_tanggal" label="Tanggal" id="bukti_tanggal" type="text" class="easyui-datebox" labelWidth="150" style="width:100%" data-options="formatter:myformatter,parser:myparser">
                                 </div>
-                                <div style="margin-bottom:10px">
+                                <!-- <div style="margin-bottom:10px">
                                     <input name="bukti_bulan" label="Bukti Bulan" id="bukti_bulan" class="easyui-numberbox" labelWidth="150" style="width:100%">
-                                </div>
+                                </div> -->
                                 <div style="margin-bottom:10px">
-                                    <input name="bukti_nomor" label="Bukti Nomor" id="bukti_nomor" class="easyui-numberbox" labelWidth="150" style="width:100%">
+                                    <input name="bukti_nomor" label="Nomor Nota" id="bukti_nomor" class="easyui-textbox" labelWidth="150" style="width:100%">
                                 </div>
 
                                 <div style="margin-bottom:10px">
@@ -317,6 +323,39 @@ else{
     <script type="text/javascript" src="https://www.jeasyui.com/easyui/datagrid-detailview.js"></script>
     <script src="assets/js/fungsi.js"></script>
     <script>
+        function myformatter(date){
+            var y = date.getFullYear();
+            var m = date.getMonth()+1;
+            var d = date.getDate();
+            return (d<10?('0'+d):d)+'-'+(m<10?('0'+m):m)+'-'+y;
+        }
+
+        function myparser(s){
+            if (!s) return new Date();
+            var ss = (s.split('-'));
+            var y = parseInt(ss[2],10);
+            var m = parseInt(ss[1],10);
+            var d = parseInt(ss[0],10);
+            if (!isNaN(y) && !isNaN(m) && !isNaN(d)){
+                return new Date(y,m-1,d);
+            } else {
+                return new Date();
+            }
+        }
+
+        function sqldateparser(s){
+            if (!s) return new Date();
+            var ss = (s.split('-'));
+            var y = parseInt(ss[0],10);
+            var m = parseInt(ss[1],10);
+            var d = parseInt(ss[2],10);
+            if (!isNaN(y) && !isNaN(m) && !isNaN(d)){
+                return new Date(y,m-1,d);
+            } else {
+                return new Date();
+            }
+        }
+
         $(document).ready(function(){
             $('#dg').datagrid({
                 rownumbers:"true",
@@ -324,9 +363,9 @@ else{
                 columns:
                 [
                     [
-                        {title:'Data Barang', halign: 'center',colspan:4},
+                        {title:'Data Barang', halign: 'center',colspan:6},
                         
-                        {title: 'Bukti Pembelian', halign: 'center',colspan:3},
+                        {title: 'Bukti Pembelian', halign: 'center',colspan:2},
                         
                         {title: 'Jumlah', halign: 'center',colspan:2},
                         
@@ -335,14 +374,15 @@ else{
                     ],
                     [
                         
+                        {field:'kode_barang',title:'kode Barang',width:200},
                         {field:'nama_barang',title:'Nama Barang',width:200},
                         {field:'merek',title:'Merek',width:100,align:'center'},
                         {field:'tipe',title:'tipe',width:100,align:'center'},
+                        {field:'warna',title:'warna',width:100,align:'center'},
                         {field:'bahan',title:'bahan',width:100,align:'center'},
 
                         {field:'bukti_tanggal',title:'Tgl',align:'center',width:50},
-                        {field:'bukti_bulan',title:'Bln',align:'center',width:50},
-                        {field:'bukti_nomor',title:'Nomor',align:'center',width:80},
+                        {field:'bukti_nomor',title:'Nomor Nota',align:'center',width:180},
 
                         {field:'qty',title:'Qty',width:80,align:'center'},
                         {field:'satuan',title:'Satuan',width:100,align:'center'},

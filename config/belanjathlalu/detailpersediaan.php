@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Capsule\Manager as DB;
-use App\Models\Belanja;
-use App\Models\Rka;
+use App\Models\Belanjathlalu;
+// use App\Models\Rka;
 
 
 include_once '../db.php';
@@ -11,7 +11,7 @@ require_once '../dbmanager.php';
 
 $id= $_GET['id'];
 
-$bp= Belanja::find($id)->belanja_persediaan;
+$bp= Belanjathlalu::find($id)->belanja_persediaan;
 // $bpcount= count($bp);
 
 $result= $bp;

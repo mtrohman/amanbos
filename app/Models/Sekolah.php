@@ -41,6 +41,10 @@ class Sekolah extends Model
         return $this->hasMany('App\Models\Belanja','npsn','npsn');
     }
 
+    public function belanjathlalus(){
+        return $this->hasMany('App\Models\Belanjathlalu','npsn','npsn');
+    }
+
     public function kecamatannya(){
         return $this->belongsTo('App\Models\Kecamatan','kecamatan');
     }

@@ -137,7 +137,7 @@ class Belanjathlalu extends Model
 
     public function belanja_modal()
     {
-        return $this->hasMany('App\Models\BelanjaModal');
+        return $this->hasMany('App\Models\BelanjathlaluModal');
     }
 
 }

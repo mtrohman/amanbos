@@ -1,6 +1,7 @@
 <?php
 use App\Models\Sekolah;
-// use App\Models\Belanja;
+use App\Models\Saldo;
+use App\Models\Belanjathlalu;
 
 // use App\Models\Rka;
 header('Content-Type: application/json');
@@ -24,53 +25,34 @@ if (!empty($_POST)) {
     $tanggalbelanja= DateTime::createFromFormat('d-m-Y', $request->tanggal_belanja);
 
     $sekolah= Sekolah::npsn($npsn)->first();
-    $rka=$sekolah->rkas()->with(['sisa'])->where('id',$request->rka_id)->first();
-    // $saldo=$sekolah->pencairans()->with(['sisa'])->triwulan($triwulan)->ta($ta)->first();
-    $saldo= $sekolah->saldos()->where('ta',$ta)->first();
-    
-    if ($request->nilai <= $rka->sisa->nilai) {
-    	if ($request->nilai <= $saldo->sisa) {
-    		$tambahbelanja= $rka->belanja()->create([
-    			'triwulan' => $triwulan,
-			    'rka_id' => $request->rka_id,
-			    'nama' => $request->nama,
-			    'nilai' => $request->nilai,
-			    'tanggal_belanja' => $tanggalbelanja,
-			    
-			]);
-			if ($tambahbelanja) {
-				$rka->sisa->nilai -= $request->nilai;
-				$saldo->sisa -= $request->nilai;
-				if ($rka->push() && $saldo->save()) {
-					# code...
-					echo json_encode(array('success'=> true,'request' => $request,'saldo'=>$saldo,'rka'=>$rka));
-				} else {
-					echo json_encode(array('errorMsg'=>'Some errors occured. #01'));
-				}
-				
-			} else {
-				echo json_encode(array('errorMsg'=>'Some errors occured. #02'));
-			}
-			
-    	} else {
-    		echo json_encode(array('errorMsg'=>'Some errors occured. #Saldo Tidak Cukup','saldo'=>$saldo));
+    $saldo = Saldo::ta($ta-1)->npsn($npsn)->first();
+    if ($request->nilai <= $saldo->sisa) {
+    	# code...
+    	$belanja = array(
+    		'ta' => $ta,
+    		'triwulan' => $triwulan,
+    		'program_id' => $request->program,
+    		'pembiayaan_id' => $request->kp,
+    		'rekening_id' => $request->rekening,
+    		'nama' => $request->nama,
+    		'nilai' => $request->nilai,
+    		'tanggal_belanja' => $tanggalbelanja
+    	);
+    	$saldo->sisa -= $request->nilai;
+    	$bljthlalu= $sekolah->belanjathlalus()->create($belanja);
+    	if ($bljthlalu) {
+    		# code...
+	    	if($saldo->save()){
+    			echo json_encode(array('success'=> true,'request' => $request,'saldo'=>$saldo));
+	    	}
     	}
-    	
-    } else {
-    	echo json_encode(array('errorMsg'=>'Some errors occured. #RKA Tidak Cukup'));
+    	else{
+    		echo json_encode(array('errorMsg'=>'Some errors occured. Belanja Tahun Lalu Gagal disimpan!'));
+    	}
+    }
+    else{
+    	echo json_encode(array('errorMsg'=>'Some errors occured. Saldo Tahun Lalu Tidak Cukup!'));
     }
     
-
-
-    // echo json_encode($rka);
-	// end
-	// if ($sekolah->rkas()->saveMany($datarka)){	
-		// echo ;
-		// header('location: /rka.php');
-	// } else {
-    // ,'saldo'=>$saldo,'rka'=>$rka
-    // 'errorMsg'=>'Some errors occured.',
-		
-	// }
 }
 ?>
