@@ -31,7 +31,7 @@ if (!empty($belanja)) {
 	$namakecamatan= $sekolah->kecamatannya->nama_kecamatan;
 	// echo json_encode($belanja);
 	//-----------------------------------------------
-	$ta= $belanja->ta;
+	$ta= $belanja->rka->ta;
 	$tanggal= tgl_indo($belanja->tanggal_belanja);
 	$nomor= $belanja->nomor;	
 	$judul= $namasekolah." - ".$namakecamatan;
