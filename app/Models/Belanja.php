@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Belanja extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['triwulan','nama','nilai','tanggal_belanja'];
+    protected $fillable = ['triwulan','nama','nilai','tanggal_belanja','nomor','penerima','ppn','pph21','pph23'];
     
     /**
      * The attributes that should be mutated to dates.
@@ -64,7 +64,14 @@ class Belanja extends Model
 
 
 
-    protected $appends = ['jenis_belanja','keterangan'];
+    protected $appends = ['jenis_belanja','keterangan','npsn'];
+
+    public function getNpsnAttribute()
+    {
+        if($this->rka->npsn){
+            return $this->rka->npsn;
+        }
+    }
 
     public function getJenisBelanjaAttribute()
     {

@@ -12,7 +12,7 @@ $triwulan= (!empty($_POST['triwulan'])) ? $_POST['triwulan'] : (!empty($_SESSION
 if (!empty($_POST)) {
     $request = (object)$_POST;
     $belanjaan= Belanja::find($id);
-
+    $tanggalbelanja= DateTime::createFromFormat('d-m-Y', $request->tanggal_belanja);
     $rka=$belanjaan->rka()->with(['sisa'])->first();
     $sekolah = $rka->sekolah()->npsn($rka->npsn)->first();
     $saldo= $sekolah->saldos()->where('ta',$rka->ta)->first();
@@ -35,6 +35,16 @@ if (!empty($_POST)) {
 		$saldo->sisa -= $selisih;
 		if($rka->sisa->nilai >= 0){
 			if ($saldo->sisa >= 0) {
+				$belanjaan->tanggal_belanja= $tanggalbelanja;
+				$belanjaan->nama= $request->nama;
+				$belanjaan->nomor= $request->nomor;
+				$belanjaan->penerima= $request->penerima;
+				$belanjaan->ppn= $request->ppn;
+				$belanjaan->pph21= $request->pph21;
+				$belanjaan->pph23= $request->pph23;
+				
+				
+
 				if($belanjaan->save()){
 					$sukses=($rka->push() && $saldo->save());
 				}
@@ -54,6 +64,11 @@ if (!empty($_POST)) {
 	else{
 		$belanjaan->tanggal_belanja= $tanggalbelanja;
 		$belanjaan->nama= $request->nama;
+		$belanjaan->nomor= $request->nomor;
+		$belanjaan->penerima= $request->penerima;
+		$belanjaan->ppn= $request->ppn;
+		$belanjaan->pph21= $request->pph21;
+		$belanjaan->pph23= $request->pph23;
 		$sukses=$belanjaan->save();
 	}
     
