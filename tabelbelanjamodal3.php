@@ -17,7 +17,7 @@ require_once 'config/dbmanager.php';
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/x-icon" sizes="16x16" href="assets/images/favicon.ico">
-    <title>Data Belanja Modal - <?php echo $namaweb;?></title>
+    <title>Data Belanja Modal (Tahun Lalu) - <?php echo $namaweb;?></title>
     <!-- Bootstrap Core CSS -->
     <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
@@ -252,7 +252,7 @@ require_once 'config/dbmanager.php';
         $(document).ready(function(){
             var npsn="<?=($_SESSION['role']==2) ? $_SESSION['username'] : '';?>";
             $('#dg').datagrid({
-                url:"config/belanja/getmodal.php?npsn="+npsn,
+                url:"config/belanjathlalu/getmodal.php?npsn="+npsn,
                 emptyMsg:'Tidak ada data tersedia',
 				rownumbers:true,
             	view: detailview,
@@ -262,7 +262,7 @@ require_once 'config/dbmanager.php';
                 onExpandRow: function(index,row){
                     var ddv = $(this).datagrid('getRowDetail',index).find('table.ddv');
                     ddv.datagrid({
-                        url:'config/belanja/modal/getdata.php?id='+row.id,
+                        url:'config/belanjathlalu/modal/getdata.php?id='+row.id,
                         fitColumns:false,
                         singleSelect:true,
                         rownumbers:true,
@@ -339,7 +339,7 @@ require_once 'config/dbmanager.php';
         function editBelanjaModal(){
             var row = $('#dg').datagrid('getSelected');
             if (row){
-                var pageto = 'belanjamodal.php?id='+row.id;
+                var pageto = 'belanjamodal2.php?id='+row.id;
                 window.location = pageto;
                 // console.log("tes");
             }

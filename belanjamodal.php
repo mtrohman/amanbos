@@ -11,6 +11,7 @@ if (!empty($_GET['id'])) {
     if(!empty($belanja)){
         if ($belanja->jenis_belanja==1) {
             $bm= $belanja->belanja_modal;
+            $parentid= $belanja->rka->rekening->parent_id;
             $kr_all = array();
             $res_kr = DB::select('call koderekening_lengkap()');
             foreach ($res_kr as $key => $value) {
@@ -216,7 +217,7 @@ else{
                             <form id="fm" method="post">
                                 
                                 <div style="margin-bottom:10px">
-                                    <input name="kode_barang" label="Kode Barang" id="kode_barang" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                    <input name="kode_barang" label="Kode Barang" id="cg" class="" labelWidth="150" style="width:100%">
                                 </div>
                                 <div style="margin-bottom:10px">
                                     <input name="nama_barang" label="Nama Barang" id="nama" class="easyui-textbox" labelWidth="150" style="width:100%">
@@ -400,6 +401,20 @@ else{
                         
                     ]
                 ]
+            });
+
+            $('#cg').combogrid({
+                panelWidth:500,
+                // delay: 250,
+                url: 'config/belanja/combo_barang.php?pid=<?=$parentid;?>',
+                idField:'id',
+                textField:'nama_barang',
+                mode:'remote',
+                fitColumns:false,
+                columns: [[
+                    {field:'kode_barang',title:'Kode'},
+                    {field:'nama_barang',title:'Nama Barang'},
+                ]]
             });
 
             $('#qty').numberbox({

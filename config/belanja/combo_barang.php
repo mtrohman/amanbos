@@ -12,9 +12,9 @@ require_once '../dbmanager.php';
 // $npsn = isset($_GET['npsn']) ? $_GET['npsn'] : '';
 // $triwulan = isset($_GET['triwulan']) ? $_GET['triwulan'] : '';
 $q = isset($_POST['q']) ? strval($_POST['q']) : '';
-
-// $barangs= KodeBarang::where('nama_barang','like', '%'.$q.'%')->get();
-$barangs= KodeBarang::all();
+$pid= $_GET['pid'];
+$barangs= KodeBarang::where('parent_rekening',$pid)->where('nama_barang','like', '%'.$q.'%')->get();
+// $barangs= KodeBarang::all();
 // $pagucount= Sekolah::count();
 $result = array();
 $i=0;

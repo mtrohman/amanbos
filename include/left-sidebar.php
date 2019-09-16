@@ -52,7 +52,7 @@
                             <h6><?php echo ucfirst($nama); ?></h6>
                             <!-- <a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><i class="mdi mdi-settings"></i></a> -->
                              
-                            <!-- <a href="javascript:logout()" class="" title="Logout"><i class="mdi mdi-power"></i></a> -->
+                            <a href="javascript:logout()" class="" title="Logout"><i class="mdi mdi-power"></i></a>
 
                         <div class="dropdown-menu animated flipInY">
                         <!-- text--> 

@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Capsule\Manager as DB;
-use App\Models\Belanja;
-use App\Models\Rka;
+use App\Models\Belanjathlalu;
+// use App\Models\Rka;
 
 
 include_once '../db.php';
@@ -40,9 +40,9 @@ foreach ($res_kr as $key => $value) {
 $jsonbelanja = array();
 
 // 'npsn', 'like', '%' .$npsn. '%'
-$belanja = Belanja::with(['rka.program','rka.kp','rka.sekolah','rka.rekening'])->ta($ta)->triwulan($triwulan)->npsn($npsn)->namaSekolah($sekolah)->modal()->skip($offset)->take($rows)->get();
+$belanja = Belanjathlalu::with(['program','kp','sekolah'])->ta($ta)->triwulan($triwulan)->npsn($npsn)->namaSekolah($sekolah)->modal()->skip($offset)->take($rows)->get();
 
-$belanjacount = Belanja::with(['rka.program','rka.kp','rka.sekolah'])->ta($ta)->triwulan($triwulan)->npsn($npsn)->namaSekolah($sekolah)->modal()->count();
+$belanjacount = Belanjathlalu::with(['program','kp','sekolah'])->ta($ta)->triwulan($triwulan)->npsn($npsn)->namaSekolah($sekolah)->modal()->count();
 
 // $rka = Rka::ta($ta)->triwulan($triwulan)->npsn($npsn)->namaSekolah($sekolah)->with(['sekolah', 'program', 'kp'])->skip($offset)->take($rows)->get();
 // $rkacount = Rka::ta($ta)->triwulan($triwulan)->npsn($npsn)->namaSekolah($sekolah)->count();
@@ -50,8 +50,8 @@ $belanjacount = Belanja::with(['rka.program','rka.kp','rka.sekolah'])->ta($ta)->
 
 foreach ($belanja as $key => $value) {
     $jsonbelanja[$key] = $value;
-    $jsonbelanja[$key]['nomor_rekening'] = $kr_all[$value->rka->rekening_id]->path;
-    $jsonbelanja[$key]['nama_rekening'] = $kr_all[$value->rka->rekening_id]->nama_rekening;
+    $jsonbelanja[$key]['nomor_rekening'] = $kr_all[$value->rekening_id]->path;
+    $jsonbelanja[$key]['nama_rekening'] = $kr_all[$value->rekening_id]->nama_rekening;
 }
 
 
