@@ -15,7 +15,10 @@ if (!empty($_POST)) {
     $id= $_GET['id'];
     
     $belanja= Belanja::find($id);
-    $save= $belanja->belanja_modal()->create($_POST);
+    $belanjamodal= $_POST;
+    $belanjamodal['bukti_tanggal']=DateTime::createFromFormat('d-m-Y', $request->bukti_tanggal);
+    
+    $save= $belanja->belanja_modal()->create($belanjamodal);
     if ($save) {
     	echo json_encode(array('success'=> true,'request' => $request,'belanja'=>$belanja));
     }

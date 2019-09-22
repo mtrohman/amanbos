@@ -45,6 +45,13 @@ class Rka extends Model
         return $this->belongsTo('App\Models\KodeRekening','rekening_id')->select(array('id', 'kode_rekening', 'nama_rekening', 'parent_id','jenis'));
     }
 
+    public function scopeParentRekening($query, $rekening)
+    {
+        return $query->whereHas('rekening', function ($q) use ($rekening) {
+            $q->where('parent_id', $rekening);
+        });
+    }
+
     public function scopeNamaSekolah($query, $sekolah)
     {
         return $query->whereHas('sekolah', function ($q) use ($sekolah) {

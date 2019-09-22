@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class BelanjaModal extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['nama_barang','merek','tipe','bahan','bukti_tanggal','bukti_bulan','bukti_nomor','qty','satuan','harga_satuan','total'];
+    protected $fillable = ['nama_barang','kode_barang','merek','tipe','bahan','warna','bukti_tanggal','bukti_bulan','bukti_nomor','qty','satuan','harga_satuan','total'];
     
     
     /**

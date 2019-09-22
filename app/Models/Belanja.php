@@ -39,6 +39,15 @@ class Belanja extends Model
         }
     }
 
+    public function scopeParentRekening($query, $rekening_id)
+    {
+        return $query->whereHas('rka', function ($qrka) use ($rekening_id) {
+            $qrka->whereHas('rekening', function ($q) use ($rekening_id) {
+                $q->where('parent_id', $rekening_id);
+            });
+        });
+    }
+
     public function scopeTriwulan($query, $tw)
     {
         if (!empty($tw)) {
@@ -48,9 +57,9 @@ class Belanja extends Model
 
     public function scopeSampaiTriwulan($query, $tw)
     {
-        if (!empty($tw)) {
+        // if (!empty($tw)) {
             return $query->where('triwulan','<=', $tw);
-        }
+        // }
     }
 
     public function scopeTa($query, $ta)

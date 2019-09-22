@@ -382,19 +382,19 @@ else{
                         {field:'warna',title:'warna',width:100,align:'center'},
                         {field:'bahan',title:'bahan',width:100,align:'center'},
 
-                        {field:'bukti_tanggal',title:'Tgl',align:'center',width:50},
+                        {field:'bukti_tanggal',title:'Tgl',align:'center',width:100,formatter:function(value, row){return myformatter(sqldateparser(value));}},
                         {field:'bukti_nomor',title:'Nomor Nota',align:'center',width:180},
 
                         {field:'qty',title:'Qty',width:80,align:'center'},
                         {field:'satuan',title:'Satuan',width:100,align:'center'},
 
-                        {field:'harga_satuan',title:'Harga Satuan',width:100,align:'center',formatter:function(value, row){ 
+                        {field:'harga_satuan',title:'Harga Satuan',width:150,align:'center',formatter:function(value, row){ 
                                 if (value) {
                                     return cetakIDR(value);
                                 }
                             }
                         },
-                        {field:'total',title:'Total',width:100,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
+                        {field:'total',title:'Total',width:150,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
 
                         // {field:'bukti',title:'Nomor Pembelian',width:200,align:'center',formatter:function(value, row){ return row.bukti_tanggal+"-"+row.bukti_bulan+"-"+row.bukti_nomor;}},
 
@@ -462,6 +462,7 @@ else{
             if (row){
                 $('#dlg').dialog('open').dialog('setTitle','Edit Belanja');
                 $('#fm').form('load',row);
+                $('#bukti_tanggal').datebox('setValue', myformatter(sqldateparser(row.bukti_tanggal)));
                 
                 url = 'config/belanja/modal/update.php?modal='+row.id;
             }

@@ -10,7 +10,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Models\Sekolah;
 use App\Models\Belanja;
 
-$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('bukti_pengeluaran.xlsx');
+$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('format/bukti_pengeluaran.xlsx');
 
 $worksheet = $spreadsheet->getActiveSheet();
 $bid= $_GET['id'];
@@ -74,10 +74,19 @@ $worksheet->getCell('ta')->setValue($ta);
 $worksheet->getCell('nomor')->setValue($nomor);
 $worksheet->getCell('tanggal')->setValue($tanggal);
 
+$spreadsheet->getActiveSheet()
+    ->getProtection()->setPassword('K8');
+$spreadsheet->getActiveSheet()
+    ->getProtection()->setSheet(true);
+$spreadsheet->getActiveSheet()
+    ->getProtection()->setFormatCells(true);
+
 $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-// $writer->save('laporan/bukti_bid_'.$belanja->id.'.xlsx');
-$file= 'laporan/bukti_bid_'.$belanja->id.'.xlsx';
-$writer->save($file);
-header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment; filename="'.$file.'"');
-$writer->save("php://output");
+$temp_file = tempnam(sys_get_temp_dir(), 'Excel');
+$writer->save($temp_file);
+$file= 'bukti_bid_'.$belanja->id.'.xlsx';
+$documento = file_get_contents($temp_file);
+unlink($temp_file);  // delete file tmp
+header("Content-Disposition: attachment; filename= ".$file."");
+header('Content-Type: application/excel');
+echo $documento;
