@@ -52,18 +52,18 @@ $rka_rek5= Rka::with('rekening')->ta($ta)->thBerjalan()->npsn($npsn)->parentReke
 // $rka_rek345= $rka_rek3+$rka_rek4+$rka_rek5;
 // echo $rka_rek345;
 
-$belanjar1_sd_twlalu= Belanja::npsn($npsn)->ta($ta)->sampaiTriwulan($triwulan-1)->with('rka.rekening')->parentRekening(1)->get()->sum('nilai');
-$belanjar2_sd_twlalu= Belanja::npsn($npsn)->ta($ta)->sampaiTriwulan($triwulan-1)->with('rka.rekening')->parentRekening(2)->get()->sum('nilai');
-$belanjar3_sd_twlalu= Belanja::npsn($npsn)->ta($ta)->sampaiTriwulan($triwulan-1)->with('rka.rekening')->parentRekening(3)->get()->sum('nilai');
-$belanjar4_sd_twlalu= Belanja::npsn($npsn)->ta($ta)->sampaiTriwulan($triwulan-1)->with('rka.rekening')->parentRekening(4)->get()->sum('nilai');
-$belanjar5_sd_twlalu= Belanja::npsn($npsn)->ta($ta)->sampaiTriwulan($triwulan-1)->with('rka.rekening')->parentRekening(5)->get()->sum('nilai');
+$belanjar1_sd_twlalu= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->sampaiTriwulan($triwulan-1)->with('rka.rekening')->parentRekening(1)->get()->sum('nilai');
+$belanjar2_sd_twlalu= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->sampaiTriwulan($triwulan-1)->with('rka.rekening')->parentRekening(2)->get()->sum('nilai');
+$belanjar3_sd_twlalu= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->sampaiTriwulan($triwulan-1)->with('rka.rekening')->parentRekening(3)->get()->sum('nilai');
+$belanjar4_sd_twlalu= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->sampaiTriwulan($triwulan-1)->with('rka.rekening')->parentRekening(4)->get()->sum('nilai');
+$belanjar5_sd_twlalu= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->sampaiTriwulan($triwulan-1)->with('rka.rekening')->parentRekening(5)->get()->sum('nilai');
 // echo $belanjar4_sd_twlalu;
 
-$belanjar1= Belanja::npsn($npsn)->ta($ta)->triwulan($triwulan)->with('rka.rekening')->parentRekening(1)->get()->sum('nilai');
-$belanjar2= Belanja::npsn($npsn)->ta($ta)->triwulan($triwulan)->with('rka.rekening')->parentRekening(2)->get()->sum('nilai');
-$belanjar3= Belanja::npsn($npsn)->ta($ta)->triwulan($triwulan)->with('rka.rekening')->parentRekening(3)->get()->sum('nilai');
-$belanjar4= Belanja::npsn($npsn)->ta($ta)->triwulan($triwulan)->with('rka.rekening')->parentRekening(4)->get()->sum('nilai');
-$belanjar5= Belanja::npsn($npsn)->ta($ta)->triwulan($triwulan)->with('rka.rekening')->parentRekening(5)->get()->sum('nilai');
+$belanjar1= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->triwulan($triwulan)->with('rka.rekening')->parentRekening(1)->get()->sum('nilai');
+$belanjar2= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->triwulan($triwulan)->with('rka.rekening')->parentRekening(2)->get()->sum('nilai');
+$belanjar3= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->triwulan($triwulan)->with('rka.rekening')->parentRekening(3)->get()->sum('nilai');
+$belanjar4= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->triwulan($triwulan)->with('rka.rekening')->parentRekening(4)->get()->sum('nilai');
+$belanjar5= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->triwulan($triwulan)->with('rka.rekening')->parentRekening(5)->get()->sum('nilai');
 
 $tanggal=date("Y-m-d");
 $tanggal_tempat= "Kab. Semarang, ".tgl_indo($tanggal);
