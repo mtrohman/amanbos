@@ -13,11 +13,11 @@ use App\Models\Saldo;
 use App\Models\Pencairan;
 
 // Lap Realisasi
-$npsn= $_SESSION['username'];
-$ta= $_GET['ta'];
+$npsn= $_POST['npsn'];
+$ta= $_POST['ta'];
 $teks_saldo_tahun= "TAHUN ".($ta-1);
-$triwulan= $_GET['tw'];
-$nomor_sptj= $_GET['nomor_sptj'];
+$triwulan= $_POST['tw'];
+$nomor_sptj= $_POST['nomor_sptj'];
 $sekolah= Sekolah::npsn($npsn)->first();
 $nama_sekolah= $sekolah->nama_sekolah;
 $nama_kepsek= $sekolah->nama_kepsek;

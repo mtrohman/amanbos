@@ -11,45 +11,16 @@ use App\Models\Rka;
 use App\Models\Belanja;
 
 // Lap Realisasi
-$npsn= $_POST['npsn'];
-$ta= $_POST['ta'];
+$npsn= $_SESSION['username'];
+$ta= $_GET['ta'];
 // $tahun_tahun= "TAHUN ".$ta;
-$nomor_sptmh= $_POST['nomor_sptmh'];
-$triwulan= $_POST['tw'];
-$tanggal=date("Y-m-d");
-$tanggal_tanggal= strtoupper("Tanggal ".tgl_indo($tanggal));
+$triwulan= $_GET['tw'];
+$judul= "REKAPITULASI PENGGUNAAN DANA BOS TRIWULAN ".$triwulan." TAHUN ".$ta;
 $sekolah= Sekolah::npsn($npsn)->first();
 $nama_sekolah= $sekolah->nama_sekolah;
 $nama_kepsek= $sekolah->nama_kepsek;
 $nip_kepsek= $sekolah->nip_kepsek;
-$jenjang= $sekolah->jenjang;
 $nama_kecamatan= $sekolah->kecamatannya->nama_kecamatan;
-switch ($triwulan) {
-	case '1':
-		# code...
-		$twhuruf= "I";
-		break;
-	case '2':
-		# code...
-		$twhuruf= "II";
-		break;
-	case '3':
-		# code...
-		$twhuruf= "III";
-		break;
-	case '4':
-		# code...
-		$twhuruf= "IV";
-		break;
-	
-	default:
-		# code...
-		$twhuruf="-";
-		break;
-}
-
-$deskripsi= "Bertangungjawab penuh atas segala penerima hibah berupa uang yang diterima langsung pada triwulan ".$twhuruf;
-
 
 $total_rka_berjalan= Rka::with('rekening')->ta($ta)->thBerjalan()->npsn($npsn)->sum('nilai');
 $total_rka= $total_rka_berjalan;

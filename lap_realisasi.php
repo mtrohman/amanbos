@@ -11,10 +11,10 @@ use App\Models\Rka;
 use App\Models\Belanja;
 
 // Lap Realisasi
-$npsn= $_SESSION['username'];
-$ta= $_GET['ta'];
+$npsn= $_POST['npsn'];
+$ta= $_POST['ta'];
 $tahun_tahun= "TAHUN ".$ta;
-$triwulan= $_GET['tw'];
+$triwulan= $_POST['tw'];
 switch ($triwulan) {
 	case '1':
 		# code...
