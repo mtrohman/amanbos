@@ -32,6 +32,13 @@ class BelanjaModal extends Model
         });
     }
 
+    public function scopeTriwulan($query, $triwulan)
+    {
+        return $query->whereHas('belanja', function ($qbelanja) use ($triwulan) {
+            $qbelanja->where('triwulan', $triwulan);
+        });
+    }
+
     public function kd_barang()
     {
         return $this->belongsTo('App\Models\KodeBarang', 'kode_barang');

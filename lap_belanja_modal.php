@@ -63,7 +63,7 @@ $bulan2= bln_indo($bulanarr[1]);
 $bulan3= bln_indo($bulanarr[2]);
 
 $barang_modal= array();
-$belanja_modal= BelanjaModal::npsn($npsn)->with('kd_barang')->get();
+$belanja_modal= BelanjaModal::npsn($npsn)->with('kd_barang')->triwulan($triwulan)->get();
 foreach ($belanja_modal as $key => $modal) {
     $barang_modal[$key]['kode_barang']= $modal->kd_barang->kode_barang;
     $barang_modal[$key]['nama_barang']= $modal->nama_barang;
