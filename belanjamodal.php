@@ -375,7 +375,7 @@ else{
                     ],
                     [
                         
-                        {field:'kode_barang',title:'kode Barang',width:200},
+                        {field:'kode_barang',title:'kode Barang',width:200,formatter:function(value, row){return row.kd_barang.kode_barang;}},
                         {field:'nama_barang',title:'Nama Barang',width:200},
                         {field:'merek',title:'Merek',width:100,align:'center'},
                         {field:'tipe',title:'tipe',width:100,align:'center'},

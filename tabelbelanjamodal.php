@@ -272,9 +272,9 @@ require_once 'config/dbmanager.php';
                         columns:
                         [
                             [
-                                {title:'Data Barang', halign: 'center',colspan:4},
-                                
-                                {title: 'Bukti Pembelian', halign: 'center',colspan:3},
+                                {title:'Data Barang', halign: 'center',colspan:6},
+                        
+                                {title: 'Bukti Pembelian', halign: 'center',colspan:2},
                                 
                                 {title: 'Jumlah', halign: 'center',colspan:2},
                                 
@@ -283,20 +283,26 @@ require_once 'config/dbmanager.php';
                             ],
                             [
                                 
+                                {field:'kode_barang',title:'kode Barang',width:200,formatter:function(value, row){return row.kd_barang.kode_barang;}},
                                 {field:'nama_barang',title:'Nama Barang',width:200},
                                 {field:'merek',title:'Merek',width:100,align:'center'},
                                 {field:'tipe',title:'tipe',width:100,align:'center'},
+                                {field:'warna',title:'warna',width:100,align:'center'},
                                 {field:'bahan',title:'bahan',width:100,align:'center'},
 
-                                {field:'bukti_tanggal',title:'Tgl',align:'center',width:50},
-                                {field:'bukti_bulan',title:'Bln',align:'center',width:50},
-                                {field:'bukti_nomor',title:'Nomor',align:'center',width:80},
+                                {field:'bukti_tanggal',title:'Tgl',align:'center',width:100,formatter:function(value, row){return myformatter(sqldateparser(value));}},
+                                {field:'bukti_nomor',title:'Nomor Nota',align:'center',width:180},
 
                                 {field:'qty',title:'Qty',width:80,align:'center'},
                                 {field:'satuan',title:'Satuan',width:100,align:'center'},
 
-                                {field:'harga_satuan',title:'Harga Satuan',width:100,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
-                                {field:'total',title:'Total',width:100,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
+                                {field:'harga_satuan',title:'Harga Satuan',width:150,align:'center',formatter:function(value, row){ 
+                                        if (value) {
+                                            return cetakIDR(value);
+                                        }
+                                    }
+                                },
+                                {field:'total',title:'Total',width:150,align:'center',formatter:function(value, row){ return cetakIDR(value);}},
 
                                 // {field:'bukti',title:'Nomor Pembelian',width:200,align:'center',formatter:function(value, row){ return row.bukti_tanggal+"-"+row.bukti_bulan+"-"+row.bukti_nomor;}},
 

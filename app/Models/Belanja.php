@@ -48,6 +48,29 @@ class Belanja extends Model
         });
     }
 
+    public function scopeIdRekening($query, $rekening_id)
+    {
+        return $query->whereHas('rka', function ($qrka) use ($rekening_id) {
+            $qrka->whereHas('rekening', function ($q) use ($rekening_id) {
+                $q->where('id', $rekening_id);
+            });
+        });
+    }
+
+    public function scopeIdProgram($query, $program_id)
+    {
+        return $query->whereHas('rka', function ($qrka) use ($program_id) {
+            $qrka->where('program_id', $program_id);
+        });
+    }
+
+    public function scopeIdKp($query, $pembiayaan_id)
+    {
+        return $query->whereHas('rka', function ($qrka) use ($pembiayaan_id) {
+            $qrka->where('pembiayaan_id', $pembiayaan_id);
+        });
+    }
+
     public function scopeTriwulan($query, $tw)
     {
         if (!empty($tw)) {

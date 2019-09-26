@@ -25,7 +25,7 @@ $offset = ($page - 1) * $rows;
 
 $id= $_GET['id'];
 
-$bm= Belanja::find($id)->belanja_modal()->skip($offset)->take($rows)->get();
+$bm= Belanja::find($id)->belanja_modal()->with('kd_barang')->skip($offset)->take($rows)->get();
 $bmall= Belanja::find($id)->belanja_modal();
 $bmcount= $bmall->count();
 $bmfooter= array(

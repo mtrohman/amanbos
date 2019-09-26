@@ -9,6 +9,8 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Models\Sekolah;
 use App\Models\Rka;
 use App\Models\Belanja;
+use App\Models\KodeRekening;
+use App\Models\Pencairan;
 
 // Lap Realisasi
 $npsn= $_SESSION['username'];
@@ -20,45 +22,106 @@ $sekolah= Sekolah::npsn($npsn)->first();
 $nama_sekolah= $sekolah->nama_sekolah;
 $nama_kepsek= $sekolah->nama_kepsek;
 $nip_kepsek= $sekolah->nip_kepsek;
+$nama_bendahara= $sekolah->nama_bendahara;
+$nip_bendahara= $sekolah->nip_bendahara;
 $nama_kecamatan= $sekolah->kecamatannya->nama_kecamatan;
+$saldo_twlalu=0;
+// $penerimaan_twsekarang=0;
+$penerimaan_twsekarang= Pencairan::npsn($npsn)->ta($ta)->triwulan($triwulan)->get()->sum('saldo');
+$saldo_tw= ($triwulan==1)? "-" : "Saldo TW".$triwulan;
+$penerimaan_tw= "Penerimaan TW".$triwulan;
 
-$total_rka_berjalan= Rka::with('rekening')->ta($ta)->thBerjalan()->npsn($npsn)->sum('nilai');
-$total_rka= $total_rka_berjalan;
+$triwulan1= [1 ,2 ,3 ];
+$triwulan2= [4 ,5 ,6 ];
+$triwulan3= [7 ,8 ,9 ];
+$triwulan4= [10,11,12];
+$twarray= "triwulan".$triwulan;
 
-// $belanjar1_sd_twlalu= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->sampaiTriwulan($triwulan-1)->with('rka.rekening')->parentRekening(1)->get()->sum('nilai');
-// $belanjar2_sd_twlalu= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->sampaiTriwulan($triwulan-1)->with('rka.rekening')->parentRekening(2)->get()->sum('nilai');
-// $belanjar3_sd_twlalu= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->sampaiTriwulan($triwulan-1)->with('rka.rekening')->parentRekening(3)->get()->sum('nilai');
-// $belanjar4_sd_twlalu= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->sampaiTriwulan($triwulan-1)->with('rka.rekening')->parentRekening(4)->get()->sum('nilai');
-// $belanjar5_sd_twlalu= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->sampaiTriwulan($triwulan-1)->with('rka.rekening')->parentRekening(5)->get()->sum('nilai');
-// $realisasi_sd_twlalu= $belanjar1_sd_twlalu+$belanjar2_sd_twlalu+$belanjar3_sd_twlalu+$belanjar4_sd_twlalu+$belanjar5_sd_twlalu;
-$realisasi_sd_twlalu= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->sampaiTriwulan($triwulan-1)->with('rka')->get()->sum('nilai');
-// echo $belanjar4_sd_twlalu;
+$bulan1= bln_indo($$twarray[0]);
+$bulan2= bln_indo($$twarray[1]);
+$bulan3= bln_indo($$twarray[2]);
+$nama_triwulan= "Triwulan ".$triwulan;
 
-// $belanjar1= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->triwulan($triwulan)->with('rka.rekening')->parentRekening(1)->get()->sum('nilai');
-// $belanjar2= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->triwulan($triwulan)->with('rka.rekening')->parentRekening(2)->get()->sum('nilai');
-// $belanjar3= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->triwulan($triwulan)->with('rka.rekening')->parentRekening(3)->get()->sum('nilai');
-// $belanjar4= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->triwulan($triwulan)->with('rka.rekening')->parentRekening(4)->get()->sum('nilai');
-// $belanjar5= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->triwulan($triwulan)->with('rka.rekening')->parentRekening(5)->get()->sum('nilai');
-$realisasi_twsekarang= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->triwulan($triwulan)->with('rka')->get()->sum('nilai');
-$tanggal_tempat= "Kab. Semarang, ".tgl_indo($tanggal);
+// whereIn('parent_id', [3, 4, 5])
+// where('parent_id',1)
+$rekening1= KodeRekening::where('parent_id',1)->get();
+$belanjar1= array();
+foreach ($rekening1 as $key => $rek1) {
+	// $belanjar1[$rek1->id]=$key;
+	foreach ($$twarray as $twkey => $bulan) {
+		$belanjar1detail= Belanja::npsn($npsn)->ta($ta)->triwulan($triwulan)->idRekening($rek1->id)->whereMonth('tanggal_belanja',$bulan)->get()->sum('nilai');
+		$belanjar1[$rek1->id][$bulan]=$belanjar1detail;
+	}
+}
+// echo json_encode($belanjar1);
 
-$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('format/sptmh.xlsx');
+// whereIn('parent_id', [3, 4, 5])
+// where('parent_id',1)
+$rekening2= KodeRekening::where('parent_id',2)->get();
+$belanjar2= array();
+foreach ($rekening2 as $key => $rek2) {
+	// $belanjar1[$rek1->id]=$key;
+	foreach ($$twarray as $twkey => $bulan) {
+		$belanjar2detail= Belanja::npsn($npsn)->ta($ta)->triwulan($triwulan)->idRekening($rek2->id)->whereMonth('tanggal_belanja',$bulan)->get()->sum('nilai');
+		$belanjar2[$rek2->id][$bulan]=$belanjar2detail;
+	}
+}
+// echo json_encode($belanjar2);
+
+// whereIn('parent_id', [3, 4, 5])
+// where('parent_id',1)
+$rekening3= KodeRekening::whereIn('parent_id', [3, 4, 5])->get();
+$belanjar3= array();
+foreach ($rekening3 as $key => $rek3) {
+	// $belanjar1[$rek1->id]=$key;
+	foreach ($$twarray as $twkey => $bulan) {
+		$belanjar3detail= Belanja::npsn($npsn)->ta($ta)->triwulan($triwulan)->idRekening($rek3->id)->whereMonth('tanggal_belanja',$bulan)->get()->sum('nilai');
+		$belanjar3[$rek3->id][$bulan]=$belanjar3detail;
+	}
+}
+// echo json_encode($belanjar3);
+
+
+
+// $tanggal_tempat= "Kab. Semarang, ".tgl_indo($tanggal);
+
+$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('format/k7_kab1.xlsx');
 
 $worksheet = $spreadsheet->getActiveSheet();
 
-$worksheet->getCell('nomor_sptmh')->setValue($nomor_sptmh);
-$worksheet->getCell('tanggal_tanggal')->setValue($tanggal_tanggal);
-$worksheet->getCell('jenjang')->setValue($jenjang);
+$worksheet->getCell('judul')->setValue($judul);
+$worksheet->getCell('npsn')->setValue($npsn);
 $worksheet->getCell('nama_sekolah')->setValue($nama_sekolah);
 $worksheet->getCell('nama_kecamatan')->setValue($nama_kecamatan);
-$worksheet->getCell('npsn')->setValue($npsn);
-$worksheet->getCell('deskripsi')->setValue($deskripsi);
-$worksheet->getCell('total_rka')->setValue($total_rka);
-$worksheet->getCell('realisasi_sd_twlalu')->setValue($realisasi_sd_twlalu);
-$worksheet->getCell('realisasi_twsekarang')->setValue($realisasi_twsekarang);
-$worksheet->getCell('tanggal_tempat')->setValue($tanggal_tempat);
+$worksheet->getCell('saldo_tw')->setValue($saldo_tw);
+$worksheet->getCell('saldo_twlalu')->setValue($saldo_twlalu);
+$worksheet->getCell('penerimaan_tw')->setValue($penerimaan_tw);
+$worksheet->getCell('penerimaan_twsekarang')->setValue($penerimaan_twsekarang);
+$worksheet->getCell('bulan1')->setValue($bulan1);
+$worksheet->getCell('bulan2')->setValue($bulan2);
+$worksheet->getCell('bulan3')->setValue($bulan3);
+$worksheet->getCell('nama_triwulan')->setValue($nama_triwulan);
 $worksheet->getCell('nama_kepsek')->setValue($nama_kepsek);
-$worksheet->getCell('nip_kepsek')->setValue('NIP.'.$nip_kepsek);
+$worksheet->getCell('nip_kepsek')->setValue("NIP.".$nip_kepsek);
+$worksheet->getCell('nama_bendahara')->setValue($nama_bendahara);
+$worksheet->getCell('nip_bendahara')->setValue("NIP.".$nip_bendahara);
+
+$worksheet->fromArray(
+    $belanjar1,
+    null,
+    'F11'
+);
+$worksheet->fromArray(
+    $belanjar2,
+    null,
+    'F16'
+);
+$worksheet->fromArray(
+    $belanjar3,
+    null,
+    'F62'
+);
+
 
 // $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
 // $writer->save('output.xlsx');
@@ -73,7 +136,7 @@ $spreadsheet->getActiveSheet()
 $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
 $temp_file = tempnam(sys_get_temp_dir(), 'Excel');
 $writer->save($temp_file);
-$file= 'sptmh_'.$ta.'_tw'.$triwulan.'_'.$npsn.'.xlsx';
+$file= 'k7kab_'.$ta.'_tw'.$triwulan.'_'.$npsn.'.xlsx';
 $documento = file_get_contents($temp_file);
 unlink($temp_file);  // delete file tmp
 header("Content-Disposition: attachment; filename= ".$file."");
