@@ -14,10 +14,10 @@ use App\Models\KodePembiayaan;
 use App\Models\Pencairan;
 
 // Lap Realisasi
-$npsn= $_SESSION['username'];
-$ta= $_GET['ta'];
+$npsn= $_POST['npsn'];
+$ta= $_POST['ta'];
 // $tahun_tahun= "TAHUN ".$ta;
-$triwulan= $_GET['tw'];
+$triwulan= $_POST['tw'];
 $triwulan1= [1 ,2 ,3 ];
 $triwulan2= [4 ,5 ,6 ];
 $triwulan3= [7 ,8 ,9 ];

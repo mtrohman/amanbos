@@ -13,10 +13,10 @@ use App\Models\KodeRekening;
 use App\Models\Pencairan;
 
 // Lap Realisasi
-$npsn= $_SESSION['username'];
-$ta= $_GET['ta'];
+$npsn= $_POST['npsn'];
+$ta= $_POST['ta'];
 // $tahun_tahun= "TAHUN ".$ta;
-$triwulan= $_GET['tw'];
+$triwulan= $_POST['tw'];
 $judul= "REKAPITULASI PENGGUNAAN DANA BOS TRIWULAN ".$triwulan." TAHUN ".$ta;
 $sekolah= Sekolah::npsn($npsn)->first();
 $nama_sekolah= $sekolah->nama_sekolah;
