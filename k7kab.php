@@ -35,11 +35,12 @@ $triwulan1= [1 ,2 ,3 ];
 $triwulan2= [4 ,5 ,6 ];
 $triwulan3= [7 ,8 ,9 ];
 $triwulan4= [10,11,12];
-$twarray= "triwulan".$triwulan;
+// $twarray= "triwulan".$triwulan;
+$bulanawal = ${"triwulan".$triwulan};
 
-$bulan1= bln_indo($$twarray[0]);
-$bulan2= bln_indo($$twarray[1]);
-$bulan3= bln_indo($$twarray[2]);
+$bulan1= bln_indo($bulanawal[0]);
+$bulan2= bln_indo($bulanawal[1]);
+$bulan3= bln_indo($bulanawal[2]);
 $nama_triwulan= "Triwulan ".$triwulan;
 
 // whereIn('parent_id', [3, 4, 5])
@@ -48,7 +49,7 @@ $rekening1= KodeRekening::where('parent_id',1)->get();
 $belanjar1= array();
 foreach ($rekening1 as $key => $rek1) {
 	// $belanjar1[$rek1->id]=$key;
-	foreach ($$twarray as $twkey => $bulan) {
+	foreach ($bulanawal as $twkey => $bulan) {
 		$belanjar1detail= Belanja::npsn($npsn)->ta($ta)->triwulan($triwulan)->idRekening($rek1->id)->whereMonth('tanggal_belanja',$bulan)->get()->sum('nilai');
 		$belanjar1[$rek1->id][$bulan]=$belanjar1detail;
 	}
@@ -61,7 +62,7 @@ $rekening2= KodeRekening::where('parent_id',2)->get();
 $belanjar2= array();
 foreach ($rekening2 as $key => $rek2) {
 	// $belanjar1[$rek1->id]=$key;
-	foreach ($$twarray as $twkey => $bulan) {
+	foreach ($bulanawal as $twkey => $bulan) {
 		$belanjar2detail= Belanja::npsn($npsn)->ta($ta)->triwulan($triwulan)->idRekening($rek2->id)->whereMonth('tanggal_belanja',$bulan)->get()->sum('nilai');
 		$belanjar2[$rek2->id][$bulan]=$belanjar2detail;
 	}
@@ -74,7 +75,7 @@ $rekening3= KodeRekening::whereIn('parent_id', [3, 4, 5])->get();
 $belanjar3= array();
 foreach ($rekening3 as $key => $rek3) {
 	// $belanjar1[$rek1->id]=$key;
-	foreach ($$twarray as $twkey => $bulan) {
+	foreach ($bulanawal as $twkey => $bulan) {
 		$belanjar3detail= Belanja::npsn($npsn)->ta($ta)->triwulan($triwulan)->idRekening($rek3->id)->whereMonth('tanggal_belanja',$bulan)->get()->sum('nilai');
 		$belanjar3[$rek3->id][$bulan]=$belanjar3detail;
 	}
