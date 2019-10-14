@@ -73,7 +73,7 @@ $objbku= $objbku->values()->all();
 
 foreach ($objbku as $keybelanja => $belanja) {
     $i++;
-	$bku_content[$i]['tanggal']=$belanja->tanggal_belanja;
+	$bku_content[$i]['tanggal']=tgl_indo($belanja->tanggal_belanja);
     if (!empty($belanja->rka)) {
         # code...
         $bku_content[$i]['kode_bku']=$belanja->rka->program->id."/".$kr_all[$belanja->rka->rekening_id]->path."/".$belanja->rka->kp->kode_pembiayaan;

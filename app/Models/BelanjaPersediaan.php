@@ -16,4 +16,26 @@ class BelanjaPersediaan extends Model
      */
     protected $dates = ['deleted_at'];
 
+    public function belanja()
+    {
+        return $this->belongsTo('App\Models\Belanja');
+    }
+
+    public function scopeNpsn($query, $npsn)
+    {
+        return $query->whereHas('belanja', function ($qbelanja) use ($npsn) {
+            $qbelanja->whereHas('rka', function ($q) use ($npsn) {
+            	$q->where('npsn', $npsn);
+        	});
+
+        });
+    }
+
+    public function scopeTriwulan($query, $triwulan)
+    {
+        return $query->whereHas('belanja', function ($qbelanja) use ($triwulan) {
+            $qbelanja->where('triwulan', $triwulan);
+        });
+    }
+
 }
