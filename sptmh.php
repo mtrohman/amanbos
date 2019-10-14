@@ -16,8 +16,16 @@ $ta= $_POST['ta'];
 // $tahun_tahun= "TAHUN ".$ta;
 $nomor_sptmh= $_POST['nomor_sptmh'];
 $triwulan= $_POST['tw'];
-$tanggal=date("Y-m-d");
-$tanggal_tanggal= strtoupper("Tanggal ".tgl_indo($tanggal));
+$triwulan1= [1 ,2 ,3 ];
+$triwulan2= [4 ,5 ,6 ];
+$triwulan3= [7 ,8 ,9 ];
+$triwulan4= [10,11,12];
+$akhirtanggal = ($triwulan==1||$triwulan==4) ? 31 : ($triwulan==2||$triwulan==3) ? 30 : 0 ;
+$bulanawal = ${"triwulan".$triwulan};
+
+$tanggal= $akhirtanggal." ".bln_indo($bulanawal[2])." ".$ta;
+$tanggal_tanggal= strtoupper("Tanggal ".$tanggal);
+
 $sekolah= Sekolah::npsn($npsn)->first();
 $nama_sekolah= $sekolah->nama_sekolah;
 $nama_kepsek= $sekolah->nama_kepsek;
@@ -69,7 +77,7 @@ $realisasi_sd_twlalu= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->sampaiTriwula
 // $belanjar4= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->triwulan($triwulan)->with('rka.rekening')->parentRekening(4)->get()->sum('nilai');
 // $belanjar5= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->triwulan($triwulan)->with('rka.rekening')->parentRekening(5)->get()->sum('nilai');
 $realisasi_twsekarang= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->triwulan($triwulan)->with('rka')->get()->sum('nilai');
-$tanggal_tempat= "Kab. Semarang, ".tgl_indo($tanggal);
+$tanggal_tempat= "Kab. Semarang, ".$tanggal;
 
 $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('format/sptmh.xlsx');
 

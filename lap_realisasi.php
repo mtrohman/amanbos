@@ -15,6 +15,13 @@ $npsn= $_POST['npsn'];
 $ta= $_POST['ta'];
 $tahun_tahun= "TAHUN ".$ta;
 $triwulan= $_POST['tw'];
+$triwulan1= [1 ,2 ,3 ];
+$triwulan2= [4 ,5 ,6 ];
+$triwulan3= [7 ,8 ,9 ];
+$triwulan4= [10,11,12];
+$akhirtanggal = ($triwulan==1||$triwulan==4) ? 31 : ($triwulan==2||$triwulan==3) ? 30 : 0 ;
+$bulanawal = ${"triwulan".$triwulan};
+
 switch ($triwulan) {
 	case '1':
 		# code...
@@ -65,8 +72,8 @@ $belanjar3= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->triwulan($triwulan)->wi
 $belanjar4= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->triwulan($triwulan)->with('rka.rekening')->parentRekening(4)->get()->sum('nilai');
 $belanjar5= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->triwulan($triwulan)->with('rka.rekening')->parentRekening(5)->get()->sum('nilai');
 
-$tanggal=date("Y-m-d");
-$tanggal_tempat= "Kab. Semarang, ".tgl_indo($tanggal);
+$tanggal= $akhirtanggal." ".bln_indo($bulanawal[2])." ".$ta;
+$tanggal_tempat= "Kab. Semarang, ".$tanggal;
 // echo $tanggal_tempat;
 $sekolah= Sekolah::npsn($npsn)->first();
 $nama_sekolah= $sekolah->nama_sekolah;

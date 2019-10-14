@@ -17,6 +17,13 @@ $npsn= $_POST['npsn'];
 $ta= $_POST['ta'];
 $teks_saldo_tahun= "TAHUN ".($ta-1);
 $triwulan= $_POST['tw'];
+$triwulan1= [1 ,2 ,3 ];
+$triwulan2= [4 ,5 ,6 ];
+$triwulan3= [7 ,8 ,9 ];
+$triwulan4= [10,11,12];
+$akhirtanggal = ($triwulan==1||$triwulan==4) ? 31 : ($triwulan==2||$triwulan==3) ? 30 : 0 ;
+$bulanawal = ${"triwulan".$triwulan};
+
 $nomor_sptj= $_POST['nomor_sptj'];
 $sekolah= Sekolah::npsn($npsn)->first();
 $nama_sekolah= $sekolah->nama_sekolah;
@@ -24,45 +31,71 @@ $nama_kepsek= $sekolah->nama_kepsek;
 $nip_kepsek= $sekolah->nip_kepsek;
 $jenjang= $sekolah->jenjang;
 
-if ($triwulan==3 || $triwulan==4) {
+/*if ($triwulan==3 || $triwulan==4) {
 	$semester="I";
 }
 elseif($triwulan==1 || $triwulan==2){
 	$semester="II";
+}*/
+function twhuruf($triwulan)
+{
+	switch ($triwulan) {
+		case '1':
+			# code...
+			$twhuruf= "I";
+			break;
+		case '2':
+			# code...
+			$twhuruf= "II";
+			break;
+		case '3':
+			# code...
+			$twhuruf= "III";
+			break;
+		case '4':
+			# code...
+			$twhuruf= "IV";
+			break;
+		
+		default:
+			# code...
+			$twhuruf="-";
+			break;
+	}
+	return $twhuruf;
 }
-
-switch ($triwulan) {
-	case '1':
+$twloop="";
+for ($i=1; $i <= $triwulan ; $i++) {
+	if ($i==1) {
 		# code...
-		$twhuruf= "I";
-		break;
-	case '2':
+		$twloop.="Triwulan ".twhuruf($i);
+	}
+	elseif ($i<$triwulan) {
 		# code...
-		$twhuruf= "II";
-		break;
-	case '3':
-		# code...
-		$twhuruf= "III";
-		break;
-	case '4':
-		# code...
-		$twhuruf= "IV";
-		break;
-	
-	default:
-		# code...
-		$twhuruf="-";
-		break;
+		$twloop.=", Triwulan ".twhuruf($i);
+	}
+	elseif ($i==$triwulan){
+		$twloop.=" dan Triwulan ".twhuruf($i);
+	}
 }
-
-$paragraf_terakhir= "penggunaan Dana BOS pada semester ".$semester." dan triwulan ".$twhuruf." Tahun Anggaran ".$ta." dengan rincian sebagai berikut:";
+$paragraf_terakhir= "penggunaan Dana BOS pada ".$twloop." Tahun Anggaran ".$ta." dengan rincian sebagai berikut:";
 
 $saldo_thlalu=Saldo::ta($ta-1)->npsn($npsn)->get()->sum('sisa');
 
-$penerimaan_tw1= Pencairan::npsn($npsn)->ta($ta)->triwulan(1)->get()->sum('saldo');
-$penerimaan_tw2= Pencairan::npsn($npsn)->ta($ta)->triwulan(2)->get()->sum('saldo');
-$penerimaan_tw3= Pencairan::npsn($npsn)->ta($ta)->triwulan(3)->get()->sum('saldo');
-$penerimaan_tw4= Pencairan::npsn($npsn)->ta($ta)->triwulan(4)->get()->sum('saldo');
+$penerimaan_tw1=0;
+$penerimaan_tw2=0;
+$penerimaan_tw3=0;
+$penerimaan_tw4=0;
+$penerimaanpertw="penerimaan_tw";
+
+for ($i=1; $i <= $triwulan ; $i++) { 
+	${$penerimaanpertw.$i}=Pencairan::npsn($npsn)->ta($ta)->triwulan($i)->get()->sum('saldo');
+}
+
+// $penerimaan_tw1= Pencairan::npsn($npsn)->ta($ta)->triwulan(1)->get()->sum('saldo');
+// $penerimaan_tw2= Pencairan::npsn($npsn)->ta($ta)->triwulan(2)->get()->sum('saldo');
+// $penerimaan_tw3= Pencairan::npsn($npsn)->ta($ta)->triwulan(3)->get()->sum('saldo');
+// $penerimaan_tw4= Pencairan::npsn($npsn)->ta($ta)->triwulan(4)->get()->sum('saldo');
 
 $belanjar1_sd_tw_sekarang= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->sampaiTriwulan($triwulan)->with('rka.rekening')->parentRekening(1)->get()->sum('nilai');
 $belanjar2_sd_tw_sekarang= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->sampaiTriwulan($triwulan)->with('rka.rekening')->parentRekening(2)->get()->sum('nilai');
@@ -71,8 +104,9 @@ $belanjar4_sd_tw_sekarang= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->sampaiTr
 $belanjar5_sd_tw_sekarang= Belanja::npsn($npsn)->ta($ta)->thBerjalan()->sampaiTriwulan($triwulan)->with('rka.rekening')->parentRekening(5)->get()->sum('nilai');
 $belanjar345_sd_tw_sekarang= $belanjar3_sd_tw_sekarang+$belanjar4_sd_tw_sekarang+$belanjar5_sd_tw_sekarang;
 // echo json_encode($belanjar345_sd_tw_sekarang);
-$tanggal=date("Y-m-d");
-$tanggal_tempat= "Kab. Semarang, ".tgl_indo($tanggal);
+
+$tanggal= $akhirtanggal." ".bln_indo($bulanawal[2])." ".$ta;
+$tanggal_tempat= "Kab. Semarang, ".$tanggal;
 
 $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('format/sptj.xlsx');
 
@@ -80,6 +114,7 @@ $worksheet = $spreadsheet->getActiveSheet();
 
 $worksheet->getCell('nomor_sptj')->setValue($nomor_sptj);
 $worksheet->getCell('nama_sekolah')->setValue($nama_sekolah);
+$worksheet->getCell('kode_organisasi')->setValue($npsn);
 $worksheet->getCell('jenjang')->setValue($jenjang);
 $worksheet->getCell('paragraf_terakhir')->setValue($paragraf_terakhir);
 $worksheet->getCell('teks_saldo_tahun')->setValue($teks_saldo_tahun);

@@ -20,6 +20,14 @@ $npsn= $_POST['npsn'];
 $ta= $_POST['ta'];
 // $tahun_tahun= "TAHUN ".$ta;
 $triwulan= $_POST['tw'];
+$triwulan1= [1 ,2 ,3 ];
+$triwulan2= [4 ,5 ,6 ];
+$triwulan3= [7 ,8 ,9 ];
+$triwulan4= [10,11,12];
+$akhirtanggal = ($triwulan==1||$triwulan==4) ? 31 : ($triwulan==2||$triwulan==3) ? 30 : 0 ;
+$bulanawal = ${"triwulan".$triwulan};
+$tanggal= $akhirtanggal." ".bln_indo($bulanawal[2])." ".$ta;
+$tanggal_tempat= "Kab. Semarang, ".$tanggal;
 
 switch ($triwulan) {
     case '1':
@@ -77,6 +85,7 @@ $worksheet = $spreadsheet->getActiveSheet();
 $worksheet->getCell('triwulan_tahun')->setValue($triwulan_tahun);
 $worksheet->getCell('nama_sekolah')->setValue($nama_sekolah);
 $worksheet->getCell('kecamatan')->setValue($kecamatan);
+$worksheet->getCell('tanggal_tempat')->setValue($tanggal_tempat);
 $worksheet->getCell('nama_kepsek')->setValue($nama_kepsek);
 $worksheet->getCell('nip_kepsek')->setValue("NIP.".$nip_kepsek);
 $worksheet->getCell('nama_bendahara')->setValue($nama_bendahara);
