@@ -22,10 +22,19 @@ foreach ($res_kr as $key => $value) {
 }
 
 // Lap Realisasi
-$npsn= $_GET['npsn'];
-$ta= $_GET['ta'];
+$npsn= $_POST['npsn'];
+$ta= $_POST['ta'];
 // $triwulan= $_GET['tw'];
-$bulan= $_GET['bln'];
+// $bulan= $_GET['bln'];
+$sekolah= Sekolah::npsn($npsn)->first();
+$nama_sekolah= $sekolah->nama_sekolah;
+$nama_kepsek= $sekolah->nama_kepsek;
+$nip_kepsek= $sekolah->nip_kepsek;
+$nama_bendahara= $sekolah->nama_bendahara;
+$nip_bendahara= $sekolah->nip_bendahara;
+$nama_kecamatan= $sekolah->kecamatannya->nama_kecamatan;
+$desa_kecamatan="- /".$nama_kecamatan;
+
 $bku_content= array();
 $col_start= "B";
 $row_start= 12;
@@ -155,14 +164,19 @@ foreach ($objbku as $keybelanja => $belanja) {
         $bku_content[$i]['saldo']="=H".($row_start+($i-1))." + F".($row_start+$i)." - G".($row_start+$i);
     }
 }
-echo json_encode($belanjas);
+// echo json_encode($belanjas);
 
 
 $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('format/bku.xlsx');
 
 $worksheet = $spreadsheet->getActiveSheet();
 
-// $worksheet->getCell('penerimaan_tw_sekarang')->setValue($penerimaan_tw_sekarang);
+$worksheet->getCell('nama_sekolah')->setValue($nama_sekolah);
+$worksheet->getCell('desa_kecamatan')->setValue($desa_kecamatan);
+$worksheet->getCell('nama_kepsek')->setValue($nama_kepsek);
+$worksheet->getCell('nip_kepsek')->setValue("NIP.".$nip_kepsek);
+$worksheet->getCell('nama_bendahara')->setValue($nama_bendahara);
+$worksheet->getCell('nip_bendahara')->setValue("NIP.".$nip_bendahara);
 
 $worksheet->fromArray(
     $bku_content,
@@ -171,22 +185,22 @@ $worksheet->fromArray(
 );
 
 
-$writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-$writer->save('output.xlsx');
+/*$writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+$writer->save('output.xlsx');*/
 
 /*$spreadsheet->getActiveSheet()
     ->getProtection()->setPassword('K8');
 $spreadsheet->getActiveSheet()
     ->getProtection()->setSheet(true);
 $spreadsheet->getActiveSheet()
-    ->getProtection()->setFormatCells(false);
+    ->getProtection()->setFormatCells(false);*/
 
 $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
 $temp_file = tempnam(sys_get_temp_dir(), 'Excel');
 $writer->save($temp_file);
-$file= 'k7prov_'.$ta.'_tw'.$triwulan.'_'.$npsn.'.xlsx';
+$file= 'bku_'.$ta.'_thberjalan_'.$npsn.'.xlsx';
 $documento = file_get_contents($temp_file);
 unlink($temp_file);  // delete file tmp
 header("Content-Disposition: attachment; filename= ".$file."");
 header('Content-Type: application/excel');
-echo $documento;*/
+echo $documento;
