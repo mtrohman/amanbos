@@ -8,7 +8,7 @@
                 <b>
                     <img height="50" src="assets/images/semarangkab.png" alt="Semarang Kab" />
                 </b>
-                <span><img height="40" src="assets/images/amanbos3.png" alt="Aman BOS!" /></span>
+                <span><img height="47" src="assets/images/simbos.png" alt="SIM - BOS" /></span>
             </a>
             <!-- <a class="navbar-brand" href="index.php">
                  <b>
