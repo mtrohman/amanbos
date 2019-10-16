@@ -144,16 +144,23 @@ use App\Models\Rka;
                         
                         // $pagu= PaguPerubahan::npsn($npsn)->ta($ta)->first()->pagu;
                         $pagu= PaguPerubahan::npsn($npsn)->ta($ta)->get()->sum('pagu');
-                        // $rkaperubahan= Rka::npsn($npsn)->ta($ta)->where('jenis_rka','RKA Perubahan');
-                        $rkaperubahansampaitw3= Rka::npsn($npsn)->ta(2019)->where('jenis_rka','RKA Perubahan')->sampaiTriwulan(3)->get()->sum('nilai');
-                        $rkaperubahansampaitw4= Rka::npsn($npsn)->ta(2019)->where('jenis_rka','RKA Perubahan')->sampaiTriwulan(4)->get()->sum('nilai');
-                        
+                        if (!empty($pagu)) {
+                            # code...
+                            // $rkaperubahan= Rka::npsn($npsn)->ta($ta)->where('jenis_rka','RKA Perubahan');
+                            $rkaperubahansampaitw3= Rka::npsn($npsn)->ta(2019)->where('jenis_rka','RKA Perubahan')->sampaiTriwulan(3)->get()->sum('nilai');
+                            $rkaperubahansampaitw4= Rka::npsn($npsn)->ta(2019)->where('jenis_rka','RKA Perubahan')->sampaiTriwulan(4)->get()->sum('nilai');
+                            
 
-                        $jatahtw3= $pagu*(80/100);
-                        $jatahtw4= $pagu*(100/100);
-                        $sisapagu3= $jatahtw3-$belanjasampaitw2-$rkaperubahansampaitw3;
-                        $sisapagu4= $jatahtw4-$belanjasampaitw2-$rkaperubahansampaitw4;
-                        // echo "tes".json_encode($tes);
+                            $jatahtw3= $pagu*(80/100);
+                            $jatahtw4= $pagu*(100/100);
+                            $sisapagu3= $jatahtw3-$belanjasampaitw2-$rkaperubahansampaitw3;
+                            $sisapagu4= $jatahtw4-$belanjasampaitw2-$rkaperubahansampaitw4;
+                            // echo "tes".json_encode($tes);
+                        }
+                        else{
+                            $sisapagu3=0;
+                            $sisapagu4=0;
+                        }
                         
                         
                 ?>
