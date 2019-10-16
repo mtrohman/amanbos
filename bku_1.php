@@ -100,9 +100,9 @@ foreach ($objbku as $keybelanja => $belanja) {
 
     if (!empty($belanja->ppn)) {
         $i++;
-        $bku_content[$i]['tanggal']="";
-        $bku_content[$i]['kode_bku']="";
-        $bku_content[$i]['no_bukti']="";
+        $bku_content[$i]['tanggal']=tgl_indo($belanja->tanggal_belanja);
+        $bku_content[$i]['kode_bku']=$belanja->rka->program->id."/".$kr_all[$belanja->rka->rekening_id]->path."/".$belanja->rka->kp->kode_pembiayaan;
+        $bku_content[$i]['no_bukti']=$belanja->nomor;
         // $bku_content[$i]['kosong']="";
         $bku_content[$i]['uraian']="Pajak PPN";
         $bku_content[$i]['penerimaan']=$belanja->ppn;
@@ -110,9 +110,9 @@ foreach ($objbku as $keybelanja => $belanja) {
         $bku_content[$i]['saldo']="=H".($row_start+($i-1))." + F".($row_start+$i)." - G".($row_start+$i);
 
         $i++;
-        $bku_content[$i]['tanggal']="";
-        $bku_content[$i]['kode_bku']="";
-        $bku_content[$i]['no_bukti']="";
+        $bku_content[$i]['tanggal']=tgl_indo($belanja->tanggal_belanja);
+        $bku_content[$i]['kode_bku']=$belanja->rka->program->id."/".$kr_all[$belanja->rka->rekening_id]->path."/".$belanja->rka->kp->kode_pembiayaan;
+        $bku_content[$i]['no_bukti']=$belanja->nomor;
         // $bku_content[$i]['kosong']="";
         $bku_content[$i]['uraian']="Pajak PPN";
         $bku_content[$i]['penerimaan']="";
@@ -122,9 +122,9 @@ foreach ($objbku as $keybelanja => $belanja) {
 
     if (!empty($belanja->pph21)) {
         $i++;
-        $bku_content[$i]['tanggal']="";
-        $bku_content[$i]['kode_bku']="";
-        $bku_content[$i]['no_bukti']="";
+        $bku_content[$i]['tanggal']=tgl_indo($belanja->tanggal_belanja);
+        $bku_content[$i]['kode_bku']=$belanja->rka->program->id."/".$kr_all[$belanja->rka->rekening_id]->path."/".$belanja->rka->kp->kode_pembiayaan;
+        $bku_content[$i]['no_bukti']=$belanja->nomor;
         // $bku_content[$i]['kosong']="";
         $bku_content[$i]['uraian']="Pajak PPH 21";
         $bku_content[$i]['penerimaan']=$belanja->pph21;
@@ -132,9 +132,9 @@ foreach ($objbku as $keybelanja => $belanja) {
         $bku_content[$i]['saldo']="=H".($row_start+($i-1))." + F".($row_start+$i)." - G".($row_start+$i);
 
         $i++;
-        $bku_content[$i]['tanggal']="";
-        $bku_content[$i]['kode_bku']="";
-        $bku_content[$i]['no_bukti']="";
+        $bku_content[$i]['tanggal']=tgl_indo($belanja->tanggal_belanja);
+        $bku_content[$i]['kode_bku']=$belanja->rka->program->id."/".$kr_all[$belanja->rka->rekening_id]->path."/".$belanja->rka->kp->kode_pembiayaan;
+        $bku_content[$i]['no_bukti']=$belanja->nomor;
         // $bku_content[$i]['kosong']="";
         $bku_content[$i]['uraian']="Pajak PPH 21";
         $bku_content[$i]['penerimaan']="";
@@ -144,9 +144,9 @@ foreach ($objbku as $keybelanja => $belanja) {
 
     if (!empty($belanja->pph23)) {
         $i++;
-        $bku_content[$i]['tanggal']="";
-        $bku_content[$i]['kode_bku']="";
-        $bku_content[$i]['no_bukti']="";
+        $bku_content[$i]['tanggal']=tgl_indo($belanja->tanggal_belanja);
+        $bku_content[$i]['kode_bku']=$belanja->rka->program->id."/".$kr_all[$belanja->rka->rekening_id]->path."/".$belanja->rka->kp->kode_pembiayaan;
+        $bku_content[$i]['no_bukti']=$belanja->nomor;
         // $bku_content[$i]['kosong']="";
         $bku_content[$i]['uraian']="Pajak PPH 23";
         $bku_content[$i]['penerimaan']=$belanja->pph23;
@@ -154,9 +154,9 @@ foreach ($objbku as $keybelanja => $belanja) {
         $bku_content[$i]['saldo']="=H".($row_start+($i-1))." + F".($row_start+$i)." - G".($row_start+$i);
 
         $i++;
-        $bku_content[$i]['tanggal']="";
-        $bku_content[$i]['kode_bku']="";
-        $bku_content[$i]['no_bukti']="";
+        $bku_content[$i]['tanggal']=tgl_indo($belanja->tanggal_belanja);
+        $bku_content[$i]['kode_bku']=$belanja->rka->program->id."/".$kr_all[$belanja->rka->rekening_id]->path."/".$belanja->rka->kp->kode_pembiayaan;
+        $bku_content[$i]['no_bukti']=$belanja->nomor;
         // $bku_content[$i]['kosong']="";
         $bku_content[$i]['uraian']="Pajak PPH 23";
         $bku_content[$i]['penerimaan']="";
