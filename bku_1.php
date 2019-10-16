@@ -33,7 +33,8 @@ $nip_kepsek= $sekolah->nip_kepsek;
 $nama_bendahara= $sekolah->nama_bendahara;
 $nip_bendahara= $sekolah->nip_bendahara;
 $nama_kecamatan= $sekolah->kecamatannya->nama_kecamatan;
-$desa_kecamatan="- /".$nama_kecamatan;
+$desa= (!empty($sekolah->desa)) ? strtoupper($sekolah->desa) : "-" ;
+$desa_kecamatan=$desa." /".$nama_kecamatan;
 
 $bku_content= array();
 $col_start= "B";

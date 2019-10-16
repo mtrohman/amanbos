@@ -1,3 +1,3 @@
 <footer class="footer">
-    © 2019 AMAN BOS! (Aplikasi Manajemen Dana BOS)
+    &copy; <?= date('Y');?> SIM-BOS (Sistem Informasi Manajemen Dana BOS)
 </footer>

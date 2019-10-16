@@ -226,23 +226,33 @@ include_once 'ceklogin.php';
                                             <input name="kecamatan" label="Kecamatan" id="fkecamatan" labelWidth="150" style="width:100%" class="easyui-combobox" data-options="valueField:'id',textField:'nama_kecamatan',url:'config/sekolah/combobox_kecamatan.php'">
                                         </div>
                                         <div style="margin-bottom:10px">
+                                            <input name="desa" label="Desa/Kelurahan" id="fdesa" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                        </div>
+                                        <div style="margin-bottom:10px">
                                             <input name="alamat" label="Alamat" id="falamat" class="easyui-textbox" labelWidth="150" style="width:100%">
                                         </div>
                                         <div style="margin-bottom:10px">
                                             <input name="telepon" label="Telepon" id="ftelepon" class="easyui-numberbox" labelWidth="150" style="width:100%">
                                         </div>
-                                        <div style="margin-bottom:10px">
-                                            <input name="nama_kepsek" label="Nama Kepsek" id="fnama_kepsek" class="easyui-textbox" labelWidth="150" style="width:100%">
-                                        </div>
-                                        <div style="margin-bottom:10px">
-                                            <input name="nip_kepsek" label="Nip Kepsek" id="fnip_kepsek" class="easyui-textbox" labelWidth="150" style="width:100%">
-                                        </div>
-                                        <div style="margin-bottom:10px">
-                                            <input name="nama_bendahara" label="Nama Bendahara" id="fnama_bendahara" class="easyui-textbox" labelWidth="150" style="width:100%">
-                                        </div>
-                                        <div style="margin-bottom:10px">
-                                            <input name="nip_bendahara" label="Nip Bendahara" id="fnip_bendahara" class="easyui-textbox" labelWidth="150" style="width:100%">
-                                        </div>
+                                        <?php
+                                        if ($_SESSION['role']==1) {
+                                            # code...
+                                        ?>
+                                            <div style="margin-bottom:10px">
+                                                <input name="nama_kepsek" label="Nama Kepsek" id="fnama_kepsek" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                            </div>
+                                            <div style="margin-bottom:10px">
+                                                <input name="nip_kepsek" label="Nip Kepsek" id="fnip_kepsek" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                            </div>
+                                            <div style="margin-bottom:10px">
+                                                <input name="nama_bendahara" label="Nama Bendahara" id="fnama_bendahara" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                            </div>
+                                            <div style="margin-bottom:10px">
+                                                <input name="nip_bendahara" label="Nip Bendahara" id="fnip_bendahara" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                            </div>
+                                        <?php
+                                        }
+                                        ?>    
                                         
                                         
                                     </form>
@@ -347,6 +357,7 @@ include_once 'ceklogin.php';
                     {field:"jenjang", width:"80", title:"Jenjang"},
                     {field:"status", width:"80", title:"Status"},
                     {field:"kecamatan", width:"150", title:"Kecamatan",formatter:function(value,row){return row.kecamatannya.nama_kecamatan;}},
+                    {field:"desa", width:"150", title:"Desa"},
                     {field:"alamat", width:"200", title:"Alamat"},
                     {field:"telepon", width:"150", title:"Telepon"},
                     {field:"nama_kepsek", width:"150", title:"Nama Kepsek"},
