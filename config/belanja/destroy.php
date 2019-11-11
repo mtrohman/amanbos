@@ -40,6 +40,9 @@ if (!empty($_POST)) {
         		$deletechild=true;
         	}
         }
+        else{
+        	$deletechild=true;
+        }
     	
     	if ($deletechild) {
     		if ($belanjaan_lama->delete()) {
