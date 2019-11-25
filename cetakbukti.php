@@ -37,7 +37,7 @@ if (!empty($belanja)) {
 	$judul= $namasekolah." - ".$namakecamatan;
 	$penerima= $belanja->penerima;
 	$uang_digit= $belanja->nilai;
-	$uang_terbilang= terbilang($uang_digit);
+	$uang_terbilang= "# ( ".ucwords(terbilang($uang_digit)." rupiah")." ) #";
 	$pembayaran= $belanja->nama;
 	$keperluan= $namaprogram." / ".$namakp;
 	$kode_rekening= $kr_all[$belanja->rka->rekening_id]->path." / ".$kr_all[$belanja->rka->rekening_id]->nama_rekening;

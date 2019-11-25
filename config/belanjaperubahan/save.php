@@ -36,7 +36,11 @@ if (!empty($_POST)) {
 			    'nama' => $request->nama,
 			    'nilai' => $request->nilai,
 			    'tanggal_belanja' => $tanggalbelanja,
-			    
+			    'nomor' => $request->nomor,
+			    'penerima' => $request->penerima,
+			    'ppn' => $request->ppn,
+			    'pph21' => $request->pph21,
+			    'pph23' => $request->pph23
 			]);
 			if ($tambahbelanja) {
 				$rka->sisa->nilai -= $request->nilai;

@@ -1,14 +1,15 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SaldoTriwulan extends Model
+class BarangPersediaan extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['ta','triwulan','npsn','sisa'];
-    
+    // protected $table = 'rka';
+    protected $fillable = ['npsn', 'nama_persediaan', 'satuan','harga_satuan', 'stok'];
     /**
      * The attributes that should be mutated to dates.
      *
@@ -31,16 +32,6 @@ class SaldoTriwulan extends Model
     public function scopeNpsn($query, $npsn)
     {
         return $query->where('npsn', 'like', '%' . $npsn . '%');
-    }
-
-    public function scopeTa($query, $ta)
-    {
-        return $query->where('ta', $ta);
-    }
-
-    public function scopeTriwulan($query, $triwulan)
-    {
-        return $query->where('triwulan', $triwulan);
     }
 
 }

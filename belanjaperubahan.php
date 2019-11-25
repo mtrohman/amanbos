@@ -183,11 +183,26 @@ require_once 'config/dbmanager.php';
                                 </div>
 
                                 <div style="margin-bottom:10px">
-                                    <input name="nilai" label="Harga" id="harga" class="easyui-numberbox" labelWidth="150" style="width:100%" data-options="min:0,precision:2,decimalSeparator:',',groupSeparator:'.',prefix:'Rp '">
+                                    <input name="nilai" label="Harga (+ pajak)" id="harga" class="easyui-numberbox" labelWidth="150" style="width:100%" data-options="min:0,precision:2,decimalSeparator:',',groupSeparator:'.',prefix:'Rp '">
                                 </div>
 
                                 <div style="margin-bottom:10px">
                                     <input name="tanggal_belanja" label="Tanggal" id="tgl" type="text" class="easyui-datebox" labelWidth="150" style="width:100%" data-options="formatter:myformatter,parser:myparser">
+                                </div>
+                                <div style="margin-bottom:10px">
+                                    <input name="nomor" label="Nomor" id="nomora2" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                </div>
+                                <div style="margin-bottom:10px">
+                                    <input name="penerima" label="Di Bayarkan Kepada" id="penerima" class="easyui-textbox" labelWidth="150" style="width:100%">
+                                </div>
+                                <div style="margin-bottom:10px">
+                                    <input name="ppn" label="PPN" id="ppn" class="easyui-numberbox" labelWidth="150" style="width:100%" data-options="min:0,precision:2,decimalSeparator:',',groupSeparator:'.',prefix:'Rp '">
+                                </div>
+                                <div style="margin-bottom:10px">
+                                    <input name="pph21" label="PPH 21" id="pph21" class="easyui-numberbox" labelWidth="150" style="width:100%" data-options="min:0,precision:2,decimalSeparator:',',groupSeparator:'.',prefix:'Rp '">
+                                </div>
+                                <div style="margin-bottom:10px">
+                                    <input name="pph23" label="PPH 23" id="pph23" class="easyui-numberbox" labelWidth="150" style="width:100%" data-options="min:0,precision:2,decimalSeparator:',',groupSeparator:'.',prefix:'Rp '">
                                 </div>
                                 
                                 
@@ -360,6 +375,13 @@ require_once 'config/dbmanager.php';
                             break;
                         }
                     }
+                },
+                {
+                    field:'download',width:'200',
+                    title:'Download',align:'center',
+                    formatter:function(value,row){
+                        return "<a target=\"_blank\" href=\"cetakbukti.php?id="+row.id+"\"> <button class=\"btn-xs btn-primary\"><i class=\"fa fa-file\"></i> Bukti Pengeluaran</button></a>";
+                    }
                 }
             ]]
         });
@@ -375,7 +397,9 @@ require_once 'config/dbmanager.php';
             $('#dlg').dialog('open').dialog('setTitle','Tambah Belanja');
             $('#fm').form('clear');
             url = 'config/belanjaperubahan/save.php';
-
+            $('#ppn').numberbox('setValue', 0);
+            $('#pph21').numberbox('setValue', 0);
+            $('#pph23').numberbox('setValue', 0);
             
             // $('#npsn').val("<?=$_SESSION['username'];?>").attr('readonly','true');
             // $('#ta').val("<?=$_SESSION['ta'];?>").attr('readonly','true');

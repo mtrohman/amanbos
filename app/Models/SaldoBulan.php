@@ -4,10 +4,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SaldoTriwulan extends Model
+class SaldoBulan extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['ta','triwulan','npsn','sisa'];
+    protected $fillable = ['ta','bulan','npsn','sisa'];
     
     /**
      * The attributes that should be mutated to dates.
@@ -38,9 +38,9 @@ class SaldoTriwulan extends Model
         return $query->where('ta', $ta);
     }
 
-    public function scopeTriwulan($query, $triwulan)
+    public function scopeBulan($query, $bulan)
     {
-        return $query->where('triwulan', $triwulan);
+        return $query->where('bulan', $bulan);
     }
 
 }
