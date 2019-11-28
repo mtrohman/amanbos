@@ -55,6 +55,12 @@ else{
     <!-- You can change the theme colors from here -->
     <link href="assets/css/colors/<?php echo $warnaweb;?>.css" id="theme" rel="stylesheet">
     <link href="assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
+    <style>
+        @font-face {
+          font-family: 'Roboto Mono';
+          src: URL('assets/fonts/RobotoMono-Regular.ttf') format('truetype');
+        }
+    </style>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -289,10 +295,39 @@ else{
                         </div>
                         <!-- /row -->
 
-                        <div class="card">
-                            <div class="card-body">
-                                
-                                Selamat datang
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        Selamat Datang
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            Pengumuman
+                                        </div>
+                                        <table id="tablepengumuman" style="font-family: 'Roboto Mono', monospace;" class="dt table table-sm table-bordered ">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 25%!important;">Tanggal</th>
+                                                    <th style="width: 60%!important;">Informasi</th>
+                                                    <th>Pilihan</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>25-11-2019</td>
+                                                    <td>Petunjuk Penggunaan Sistem</td>
+                                                    <td>Lihat</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
