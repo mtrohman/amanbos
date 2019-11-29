@@ -6,6 +6,10 @@ use App\Models\Sekolah;
 use App\Models\Pagu;
 use App\Models\Belanja;
 use App\Models\Pencairan;
+use App\Models\Pengumuman;
+
+$allpengumuman= Pengumuman::all();
+
 if ($_SESSION['role']==1) {
     # code...
     $countsekolah= Sekolah::count();
@@ -319,11 +323,15 @@ else{
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                            <?php
+                                                foreach ($allpengumuman as $key => $pengumuman) {
+                                            ?>
                                                 <tr>
-                                                    <td>25-11-2019</td>
-                                                    <td>Petunjuk Penggunaan Sistem</td>
-                                                    <td>Lihat</td>
+                                                    <td><?=$pengumuman->created_at->format('d-m-Y');?></td>
+                                                    <td><?=$pengumuman->judul;?></td>
+                                                    <td><button class="btn btn-sm btn-info openBtn" data-id="<?=$pengumuman->id;?>"data-judul="<?=$pengumuman->judul;?>">Lihat</button></td>
                                                 </tr>
+                                            <?php } ?>  
                                             </tbody>
                                         </table>
                                     </div>
@@ -332,6 +340,27 @@ else{
                         </div>
                     </div>
                 </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="modalpengumuman" tabindex="-1" style="display: none;">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="judulpengumuman">Pengumuman</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            </div>
+                            <div class="modal-body">
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->
                 <!-- ============================================================== -->
@@ -396,6 +425,15 @@ else{
               }
             });
         }
+
+        $('.openBtn').on('click',function(){
+            var judul = $(this).attr('data-judul');
+            var dataurl= "config/pengumuman/getpengumuman.php?id="+$(this).attr('data-id');
+            $('#judulpengumuman').html(judul);
+            $('.modal-body').load(dataurl,function(){
+                $('#modalpengumuman').modal({show:true});
+            });
+        });
     </script>
     
 </body>
