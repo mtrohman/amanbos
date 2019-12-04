@@ -1,6 +1,7 @@
 <?php 
 include_once 'config/db.php';
 include_once 'ceklogin.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -168,6 +169,9 @@ include_once 'ceklogin.php';
                                             <input id="snpsn" style="line-height:26px;border:1px solid #ccc">
                                             <span>sekolah:</span>
                                             <input id="ssekolah" style="line-height:26px;border:1px solid #ccc">
+                                            <span>kecamatan:</span>
+                                            <input name="kecamatan" id="skecamatan" class="easyui-combobox" data-options="valueField:'id',textField:'nama_kecamatan',url:'config/sekolah/combobox_kecamatan.php'">
+
                                             <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">Cari</a>
                                         </div>
                                             <?php
@@ -377,6 +381,7 @@ include_once 'ceklogin.php';
             $('#dg').datagrid('load',{
                 npsn: $('#snpsn').val(),
                 namasekolah: $('#ssekolah').val(),
+                kecamatan: $('#skecamatan').val(),
             });
         }
         function newSekolah(){

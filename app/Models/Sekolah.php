@@ -59,4 +59,9 @@ class Sekolah extends Model
         return $query->where('nama_sekolah', 'like', '%' . $sekolah . '%');
     }
 
+    public function scopeIdKecamatan($query, $kecamatan)
+    {
+        return $query->where('kecamatan', $kecamatan );
+    }
+
 }

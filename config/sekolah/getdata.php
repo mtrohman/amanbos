@@ -23,12 +23,18 @@
         $namasekolah=$_POST['namasekolah'];
     }
 
+    if (!empty($_POST['kecamatan'])) {
+        $sekolah= Sekolah::with(['kecamatannya'])->npsn($npsn)->namasekolah($namasekolah)->idkecamatan($_POST['kecamatan'])->skip($offset)->take($rows)->get();
+        $sekolahcount= Sekolah::npsn($npsn)->namasekolah($namasekolah)->idkecamatan($_POST['kecamatan'])->count();
+    }
+    else{
+        $sekolah= Sekolah::with(['kecamatannya'])->npsn($npsn)->namasekolah($namasekolah)->skip($offset)->take($rows)->get();
+        $sekolahcount= Sekolah::npsn($npsn)->namasekolah($namasekolah)->count();
+    }
 
-	$pagu= Sekolah::with(['kecamatannya'])->npsn($npsn)->namasekolah($namasekolah)->skip($offset)->take($rows)->get();
-    $pagucount= Sekolah::npsn($npsn)->namasekolah($namasekolah)->count();
 	$result = array();
-	$result["total"] = $pagucount;
-	$result["rows"] = $pagu;
+	$result["total"] = $sekolahcount;
+	$result["rows"] = $sekolah;
 	
 	echo json_encode($result);
 ?>
