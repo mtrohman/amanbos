@@ -373,6 +373,12 @@ include_once 'ceklogin.php';
 
             
         });
+        function doSearch(){
+            $('#dg').datagrid('load',{
+                npsn: $('#snpsn').val(),
+                namasekolah: $('#ssekolah').val(),
+            });
+        }
         function newSekolah(){
             $('#dlg').dialog('open').dialog('setTitle','Tambah Sekolah');
             $('#fm').form('clear');

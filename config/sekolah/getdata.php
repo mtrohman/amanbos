@@ -7,8 +7,9 @@
 	$page = isset($_POST['page']) ? intval($_POST['page']) : 1;
 	$rows = isset($_POST['rows']) ? intval($_POST['rows']) : 10;
     $offset = ($page-1)*$rows;
+    $namasekolah="";
 
-if (isset($_POST['npsn'])) {
+    if (isset($_POST['npsn'])) {
     	$npsn=$_POST['npsn'];
     }
     else if(isset($_GET['npsn'])){
@@ -18,12 +19,13 @@ if (isset($_POST['npsn'])) {
     	$npsn='';
     }
 
-    if (!empty($_POST)) {
-        $request = (object)$_POST;
+    if (isset($_POST['namasekolah'])) {
+        $namasekolah=$_POST['namasekolah'];
     }
 
-	$pagu= Sekolah::with(['kecamatannya'])->npsn($npsn)->skip($offset)->take($rows)->get();
-    $pagucount= Sekolah::npsn($npsn)->count();
+
+	$pagu= Sekolah::with(['kecamatannya'])->npsn($npsn)->namasekolah($namasekolah)->skip($offset)->take($rows)->get();
+    $pagucount= Sekolah::npsn($npsn)->namasekolah($namasekolah)->count();
 	$result = array();
 	$result["total"] = $pagucount;
 	$result["rows"] = $pagu;
